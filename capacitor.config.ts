@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.junto.travel',
+  appId: 'junto.package.app',
   appName: 'Junto',
   webDir: 'out',
   server: {

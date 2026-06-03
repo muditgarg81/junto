@@ -1,4 +1,4 @@
-package com.junto.travel;
+package junto.pkg.app;
 
 import com.getcapacitor.BridgeActivity;
 
