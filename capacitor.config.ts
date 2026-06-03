@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Junto',
   webDir: 'out',
   server: {
-    url: 'https://junto-l9c0g2zrc-muditgarg81s-projects.vercel.app',
+    url: 'https://junto-three.vercel.app',
     cleartext: true
   }
 };
