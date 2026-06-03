@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#dfd9ce",
+                    "tertiary-fixed-dim": "#f3be6a",
+                    "surface-container-low": "#f9f3e7",
+                    "on-primary-fixed": "#002118",
+                    "on-surface-variant": "#404945",
+                    "primary": "#023629",
+                    "secondary-fixed": "#ffdbcf",
+                    "inverse-surface": "#333028",
+                    "background": "#fff9ed",
+                    "on-primary-container": "#8dbdab",
+                    "ai-sage-tint": "#E8F0EA",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#e8e2d6",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#214f41",
+                    "inverse-primary": "#a1d1be",
+                    "secondary-container": "#ff8759",
+                    "tertiary": "#422b00",
+                    "on-secondary-fixed": "#380d00",
+                    "surface-container-high": "#ede8dc",
+                    "primary-container": "#1f4d3f",
+                    "tertiary-fixed": "#ffddaf",
+                    "on-secondary-fixed-variant": "#802901",
+                    "border-warm-grey": "#D9D4CB",
+                    "inverse-on-surface": "#f6f0e4",
+                    "muted-text": "#5E594E",
+                    "tertiary-container": "#5f3f00",
+                    "primary-fixed": "#bcedda",
+                    "on-surface": "#1d1c14",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#a1d1be",
+                    "surface-container-highest": "#e8e2d6",
+                    "card-cream": "#FCFAF4",
+                    "surface-bright": "#fff9ed",
+                    "on-tertiary-container": "#ddaa59",
+                    "error-container": "#ffdad6",
+                    "outline": "#717975",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#a04018",
+                    "surface-tint": "#3a6758",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c0c8c3",
+                    "on-error": "#ffffff",
+                    "surface": "#fff9ed",
+                    "ink-text": "#211F1A",
+                    "on-secondary-container": "#712300",
+                    "on-tertiary-fixed-variant": "#614000",
+                    "on-background": "#1d1c14",
+                    "surface-container": "#f3ede1",
+                    "on-tertiary-fixed": "#281800",
+                    "secondary-fixed-dim": "#ffb59a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "stack-sm": "12px",
+                    "container-padding": "20px",
+                    "stack-lg": "40px",
+                    "stack-md": "24px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Fraunces"],
+                    "headline-sm": ["Fraunces"],
+                    "display": ["Fraunces"],
+                    "label-caps": ["Hanken Grotesk"],
+                    "headline-lg": ["Fraunces"],
+                    "body-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "mono-price": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      body { background-color: #fff9ed; color: #211F1A; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col items-center min-h-screen pb-32">
+<!-- Top AppBar Component -->
+<header class="w-full top-0 sticky bg-surface z-50 flex items-center justify-between px-gutter py-base w-full max-w-[390px] border-b border-border-warm-grey">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center overflow-hidden border border-border-warm-grey">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a traveler with a warm, friendly expression. The lighting is soft and natural, suggesting an outdoor setting at golden hour. The aesthetic is clean and high-end, matching a refined travel journal style with warm cream tones and subtle analog textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq8iL3yXiYT2ainy716JgyJI2qnLSpfvM5-2bvXmCXuZcvA0RNMWahh2zciqSc_PdaGjcflJl_03RJdNv0VX9_DkEK43uC8f4ZgNcK5KzKPIy9cJLSFAz2EFa5OqYjoPrXgH91Dny2zt4lIrny6IsDy-N1Rp0gpHoSAvNP6TPHrld5MDlPpruj6ECi2HOQECS2mAiG-gXEojLOcoAvuXfff1eY-np8ttVZ4xR_sDREZUzdizYI2PvIzPyPzil3bVZ2LPb_XxOrk1qf"/>
+</div>
+<span class="font-display text-headline-md text-primary">Wandertogether</span>
+</div>
+<div class="text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">group</span>
+</div>
+</header>
+<main class="w-full max-w-[390px] px-gutter pt-stack-md flex flex-col gap-stack-lg">
+<!-- Page Title Section -->
+<section>
+<h1 class="font-display text-display text-ink-text">Memories</h1>
+</section>
+<!-- Featured Section (Editorial Masonry Style) -->
+<section class="flex flex-col gap-base">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-muted-text">FEATURED</span>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl border border-border-warm-grey shadow-sm">
+<img class="w-full h-80 object-cover" data-alt="A breathtaking golden hour sunset over the ocean at Vagator Beach in Goa. The silhouettes of palm trees frame the vibrant orange and pink sky. The lighting is warm and analog, reminiscent of a premium film photograph in a travel magazine. The scene is serene, capturing the luxury of a coastal getaway." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBeTcI-t2BDYjTmyQonnJmV2hkgrf5EWyWABa0FMTVHHMLnfinphKKMI-l0SNYA05rhvlx0HCXImK-YT_2jB2CXgWJZ_HUeWGal5tUw_JsRrIqLSpbMzBPxpOL3E4Tcd2RxgCatdXD3NIyh94TzX2XLC8KB2Sgo5z3Vo2MQ7kCVe6qUQa3JqIHO1DnzWd9zYHfGq-HMYW8yVDk75wnOekB6LK6Fv4nWKF1kWyFsgfwGbZmhrnIff4McpPi8aEp6M-3nCChhI2y6hHa"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+<div class="absolute bottom-4 left-4 bg-ai-sage-tint/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-primary-container/20">
+<p class="font-label-caps text-[10px] text-primary-container leading-none mb-0.5">CAPTION</p>
+<p class="font-body-sm text-primary font-semibold">Sunset at Thalassa · Day 3</p>
+</div>
+</div>
+</section>
+<!-- Photo Grid Grouped by Day -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center gap-4">
+<h2 class="font-label-caps text-label-caps text-muted-text whitespace-nowrap">DAY 1 · ARRIVAL</h2>
+<div class="h-[1px] w-full bg-border-warm-grey"></div>
+</div>
+<!-- Bento-style Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Large Card -->
+<div class="col-span-2 relative h-48 rounded-xl overflow-hidden border border-border-warm-grey shadow-sm group">
+<img class="w-full h-full object-cover" data-alt="An aesthetic shot of a tropical welcome drink sitting on a rustic wooden table at a luxury Goa resort. The lighting is bright and airy, emphasizing the vibrant greens and yellows of the garnishes. Soft depth of field highlights the condensation on the glass. The mood is welcoming and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD5zHCWcD3j_Qe1wEuOcub4lZM0pU5Fl-_jOA6jYErD2mwo6Mvg6wOJ-x8_o82VMysyjwf_YaQVrwqscqNrwui4ofV5Ij4XQ_q984hZNIg2VahiUJHAbncgmaRWbUE6u_jFEks87oiifvjtilxJ6UA6zVsD8tGS7efUlD08pmm-crdlr-A3Z06JbO2L5tZb6zIzsuHHQ_nYckdGEFt7yKfCqdWbwpk3K1A34Nj9p42v8ECsapd_5Df272x4WML_QM9BUCBM1ytwmN5"/>
+<div class="absolute top-2 right-2 w-6 h-6 rounded-full border border-white/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar of a traveler with a smiling face, rendered in a warm, artistic lighting style consistent with a premium editorial journal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkTaa3l7Qdsf_HXmnN-9q_t2Wce30Wbo6ov7M7uboUgmCDin0_nRizTvREewcSNSW-GqJhoKKh9aLX8dHDWea7Yz-R99unsfDhvu3_ady70SMgzPz9Y5mz0Sq974Rr_5Wk9HSjZ00cQ-ThBDPiJ_Q8qJ_weOpVDoyx-0tSbxSAeGNfd446NC8hx3s64kTUo2uoE-OM916lpr78eN6Gt-HepGSwwOA7SDJvpTBmoN_VWJtRjmbBqmUvD8oPnKh7PGVgD0fvWTC13z9M"/>
+</div>
+</div>
+<!-- Square Card 1 -->
+<div class="relative aspect-square rounded-xl overflow-hidden border border-border-warm-grey shadow-sm group">
+<img class="w-full h-full object-cover" data-alt="A wide shot of a pristine white beach in Goa under a clear blue sky. Small ripples of ocean water gently lap onto the warm sand. The composition is minimalist and high-contrast, evoking a sense of space and tranquility in a modern travel editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXw949T_1-KqkbskPEKl2Ija1bmPrie5GJvwCxvCYSBulLVrhFW-kdqs-DboQh6mCG-IC2UWT5Yz3JbYD5qu_XmPuBt66dKYDhR2vodQDbv6K6PIE5A2VXnH_LZ5OD72AhjgtIJYuowH_uOzSj0si-9h_Wk6SewyzhNRSpBMjqD5warj_FZwu8_cjM8KZBzk4q9q9_fKdqYBCjPRvdYJBAKFcSxzwOD3Zu_u_gqG9clSQNK8XBh_JptKvd_oAYjvD1_h_RFjUT89y_"/>
+<div class="absolute top-2 right-2 w-6 h-6 rounded-full border border-white/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar of a person in a sun hat, styled with a warm, analog film grain look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJPK5B0D3ylFBGyW88aE0GPhET3zmIEin5vHGNfYMo6ANoTDMimeDvUM2QB46EKYVCYtM093YgkUICRk4av6TmPFzFPFeLlyI_Ya4CLf6FIO5om-s6fYQBLbCBjXgpVYQAo83aBs2J4t7PtmNyOW_oSWI05_SNNcvue1TlNoOS2xHUyPHxCkUc4XSYBpDkszJcr1xO0K1XpDlvjEFwgQt7wARACIk8NekpWySU6YPDK4omSzaaytdr4kJme5XP7dfP-h1UI5G3xTNv"/>
+</div>
+</div>
+<!-- Square Card 2 -->
+<div class="relative aspect-square rounded-xl overflow-hidden border border-border-warm-grey shadow-sm group">
+<img class="w-full h-full object-cover" data-alt="Close up of artisanal seafood appetizers served on a decorative ceramic plate. The food is colorful and exquisitely presented, captured in bright daylight that creates soft, elegant shadows. The aesthetic is sophisticated and culinary-focused, fitting a luxury travel experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOHF_cei6CgKjHfMQJXAyd45KrvJyxVfH8cHrPwkW7vE1u5-UYk4Nmxgy1OKuwsPzCswZxLd90mAQUVICtPAJ9y7GnDqhgANRqjONBolT5yXzX3aO6qJwD4E5LyG33EvAHPr68Aq2flCBgTY5gRbpL35kUD3fr8ZTOYD0ICmv3Rnsu2_VvfqQ5GeR4E9ZOb6y21duzm3taszF6TheCSMoY1UqqwblFBYZNFkHYVXm8khmjR-luhHBNPQAxs1hF7EkesUA6ZvgxpAxz"/>
+</div>
+</div>
+</section>
+<!-- More Memories (Day 2 Preview) -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center gap-4">
+<h2 class="font-label-caps text-label-caps text-muted-text whitespace-nowrap">DAY 2 · EXPLORATION</h2>
+<div class="h-[1px] w-full bg-border-warm-grey"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden border border-border-warm-grey shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A vertical shot of a narrow cobblestone street in Old Goa, flanked by colorful Portuguese-style colonial buildings with overflowing flower balconies. The morning sun casts long, soft shadows, creating a nostalgic and romantic mood. The color palette is rich with ochre, blue, and terracotta." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd5i03kpM6fTy5gAioet8La-Boko2XP7mUdrwQUfO1iPglgqCB2IsqA9P0Zavn0egPezUCQk2cZ8_mW6e_xec0GIwVKVzD5TBjyDAAchZnIThluwpNFVKjAHpY_yE6cRuxVQs9xMHWHOBWdvbPmj-Q55p7aYwKEC6Q1v9JwSEMyQIcaLP7Y3QtMg1B0AOPvYUbM5yFpd0h3cOK9BAeKwDHcHM4L5_DWV65nImyHTScryU9Erbd7AmKJj-ZAe1sdOfPT4qtlVC_rwHw"/>
+</div>
+<div class="flex flex-col gap-4">
+<div class="relative h-[calc(50%-8px)] rounded-xl overflow-hidden border border-border-warm-grey shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Detail of a local market stall in Goa filled with vibrant spices in woven baskets. The lighting is earthy and warm, focusing on the textures and intense colors of the turmeric and chili powders. A tactile, organic feel that captures the essence of local culture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbjiUGKLSIM0e7CtPvrryJ0Sll1R4_AXZf6PafpyanhqIo9bVCggSJIRjF4a-fCx6yoBlXA9-sZCDEszhEJ7srAei5tqJPjzYXQc2XvCums_yjcfAHl_Ti1nRbrDVS1vUfDorRkvW-B3YjfSXhTg69Dd3HG_LTFcHZol6qIX4k6QtVjFEklK-C7hBtKgZEHHfGB8X5zR03i05WbAthUZvKaSDNhKSewbvel01f0sPCxpXopOu07iIqooo1AB_oDV4x_X-6d0qvBxP4"/>
+</div>
+<div class="relative h-[calc(50%-8px)] rounded-xl overflow-hidden border border-border-warm-grey shadow-sm bg-surface-container-low flex flex-col items-center justify-center">
+<span class="font-headline-sm text-muted-text">+12</span>
+<span class="font-label-caps text-[10px] text-muted-text">MEMORIES</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB: Pine Green Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary-container text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined text-3xl">add_a_photo</span>
+</button>
+<!-- Bottom Navigation Component -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface rounded-t-xl border-t border-border-warm-grey shadow-[0_-2px_10px_rgba(33,31,26,0.05)] z-50">
+<!-- Chat -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<!-- Plan (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</a>
+<!-- Money -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</a>
+<!-- Vault -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for image cards
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('click', () => {
+                img.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    img.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Atmospheric effect: Soft fade in on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-4');
+            observer.observe(section);
+        });
+    </script>
+</body></html>

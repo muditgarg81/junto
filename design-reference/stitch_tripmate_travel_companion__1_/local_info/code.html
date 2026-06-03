@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#214f41",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "on-tertiary-fixed": "#281800",
+                        "background": "#fff9ed",
+                        "tertiary": "#422b00",
+                        "ink-text": "#211F1A",
+                        "primary-container": "#1f4d3f",
+                        "tertiary-fixed": "#ffddaf",
+                        "surface-container-high": "#ede8dc",
+                        "border-warm-grey": "#D9D4CB",
+                        "secondary-fixed": "#ffdbcf",
+                        "inverse-primary": "#a1d1be",
+                        "outline-variant": "#c0c8c3",
+                        "on-secondary-fixed-variant": "#802901",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "outline": "#717975",
+                        "surface": "#fff9ed",
+                        "surface-container": "#f3ede1",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1d1c14",
+                        "primary": "#023629",
+                        "ai-sage-tint": "#E8F0EA",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e8e2d6",
+                        "inverse-surface": "#333028",
+                        "secondary": "#a04018",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f9f3e7",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "primary-fixed": "#bcedda",
+                        "surface-container-highest": "#e8e2d6",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#5f3f00",
+                        "on-secondary-fixed": "#380d00",
+                        "on-surface": "#1d1c14",
+                        "secondary-container": "#ff8759",
+                        "muted-text": "#5E594E",
+                        "surface-dim": "#dfd9ce",
+                        "on-tertiary-container": "#ddaa59",
+                        "surface-tint": "#3a6758",
+                        "on-primary-container": "#8dbdab",
+                        "card-cream": "#FCFAF4",
+                        "on-secondary-container": "#712300",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fff9ed",
+                        "primary-fixed-dim": "#a1d1be",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002118",
+                        "inverse-on-surface": "#f6f0e4",
+                        "on-surface-variant": "#404945",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "24px",
+                        "container-padding": "20px",
+                        "base": "8px",
+                        "stack-lg": "40px",
+                        "gutter": "16px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "mono-price": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Fraunces"],
+                        "display": ["Fraunces"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Fraunces"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"]
+                    },
+                    "fontSize": {
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fff9ed;
+            color: #211F1A;
+            -webkit-font-smoothing: antialiased;
+        }
+        .emergency-glow {
+            box-shadow: 0 0 20px rgba(194, 89, 47, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Top AppBar (from JSON context) -->
+<header class="bg-surface w-full top-0 sticky z-50 border-b border-border-warm-grey">
+<div class="flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center overflow-hidden">
+<img alt="Traveler Profile" class="w-full h-full object-cover" data-alt="A portrait of a male traveler with a friendly expression, set against a warm sunlit background. The style is journalistic and natural, matching the refined travel journal aesthetic of the application with soft lighting and earth-toned colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7GMfBgPgtZoMG0C0rAMd0ZkymTSNtlNZaT97OKqIjQVZVep9r6eyyz6uwVwRcspo-Uus-wKGi2RmDtlEh1JBozHq7br60-HU-JaN3jWYkZF5WWjOi_BKfyPBXsZxIsTSZt7mEfODAGn-NZXwVuOfKHdQWv6CqPAuicX-65CxCuiUEdf6_o-UCMQXT8sWVHyVXqLrgU7ZqVHG4TOJRLLWSTyDH-ZQv3Uwf2Eim7KMWFnV7p51DH1UnEZXmbqH1w7bkZ7zQnq6IXoaC"/>
+</div>
+<h1 class="font-display text-headline-md text-primary">Wandertogether</h1>
+</div>
+<span class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95 cursor-pointer" data-icon="group">group</span>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[390px] mx-auto px-container-padding pb-32">
+<!-- Header Section -->
+<section class="mt-stack-lg mb-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-ink-text">Local info</h2>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="material-symbols-outlined text-[16px] text-muted-text" data-icon="location_on">location_on</span>
+<p class="font-body-md text-body-md text-muted-text">Goa, India · saved offline</p>
+</div>
+</section>
+<!-- Primary Emergency Card -->
+<div class="bg-card-cream border-2 border-secondary rounded-xl p-5 mb-stack-md emergency-glow flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-label-caps text-secondary tracking-widest block mb-1">UNIVERSAL EMERGENCY</span>
+<h3 class="font-display text-display text-ink-text leading-none">112</h3>
+</div>
+<div class="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[28px]" data-icon="emergency">emergency</span>
+</div>
+</div>
+<button class="w-full bg-secondary text-white font-headline-sm text-headline-sm py-4 rounded-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined" data-icon="call" data-weight="fill" style="font-variation-settings: 'FILL' 1;">call</span>
+                Call Now
+            </button>
+</div>
+<!-- Secondary Services List -->
+<div class="flex flex-col gap-stack-sm">
+<!-- Police -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="local_police">local_police</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-muted-text">POLICE</p>
+<p class="font-headline-sm text-headline-sm text-ink-text">100</p>
+</div>
+</div>
+<button class="p-3 rounded-full bg-primary-container text-on-primary-container active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="call">call</span>
+</button>
+</div>
+<!-- Ambulance -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="medical_services">medical_services</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-muted-text">AMBULANCE</p>
+<p class="font-headline-sm text-headline-sm text-ink-text">108</p>
+</div>
+</div>
+<button class="p-3 rounded-full bg-primary-container text-on-primary-container active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="call">call</span>
+</button>
+</div>
+<!-- Hospital Bento Card -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl overflow-hidden">
+<div class="h-32 bg-surface-container-high relative">
+<img alt="Map location" class="w-full h-full object-cover opacity-60 mix-blend-multiply" data-alt="A clean, modern aerial map view of a coastal region in Goa, India. The image shows lush tropical greenery interspersed with red-roofed buildings and winding roads. The lighting is bright morning sun, creating a high-contrast and clear visual for navigation, maintaining a premium travel journal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArBPc5ubs9PLqY_OAaVGQYuYbmPrFufnkD0tLC2V2pDQ3wovHQ8JHFjY2Sx0mCKEco3Q20YOlT3l9Rn5Yu_W8nqMQDWsfbNlpJyJih1SukMsRiaFO-JDgIyNPk7yN5YHgXN-gZn9t84PpfzulSNSoAw0vKdKkhHH7krqAfAkCxM4njFWtSdxO4A0oIaIEsBybrJGd70YNWq914fgZDQHKbQUbAJ0eLKXF1D9XSbp-IMPE94RbVeFAFWhTEhjCgAcNSaEQ61uf3UoRy"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white p-2 rounded-full shadow-lg border border-border-warm-grey">
+<span class="material-symbols-outlined text-secondary" data-icon="hospital">local_hospital</span>
+</div>
+</div>
+</div>
+<div class="p-4">
+<p class="font-label-caps text-label-caps text-muted-text mb-1">NEAREST HOSPITAL</p>
+<h4 class="font-headline-sm text-headline-sm text-ink-text">Manipal Hospital</h4>
+<p class="font-body-sm text-body-sm text-muted-text">Dona Paula · 4.2 km away</p>
+<div class="flex gap-2 mt-4">
+<button class="flex-1 bg-primary text-white font-label-caps text-label-caps py-3 rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="directions">directions</span>
+                            Directions
+                        </button>
+<button class="px-4 border border-border-warm-grey text-ink-text py-3 rounded-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="call">call</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tourist Helpline -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-muted-text">TOURIST HELPLINE</p>
+<p class="font-headline-sm text-headline-sm text-ink-text">1363</p>
+</div>
+</div>
+<button class="p-3 rounded-full bg-primary-container text-on-primary-container active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="call">call</span>
+</button>
+</div>
+</div>
+<!-- Offline Footer Note -->
+<footer class="mt-stack-lg flex items-center justify-center gap-2 py-4">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="cloud_done">cloud_done</span>
+<p class="font-body-sm text-body-sm text-muted-text italic">Cached for offline — works without signal.</p>
+</footer>
+</main>
+<!-- Bottom Navigation Bar (from JSON context) -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface border-t border-border-warm-grey rounded-t-xl shadow-[0_-2px_10px_rgba(33,31,26,0.05)] z-50">
+<div class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</div>
+<div class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</div>
+<div class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</div>
+</nav>
+<script>
+        // Simple haptic feedback simulation
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(20);
+                }
+            });
+        });
+    </script>
+</body></html>

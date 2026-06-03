@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#1f4d3f",
+                        "outline-variant": "#c0c8c3",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#712300",
+                        "surface-container-low": "#f9f3e7",
+                        "secondary-container": "#ff8759",
+                        "primary-fixed": "#bcedda",
+                        "on-background": "#1d1c14",
+                        "surface-variant": "#e8e2d6",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary": "#a04018",
+                        "on-primary-fixed": "#002118",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "inverse-on-surface": "#f6f0e4",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#333028",
+                        "muted-text": "#5E594E",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "surface-dim": "#dfd9ce",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#f3ede1",
+                        "tertiary-container": "#5f3f00",
+                        "inverse-primary": "#a1d1be",
+                        "tertiary": "#422b00",
+                        "surface-tint": "#3a6758",
+                        "on-tertiary-fixed": "#281800",
+                        "border-warm-grey": "#D9D4CB",
+                        "primary-fixed-dim": "#a1d1be",
+                        "secondary-fixed": "#ffdbcf",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "surface-bright": "#fff9ed",
+                        "primary": "#023629",
+                        "card-cream": "#FCFAF4",
+                        "on-surface-variant": "#404945",
+                        "on-secondary-fixed": "#380d00",
+                        "on-error-container": "#93000a",
+                        "ink-text": "#211F1A",
+                        "on-surface": "#1d1c14",
+                        "surface-container-highest": "#e8e2d6",
+                        "ai-sage-tint": "#E8F0EA",
+                        "surface-container-high": "#ede8dc",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffddaf",
+                        "outline": "#717975",
+                        "surface": "#fff9ed",
+                        "background": "#fff9ed",
+                        "on-primary-fixed-variant": "#214f41",
+                        "on-secondary-fixed-variant": "#802901",
+                        "on-tertiary-container": "#ddaa59",
+                        "on-primary-container": "#8dbdab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "40px",
+                        "base": "8px",
+                        "container-padding": "20px",
+                        "stack-md": "24px",
+                        "stack-sm": "12px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Fraunces"],
+                        "display": ["Fraunces"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Fraunces"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "mono-price": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .strikethrough {
+            text-decoration: line-through;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-ink-text font-body-md min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky bg-surface border-b border-border-warm-grey z-40">
+<div class="flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img alt="Traveler Profile" class="w-full h-full object-cover" data-alt="A warm, editorial style portrait of a young traveler with a thoughtful expression. The lighting is soft and natural, reminiscent of a sunset in a Mediterranean coastal town. The overall aesthetic is refined and journalistic, using a palette of soft creams and deep ink tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU-pLb7JxS8CSknU5gQNn57Z9fOfC19PJJBzqTkkgEHpxC6uM4YtHR4fPJJamKhB95qMgd8wwRurTL1wRjZ1w7nRe4O6XvDK3P4dQyon44pvyNYTw8rMMOMKFb6l9jA6aW3iSnHMzOv9oZxlbXJcmjJiYNtFXxlwFZfmTI1QsshvBJ335XkrsO-asTqezQ2zLNaV0FqExFHgHCS9Xi_NOaYS4gJmF8pd9KyctXSlO85a3zCeR4JwgTFgGYmr3osbrq9Vb0X2uAVON4"/>
+</div>
+<h1 class="font-display text-headline-sm text-primary">Wandertogether</h1>
+</div>
+<button class="hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">group</span>
+</button>
+</div>
+</header>
+<main class="max-w-[390px] mx-auto px-container-padding pt-stack-md">
+<!-- Title & Progress -->
+<section class="mb-stack-md">
+<h2 class="font-headline-lg text-headline-lg mb-1">Essentials</h2>
+<p class="font-body-md text-muted-text mb-4">8 of 14 packed</p>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[57%] transition-all duration-700 ease-out"></div>
+</div>
+</section>
+<!-- Segmented Filter -->
+<nav class="flex p-1 bg-surface-container rounded-lg mb-stack-md">
+<button class="flex-1 py-2 text-center rounded-lg font-label-caps text-label-caps bg-surface shadow-sm text-ink-text">EVERYONE</button>
+<button class="flex-1 py-2 text-center rounded-lg font-label-caps text-label-caps text-muted-text hover:text-ink-text transition-colors">MINE</button>
+<button class="flex-1 py-2 text-center rounded-lg font-label-caps text-label-caps text-muted-text hover:text-ink-text transition-colors">SHARED GEAR</button>
+</nav>
+<!-- Checklist Sections -->
+<div class="space-y-stack-md">
+<!-- SHARED GEAR SECTION -->
+<article>
+<h3 class="font-label-caps text-label-caps text-muted-text mb-4 tracking-widest">SHARED GEAR</h3>
+<div class="space-y-base">
+<!-- Item: Bluetooth speaker -->
+<div class="flex items-center gap-4 bg-card-cream border border-border-warm-grey p-4 rounded-xl shadow-sm hover:border-primary-container transition-colors">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center cursor-pointer">
+</div>
+<div class="flex-1">
+<p class="font-body-md text-ink-text">Bluetooth speaker <span class="text-muted-text">(Karan)</span></p>
+</div>
+</div>
+<!-- Item: First-aid kit -->
+<div class="flex items-center gap-4 bg-card-cream border border-border-warm-grey p-4 rounded-xl shadow-sm hover:border-primary-container transition-colors">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center cursor-pointer">
+</div>
+<div class="flex-1">
+<p class="font-body-md text-ink-text">First-aid kit <span class="text-muted-text">(Aditi)</span></p>
+</div>
+</div>
+<!-- Item: Power bank (CHECKED) -->
+<div class="flex items-center gap-4 bg-card-cream border border-border-warm-grey p-4 rounded-xl opacity-60 transition-all">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-ink-text strikethrough">Power bank</p>
+</div>
+</div>
+</div>
+</article>
+<!-- PERSONAL SECTION -->
+<article>
+<h3 class="font-label-caps text-label-caps text-muted-text mb-4 tracking-widest">PERSONAL</h3>
+<div class="space-y-base">
+<!-- Item: Sunscreen (CHECKED) -->
+<div class="flex items-center gap-4 bg-card-cream border border-border-warm-grey p-4 rounded-xl opacity-60">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-ink-text strikethrough">Sunscreen</p>
+</div>
+</div>
+<!-- Item: Swimwear (CHECKED) -->
+<div class="flex items-center gap-4 bg-card-cream border border-border-warm-grey p-4 rounded-xl opacity-60">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-ink-text strikethrough">Swimwear</p>
+</div>
+</div>
+<!-- Item: Passport -->
+<div class="flex items-center gap-4 bg-card-cream border border-border-warm-grey p-4 rounded-xl shadow-sm hover:border-primary-container transition-colors">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center cursor-pointer">
+</div>
+<div class="flex-1">
+<p class="font-body-md text-ink-text">Passport / ID</p>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- AI Suggestion Chip -->
+<div class="mt-stack-lg p-gutter bg-ai-sage-tint rounded-xl border border-outline-variant flex items-center justify-between gap-3 animate-pulse-subtle">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-[20px]">auto_awesome</span>
+<p class="font-body-sm text-ink-text">Add insect repellent for a beach trip?</p>
+</div>
+<button class="bg-primary-container text-on-primary px-3 py-1.5 rounded-full font-label-caps text-label-caps hover:opacity-90 active:scale-95 transition-all">
+                + ADD
+            </button>
+</div>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary-container text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-90 transition-transform z-50">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<footer class="fixed bottom-0 w-full z-50 bg-surface rounded-t-xl border-t border-border-warm-grey shadow-[0_-2px_10px_rgba(33,31,26,0.05)]">
+<div class="max-w-[390px] mx-auto flex justify-around items-center px-4 py-3">
+<!-- Chat -->
+<div class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors px-4 py-1">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-label-caps mt-1">Chat</span>
+</div>
+<!-- Plan (Active) -->
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined filled-icon">map</span>
+<span class="font-label-caps text-label-caps mt-1">Plan</span>
+</div>
+<!-- Money -->
+<div class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors px-4 py-1">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps mt-1">Money</span>
+</div>
+<!-- Vault -->
+<div class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors px-4 py-1">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">Vault</span>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for checkboxes
+        document.querySelectorAll('.cursor-pointer').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                const parent = this.closest('div.flex');
+                const text = parent.querySelector('p');
+                
+                if (this.classList.contains('bg-primary-container')) {
+                    // Uncheck
+                    this.classList.remove('bg-primary-container');
+                    this.classList.add('border-2', 'border-outline-variant');
+                    this.innerHTML = '';
+                    parent.classList.remove('opacity-60');
+                    text.classList.remove('strikethrough');
+                } else {
+                    // Check
+                    this.classList.add('bg-primary-container');
+                    this.classList.remove('border-2', 'border-outline-variant');
+                    this.innerHTML = '<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>';
+                    parent.classList.add('opacity-60');
+                    text.classList.add('strikethrough');
+                }
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "muted-text": "#5E594E",
+                    "tertiary-container": "#5f3f00",
+                    "surface-container": "#f3ede1",
+                    "surface-dim": "#dfd9ce",
+                    "on-primary-fixed-variant": "#214f41",
+                    "surface-variant": "#e8e2d6",
+                    "surface-container-highest": "#e8e2d6",
+                    "on-primary-container": "#8dbdab",
+                    "secondary-container": "#ff8759",
+                    "tertiary": "#422b00",
+                    "inverse-primary": "#a1d1be",
+                    "secondary": "#a04018",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#281800",
+                    "on-background": "#1d1c14",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#002118",
+                    "border-warm-grey": "#D9D4CB",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#1f4d3f",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#ffdbcf",
+                    "primary-fixed-dim": "#a1d1be",
+                    "primary-fixed": "#bcedda",
+                    "on-secondary-container": "#712300",
+                    "surface": "#fff9ed",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#717975",
+                    "on-secondary-fixed": "#380d00",
+                    "tertiary-fixed": "#ffddaf",
+                    "ai-sage-tint": "#E8F0EA",
+                    "surface-bright": "#fff9ed",
+                    "on-tertiary-container": "#ddaa59",
+                    "on-surface-variant": "#404945",
+                    "background": "#fff9ed",
+                    "surface-container-high": "#ede8dc",
+                    "on-secondary-fixed-variant": "#802901",
+                    "ink-text": "#211F1A",
+                    "surface-container-low": "#f9f3e7",
+                    "card-cream": "#FCFAF4",
+                    "primary": "#023629",
+                    "on-surface": "#1d1c14",
+                    "inverse-surface": "#333028",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#3a6758",
+                    "outline-variant": "#c0c8c3",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f6f0e4",
+                    "secondary-fixed-dim": "#ffb59a",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#614000",
+                    "tertiary-fixed-dim": "#f3be6a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "24px",
+                    "container-padding": "20px",
+                    "gutter": "16px",
+                    "stack-sm": "12px",
+                    "base": "8px",
+                    "stack-lg": "40px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "mono-price": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-sm": ["Fraunces"],
+                    "display": ["Fraunces"],
+                    "body-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Fraunces"],
+                    "headline-lg": ["Fraunces"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fff9ed;
+            color: #211F1A;
+            -webkit-font-smoothing: antialiased;
+        }
+        .paper-border {
+            border: 1px solid #D9D4CB;
+        }
+        .shadow-soft {
+            box-shadow: 0 4px 20px -2px rgba(33, 31, 26, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen items-center font-body-md text-body-md pb-32">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-border-warm-grey flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Traveler Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a friendly traveler wearing a linen shirt, with soft natural sunlight hitting their face. The background is a soft-focus tropical greenery, creating a warm, approachable travel journal aesthetic. The lighting is bright and high-key, aligning with the refined off-white and pine green color palette of the app's sophisticated design style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwAqRKOsQQoPzLq4QZvm18CIydHPY-AHS5mRrepbNuLreXD9h_8kRqCqhnSk8gQsjFWlf3NaXiKAqOdAvgQen_Vdc2dal5FtPZqOevQqMMmx0qSk-U21-z9rIFGwp-nFpRAGd-fqebkz0m-timpdYLZxXA7FPPRjdiYss82y4QhgW9_EORrgXj06GKjlwq86GsrVzS2q1c-qbFjPNtieJVeTVbgyiM4SsNm1Izi4KO10pm543CkuaHHYAop-8ttVndPU9BmcWgm4SH"/>
+</div>
+<h1 class="font-display text-headline-md text-primary">Wandertogether</h1>
+</div>
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</button>
+</header>
+<main class="w-full max-w-[390px] px-gutter py-stack-md flex flex-col gap-stack-lg">
+<!-- Header Section -->
+<section class="flex flex-col gap-1">
+<h2 class="font-headline-lg text-headline-lg text-ink-text">Vault</h2>
+<p class="text-muted-text font-body-md italic opacity-80">Bookings, vouchers &amp; contacts</p>
+</section>
+<!-- Upload Card -->
+<section>
+<div class="w-full border-2 border-dashed border-border-warm-grey rounded-xl p-stack-md flex flex-col items-center justify-center text-center gap-stack-sm bg-surface-container-lowest transition-all hover:bg-white active:scale-[0.98]">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="upload">upload</span>
+</div>
+<p class="font-body-md text-ink-text leading-relaxed px-4">
+                    Forward bookings to <span class="font-mono-price text-primary">goa-trip@wandertogether.app</span> or tap to upload
+                </p>
+</div>
+</section>
+<!-- Flights Section -->
+<section class="flex flex-col gap-stack-sm">
+<h3 class="font-label-caps text-label-caps text-muted-text flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+                FLIGHTS
+            </h3>
+<div class="paper-border bg-card-cream rounded-xl p-gutter shadow-soft flex flex-col gap-3 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-surface-container rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-ink-text">IndiGo 6E-235</p>
+<p class="text-body-sm text-muted-text">Mumbai → Goa</p>
+</div>
+</div>
+<div class="bg-surface-variant px-2 py-1 rounded-md flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="description">description</span>
+<span class="text-[10px] font-bold font-label-caps">TICKET.PDF</span>
+</div>
+</div>
+<div class="flex justify-between items-center pt-2 border-t border-border-warm-grey/50">
+<div class="flex flex-col">
+<span class="text-[10px] font-label-caps text-muted-text">DEPARTURE</span>
+<span class="font-mono-price text-ink-text">Jan 15, 6:10 AM</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] font-label-caps text-muted-text">PNR</span>
+<span class="font-mono-price text-primary">XK4P2Q</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Stays Section -->
+<section class="flex flex-col gap-stack-sm">
+<h3 class="font-label-caps text-label-caps text-muted-text flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container rounded-full"></span>
+                STAYS
+            </h3>
+<div class="paper-border bg-card-cream rounded-xl p-gutter shadow-soft flex flex-col gap-3 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-surface-container rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="bed">bed</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-ink-text">Taj Holiday Village</p>
+<p class="text-body-sm text-muted-text">Check-in Jan 15 · 5 Nights</p>
+</div>
+</div>
+<div class="bg-surface-variant px-2 py-1 rounded-md flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="confirmation_number">confirmation_number</span>
+<span class="text-[10px] font-bold font-label-caps">CONFIRM.PNG</span>
+</div>
+</div>
+<div class="flex justify-between items-center pt-2 border-t border-border-warm-grey/50">
+<div class="flex flex-col">
+<span class="text-[10px] font-label-caps text-muted-text">CHECK-OUT</span>
+<span class="font-mono-price text-ink-text">Jan 20</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] font-label-caps text-muted-text">CONF #</span>
+<span class="font-mono-price text-primary">88241</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Activities Section -->
+<section class="flex flex-col gap-stack-sm">
+<h3 class="font-label-caps text-label-caps text-muted-text flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary-container rounded-full"></span>
+                ACTIVITIES
+            </h3>
+<div class="paper-border bg-card-cream rounded-xl p-gutter shadow-soft flex flex-col gap-3 relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-surface-container rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="scuba_diving">scuba_diving</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-ink-text">Scuba — Grand Island</p>
+<p class="text-body-sm text-muted-text">Jan 17, 9:00 AM</p>
+</div>
+</div>
+<div class="bg-surface-variant px-2 py-1 rounded-md flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="image">image</span>
+<span class="text-[10px] font-bold font-label-caps">VOUCHER</span>
+</div>
+</div>
+<div class="pt-2 border-t border-border-warm-grey/50">
+<span class="text-[10px] font-label-caps text-muted-text block mb-1">VOUCHER CODE</span>
+<span class="font-mono-price text-primary">GI-7782</span>
+</div>
+</div>
+</section>
+<!-- Contacts Section -->
+<section class="flex flex-col gap-stack-sm mb-8">
+<h3 class="font-label-caps text-label-caps text-muted-text flex items-center gap-2">
+<span class="w-2 h-2 bg-ink-text rounded-full"></span>
+                CONTACTS
+            </h3>
+<div class="paper-border bg-card-cream rounded-xl overflow-hidden divide-y divide-border-warm-grey/50">
+<div class="p-gutter flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-muted-text" data-icon="person">person</span>
+<div>
+<p class="font-body-md font-semibold text-ink-text">Driver · Suresh</p>
+<p class="text-body-sm text-muted-text">+91 98xxxxxxx</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="call">call</span>
+</div>
+<div class="p-gutter flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-muted-text" data-icon="apartment">apartment</span>
+<div>
+<p class="font-body-md font-semibold text-ink-text">Hotel front desk</p>
+<p class="text-body-sm text-muted-text">Taj Holiday Village</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="call">call</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface border-t border-border-warm-grey shadow-[0_-2px_10px_rgba(33,31,26,0.05)] rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-caps text-label-caps uppercase mt-0.5">Vault</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for clicking contact rows
+        document.querySelectorAll('.cursor-pointer').forEach(row => {
+            row.addEventListener('click', function() {
+                this.classList.add('scale-[0.98]');
+                setTimeout(() => this.classList.remove('scale-[0.98]'), 100);
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#ede8dc",
+                    "surface": "#fff9ed",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f9f3e7",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "tertiary": "#422b00",
+                    "on-surface": "#1d1c14",
+                    "on-tertiary-container": "#ddaa59",
+                    "on-tertiary-fixed-variant": "#614000",
+                    "inverse-primary": "#a1d1be",
+                    "tertiary-container": "#5f3f00",
+                    "surface-bright": "#fff9ed",
+                    "secondary": "#a04018",
+                    "tertiary-fixed-dim": "#f3be6a",
+                    "inverse-on-surface": "#f6f0e4",
+                    "primary-container": "#1f4d3f",
+                    "on-secondary-fixed-variant": "#802901",
+                    "on-secondary-container": "#712300",
+                    "error-container": "#ffdad6",
+                    "card-cream": "#FCFAF4",
+                    "secondary-container": "#ff8759",
+                    "surface-variant": "#e8e2d6",
+                    "on-secondary-fixed": "#380d00",
+                    "secondary-fixed-dim": "#ffb59a",
+                    "border-warm-grey": "#D9D4CB",
+                    "muted-text": "#5E594E",
+                    "on-background": "#1d1c14",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#ffddaf",
+                    "ink-text": "#211F1A",
+                    "surface-tint": "#3a6758",
+                    "on-primary-container": "#8dbdab",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#281800",
+                    "primary-fixed": "#bcedda",
+                    "secondary-fixed": "#ffdbcf",
+                    "on-primary-fixed-variant": "#214f41",
+                    "surface-container-highest": "#e8e2d6",
+                    "inverse-surface": "#333028",
+                    "on-primary-fixed": "#002118",
+                    "on-primary": "#ffffff",
+                    "outline": "#717975",
+                    "surface-container": "#f3ede1",
+                    "ai-sage-tint": "#E8F0EA",
+                    "outline-variant": "#c0c8c3",
+                    "background": "#fff9ed",
+                    "primary": "#023629",
+                    "on-surface-variant": "#404945",
+                    "surface-dim": "#dfd9ce",
+                    "primary-fixed-dim": "#a1d1be"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "stack-md": "24px",
+                    "stack-lg": "40px",
+                    "container-padding": "20px",
+                    "stack-sm": "12px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Fraunces"],
+                    "body-md": ["Hanken Grotesk"],
+                    "body-sm": ["Hanken Grotesk"],
+                    "headline-sm": ["Fraunces"],
+                    "mono-price": ["Hanken Grotesk"],
+                    "display": ["Fraunces"],
+                    "headline-lg": ["Fraunces"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "label-caps": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff9ed;
+            color: #211F1A;
+            -webkit-font-smoothing: antialiased;
+        }
+        .paper-shadow {
+            box-shadow: 0 2px 8px -2px rgba(33, 31, 26, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-40 bg-surface dark:bg-surface-dim border-b border-border-warm-grey dark:border-outline-variant flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Traveler Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoMV2L28p3rGBVf1zeL9GyUR0oNP_dR-AE8kIhY0N3f79RMOFv1wJPbrJ5lDWxpK6CiACu2n-Va9ZVxX8fXaG4LQ0j3CR88T354iUnT-mker1VyPp1FiYnQ_iOawoLHiaAfklyZ483IV5sPm4silFGxeInF1jwWP4okOYaAnskZAiYQqjF7t5ZqMTJvKrotHjd9x71XncMAHRozKzzfG-uje0foB8rRPOcV8FV8tDeqCFZsIeRv4oroJNiMuI704RnbsJN2ut7XdnF"/>
+</div>
+<h1 class="font-display text-headline-md text-primary dark:text-primary-fixed-dim">Wandertogether</h1>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:opacity-80 transition-opacity active:scale-95 transition-transform" data-icon="group">group</button>
+</header>
+<main class="max-w-[390px] mx-auto px-gutter pt-stack-md">
+<!-- Header Section -->
+<div class="mb-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-ink-text mb-stack-sm">Your travels</h2>
+<!-- Passport Summary Band -->
+<div class="bg-surface-container-high rounded-xl p-gutter border border-border-warm-grey paper-shadow flex justify-between items-center relative overflow-hidden">
+<!-- Decorative element to suggest a passport stamp texture -->
+<div class="absolute -right-4 -top-4 opacity-5 rotate-12">
+<span class="material-symbols-outlined text-[120px]" data-icon="travel_explore">travel_explore</span>
+</div>
+<div class="text-center z-10">
+<p class="font-label-caps text-label-caps text-muted-text mb-1">Trips</p>
+<p class="font-headline-sm text-headline-sm text-primary">12</p>
+</div>
+<div class="w-px h-10 bg-border-warm-grey mx-2"></div>
+<div class="text-center z-10">
+<p class="font-label-caps text-label-caps text-muted-text mb-1">Cities</p>
+<p class="font-headline-sm text-headline-sm text-primary">9</p>
+</div>
+<div class="w-px h-10 bg-border-warm-grey mx-2"></div>
+<div class="text-center z-10">
+<p class="font-label-caps text-label-caps text-muted-text mb-1">Days away</p>
+<p class="font-headline-sm text-headline-sm text-primary">47</p>
+</div>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="relative mb-stack-lg">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-muted-text" data-icon="search">search</span>
+<input class="w-full h-12 pl-12 pr-4 bg-card-cream border border-border-warm-grey rounded-xl font-body-md text-body-md focus:ring-1 focus:ring-primary focus:border-primary transition-all placeholder:text-muted-text" placeholder="Search trips" type="text"/>
+</div>
+<!-- Trip Groups by Year -->
+<div class="space-y-stack-lg">
+<!-- 2026 Section -->
+<section>
+<h3 class="font-label-caps text-label-caps text-muted-text border-b border-border-warm-grey pb-2 mb-stack-sm flex items-center justify-between">
+<span>2026</span>
+<span class="font-body-sm text-body-sm normal-case italic">Future horizons</span>
+</h3>
+<div class="space-y-stack-sm">
+<!-- Trip Card -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-3 flex items-center gap-3 paper-shadow active:scale-[0.98] transition-transform cursor-pointer">
+<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-border-warm-grey">
+<img class="w-full h-full object-cover" data-alt="A cinematic, warm-toned photograph of a sunset over Venice's Grand Canal. The scene features historic Italian architecture reflecting in the calm water, with a soft golden hour glow illuminating the terracotta rooftops. The style is editorial and nostalgic, like a high-quality travel journal, using a refined palette of warm creams and deep inky shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgC72qgkGVh8EoaaRRUa6EzGF0JnoiA_qSj_3HO4WeidUfqGI6asWqn6x7dS_PIc7zocJbEUyOEPf-_yE7i-gJtBbtLH5K52g8MbgUJShhXPSOAbk36GHFiafFVE2qqKRoBmrggVAFVIgI6M8rn4FEUI2zPyub0DzUlJLpJ1lfdbWLmUYdQQIuAM0QMrvTl3mnjPsdS3XvBD1c6RUps3uAJ5RAMTQtobvvJMeuF6PXXDd5hxldF2IBTRRP1zu8YA9gndiLu43Sv5uF"/>
+</div>
+<div class="flex-grow min-w-0">
+<h4 class="font-headline-sm text-headline-sm text-ink-text truncate">Summer in Venice</h4>
+<p class="font-body-sm text-body-sm text-muted-text">Aug 12 - Aug 20</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex -space-x-2">
+<img alt="Member" class="w-6 h-6 rounded-full border-2 border-card-cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzqHLArWmT5EUb_87FVo0O9BqZi9pubPeYVnNoz43dhVUAEb24gRhuw00LtYDzGYFpKJ_e3tVdgTDQn5EE6T8yRFxaaVwrLmVwVtwx6xIHS1YmgakFizTGww3XqtyW0aB1PFh11CGeQI5V8rfZ8Nl8r4YC2iSXehuICwka_B4DJsYYbmru6jyzFUL5Xtg4v7Gt2rLnnbLonR7lscDDt6M14IxVUbNtgUJEUhSLVXN6CK3wKkty2b19FBfnN7osZtIL4RFrdc4j30Yo"/>
+<img alt="Member" class="w-6 h-6 rounded-full border-2 border-card-cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt_aYqNGek08QQ6T91yJczgcGPtIlu5IrYKnA7bA08C5hTR1RWcxmm3XxWx6TchRWJkw8-sW_ptzOfkL6CRp19WbJYxJjSPP19Kb-y511_KgxYyD5ftbDi0CMjDEHwdb-uXreSUyWDrxEOCIpS-en9eT9d0EqWZR3iSfBHvIyUfLdmL3l-DUJnaWIRYs48jFcq5nHar_5JK6kkQFboI5FKjnY2EEtJKotbSpQTAVd5VSaQ8RpZ3UI0wDzMtrNUFKMdRT8zKiZabeHR"/>
+<div class="w-6 h-6 rounded-full bg-surface-container-high border-2 border-card-cream flex items-center justify-center">
+<span class="text-[10px] font-bold">+1</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-muted-text" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2025 Section -->
+<section>
+<h3 class="font-label-caps text-label-caps text-muted-text border-b border-border-warm-grey pb-2 mb-stack-sm">2025</h3>
+<div class="space-y-stack-sm">
+<!-- Trip Card: Completed -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-3 flex items-center gap-3 paper-shadow active:scale-[0.98] transition-transform cursor-pointer">
+<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-border-warm-grey">
+<img class="w-full h-full object-cover" data-alt="An atmospheric, medium shot of the Eiffel Tower framed by elegant Parisian balcony railings. The lighting is soft and overcast, creating a sophisticated and romantic mood with a color palette of muted greys, warm creams, and deep greens. The visual style is evocative of a vintage film photograph found in a curated travel scrapbook." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd7RFr6CyyP06cDwzRxs54EVemNp6aJ3GTCLOtEtp97fFsIPd3spzCzeykm09eZOS36y7YJqVWh5-UkTxTJI516OXTsBq1V8yGBk6RBMTjnlCmJQ-e4TwNjS2pJR8d7DaG1JSTJzS_YiIUyx7sMnFvB1YdHCK2bj5Vs0-OTYrJRRy-fFLv7sBB7g6BjtktEJ1qeppPMnGCAylEiV482b5Ioc8cRSAQzABc1HYE7jKxXei86BkspivnlXJqWkhrF4yr7ABuJdhVtQFE"/>
+</div>
+<div class="flex-grow min-w-0">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-ink-text truncate">Paris Weekend</h4>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</div>
+<p class="font-body-sm text-body-sm text-muted-text">Dec 05 - Dec 08</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex -space-x-2">
+<img alt="Member" class="w-6 h-6 rounded-full border-2 border-card-cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnr28jgVUZTKIrgbUKI6Ax3IEPqMQCIPY1SvvenFnaJQeIt8O63Pi4IYLt4dLiKWd6i70OrE6RsMOlgCR56KW55pV8HVhohdp75pgii_5_LQ-JCxSAFqH96dq9_BwGLe7JRfZF7zieVOINIBf4APwILsE2KK0pY5BQlDG9mhctbmUXdGiKNioymN-LOredBWVwEfQ-cwi19BnxNhzW2dKDxJDUtT8ohWbHE5YxhC0aIj_NU6rPwFx0AvPAKuy6tAb33b5NZkkXcBvs"/>
+<img alt="Member" class="w-6 h-6 rounded-full border-2 border-card-cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ07DODyopMZDTIBkSBUajoOkeAOElBwuku1RXseCFd-ydxr4Vkjd1wLRnDY80b8peHi4AtepLtrxuhNW0ZFd6BW7afeFbcx_jdxQUPa7eK9SWUbB-f-u3OHeT3T3Nw5N3X5ttFpCqXLiGoHRvflWshmf5jxWqqVN2Sw0_LX_9D6pKCTp-WN-KQ39EZ89TKyYNTy1bMCObvOzv6avbm5f8XhwXBLA0HS9v6iUTczCnuJBDMQats5uxPlDhwsSX0yHDlWRaW_2_jbNz"/>
+</div>
+<span class="material-symbols-outlined text-muted-text" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Trip Card: Completed -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-3 flex items-center gap-3 paper-shadow active:scale-[0.98] transition-transform cursor-pointer">
+<div class="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-border-warm-grey">
+<img class="w-full h-full object-cover" data-alt="A detailed, close-up shot of the intricate marble textures and architecture of the Colosseum in Rome. The lighting is bright and warm, emphasizing the cream and golden tones of the ancient stone against a clear blue sky. The composition is artistic and editorial, focusing on the tactile quality of the historical monument, maintaining a refined and friendly travel aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5l54Zpug7OieBILk365lLq1mm9WeoQbiDZWMVHrYx30YTMmT3EI-GlwQDwjGN3F2l0RyL5jm63xbspswIGwtE01-hksSSKfjO1no8NuS2p69mbDLiiIHBhgtscOQDsCR0QgnKLfpNgJpWKa_njGwIq7GJHgIuSFiVfPC71-_wMzfvqdhaBV17GWNvyZJaFKQ8hICXoSDpx_YZh3IWop_Nxax8DtgZL_Lqjaz0bSK-OtjUXk9_URiB1767pz12Nne6XsUjZrPeQTNe"/>
+</div>
+<div class="flex-grow min-w-0">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-ink-text truncate">The Rome Archive</h4>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</div>
+<p class="font-body-sm text-body-sm text-muted-text">May 20 - May 28</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="flex -space-x-2">
+<img alt="Member" class="w-6 h-6 rounded-full border-2 border-card-cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkVINNy-wh1BQElVv-nmTAVs1D-DRo-GyYgrZ4C21DDZKhsfpOE6f1HCGyU_yYbpBqYxwP4tZn1YPPCJDKfx1WGBkCQfcC0qYrlCTVQQk5VvkoMNTY1Sl6_46w5KsQX6F0EAPM1IBlSlEFY8FJuqmuDhxmzkXQLmbV055glZ06-JUL87YY_15OjQgqZ8wHiImsap-WNCvvy6LkudiCocohwizeVT7ggXA76ZiEvl2Jg2MoNzM74luyCAbjNdQKmBVSoRazfxzwnOGs"/>
+</div>
+<span class="material-symbols-outlined text-muted-text" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- AI Memory Suggesion -->
+<div class="bg-ai-sage-tint border border-border-warm-grey rounded-xl p-4 flex flex-col gap-2 relative">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full font-label-caps">AI DRAFT</span>
+<p class="font-label-caps text-label-caps text-primary">RECOLLECTION</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic leading-relaxed">
+                            "You haven't added photos from the Kyoto walk last October. Should we create a new entry?"
+                        </p>
+<div class="flex gap-2 mt-2">
+<button class="bg-primary text-surface-container-lowest px-4 py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-opacity">Let's do it</button>
+<button class="bg-transparent border border-outline px-4 py-2 rounded-lg font-label-caps text-label-caps text-ink-text">Not now</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface dark:bg-surface-dim border-t border-border-warm-grey dark:border-outline-variant shadow-[0_-2px_10px_rgba(33,31,26,0.05)] rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-muted-text dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container dark:bg-primary-fixed dark:text-on-primary-fixed rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for cards
+        document.querySelectorAll('.cursor-pointer').forEach(card => {
+            card.addEventListener('click', () => {
+                card.style.transform = 'scale(0.96)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body></html>

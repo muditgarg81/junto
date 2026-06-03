@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Junto</string>
+    <string name="title_activity_main">Junto</string>
+    <string name="package_name">com.junto.travel</string>
+    <string name="custom_url_scheme">com.junto.travel</string>
+</resources>

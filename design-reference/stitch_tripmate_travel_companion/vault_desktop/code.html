@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vault - Wandertogether</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Fraunces (Display/Headline) & Hanken Grotesk (Body/Labels) -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#ffb59a",
+                    "surface-container": "#f3ede1",
+                    "outline": "#717975",
+                    "on-primary-container": "#8dbdab",
+                    "secondary-container": "#ff8759",
+                    "secondary": "#a04018",
+                    "on-primary-fixed-variant": "#214f41",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f6f0e4",
+                    "on-background": "#1d1c14",
+                    "outline-variant": "#c0c8c3",
+                    "on-secondary": "#ffffff",
+                    "ink-text": "#211F1A",
+                    "surface-container-low": "#f9f3e7",
+                    "on-secondary-container": "#712300",
+                    "surface-variant": "#e8e2d6",
+                    "primary-fixed-dim": "#a1d1be",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#614000",
+                    "surface-dim": "#dfd9ce",
+                    "on-surface": "#1d1c14",
+                    "surface-container-highest": "#e8e2d6",
+                    "muted-text": "#5E594E",
+                    "inverse-surface": "#333028",
+                    "on-primary-fixed": "#002118",
+                    "tertiary-fixed": "#ffddaf",
+                    "secondary-fixed": "#ffdbcf",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#a1d1be",
+                    "primary-container": "#1f4d3f",
+                    "primary": "#023629",
+                    "on-tertiary-fixed": "#281800",
+                    "tertiary": "#422b00",
+                    "on-secondary-fixed": "#380d00",
+                    "on-secondary-fixed-variant": "#802901",
+                    "tertiary-container": "#5f3f00",
+                    "on-surface-variant": "#404945",
+                    "border-warm-grey": "#D9D4CB",
+                    "ai-sage-tint": "#E8F0EA",
+                    "on-tertiary-container": "#ddaa59",
+                    "surface": "#fff9ed",
+                    "primary-fixed": "#bcedda",
+                    "error-container": "#ffdad6",
+                    "card-cream": "#FCFAF4",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#3a6758",
+                    "surface-bright": "#fff9ed",
+                    "background": "#fff9ed",
+                    "surface-container-high": "#ede8dc",
+                    "tertiary-fixed-dim": "#f3be6a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "stack-md": "24px",
+                    "container-padding": "20px",
+                    "gutter": "16px",
+                    "stack-sm": "12px",
+                    "stack-lg": "40px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Hanken Grotesk"],
+                    "body-sm": ["Hanken Grotesk"],
+                    "display": ["Fraunces"],
+                    "headline-sm": ["Fraunces"],
+                    "mono-price": ["Hanken Grotesk"],
+                    "headline-lg": ["Fraunces"],
+                    "label-caps": ["Hanken Grotesk"],
+                    "headline-md": ["Fraunces"],
+                    "body-md": ["Hanken Grotesk"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            background-color: #fff9ed; /* Warm paper background */
+            color: #1d1c14; /* Ink text */
+            -webkit-font-smoothing: antialiased;
+        }
+        .analog-border {
+            border: 1px solid #D9D4CB;
+        }
+        .ai-draft-badge {
+            background: #E8F0EA;
+            color: #1F4D3F;
+        }
+    </style>
+</head>
+<body class="min-h-screen font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar (Desktop version of TopAppBar/BottomNavBar hybrid) -->
+<nav class="w-full top-0 sticky z-50 bg-surface border-b border-border-warm-grey">
+<div class="flex items-center justify-between px-container-padding py-base w-full max-w-7xl mx-auto">
+<!-- Left: Logo -->
+<div class="flex items-center gap-gutter">
+<h1 class="font-display text-headline-md text-primary tracking-tight">Wandertogether</h1>
+</div>
+<!-- Center: Navigation Tabs (Logic: Vault is Active) -->
+<div class="hidden md:flex items-center gap-base">
+<a class="flex flex-col items-center justify-center text-muted-text hover:opacity-80 transition-opacity px-4 py-1" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-label-caps mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:opacity-80 transition-opacity px-4 py-1" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps mt-1">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:opacity-80 transition-opacity px-4 py-1" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps mt-1">Money</span>
+</a>
+<!-- Active State: Vault -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined fill-icon">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">Vault</span>
+</a>
+</div>
+<!-- Right: Profile & Group -->
+<div class="flex items-center gap-gutter">
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity">group</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary-fixed overflow-hidden bg-surface-variant">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A close-up photographic portrait of a sophisticated world traveler with a warm, friendly expression. The lighting is soft and golden, suggesting a sunset at a luxury resort. The background is slightly blurred with warm Mediterranean architectural tones. This high-end editorial style uses a natural, muted color palette dominated by creams and soft browns, emphasizing a refined, human-centric journal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGmkrsHyvDKEUFTIrXIozxjnPH45_E_yoAwyon7YtSPQReiasBWNdz33g0M4f0reG2fiL0dJuqNcZwcHVCni-w4B2h7rLr3KAQbF0NV-9S9TP2Oh660YCu_FuTtwYlcwE6PqGz7a6zdXVlrwDVZNmkJGXT0CIuRyZhnoMZ7HLR5wsnXF0L0hgu2iv-f86n-3ZcnlkQS7D5A7IwbnbsWoHM__ZFS0zcRN1CF-a6dcUWgT0olxFWwImmpP7hyCjQyPK_rWByV9ot7TyM"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="max-w-7xl mx-auto px-container-padding py-stack-lg">
+<header class="mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg text-ink-text mb-base">The Vault</h2>
+<p class="font-body-lg text-body-lg text-muted-text max-w-2xl">Your safe haven for all trip essentials. We’ve organized your bookings and emergency contacts so you can travel without the paperwork.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg items-start">
+<!-- Left Column: Upload & Bookings (8 Columns) -->
+<div class="lg:col-span-8 flex flex-col gap-stack-md">
+<!-- Upload Section -->
+<section class="relative">
+<div class="w-full p-stack-lg rounded-xl border-2 border-dashed border-outline-variant bg-card-cream hover:bg-surface-container-low transition-colors cursor-pointer group flex flex-col items-center justify-center text-center">
+<div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-base group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-text">Add to the Vault</h3>
+<p class="font-body-md text-body-md text-muted-text mt-2">
+                            Forward bookings to <span class="font-semibold text-primary">goa-trip@wandertogether.app</span><br/>
+                            or tap here to upload PDFs and images.
+                        </p>
+</div>
+</section>
+<!-- Categorized Bookings -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center justify-between border-b border-border-warm-grey pb-base">
+<h3 class="font-headline-sm text-headline-sm text-ink-text">Vouchers &amp; Bookings</h3>
+<div class="flex gap-base">
+<span class="font-label-caps text-label-caps text-muted-text uppercase tracking-wider">Filtered by: All Items</span>
+</div>
+</div>
+<!-- Flights Card -->
+<div class="bg-card-cream rounded-xl analog-border p-container-padding flex flex-col md:flex-row gap-gutter hover:shadow-sm transition-all group">
+<div class="w-20 h-24 bg-surface-dim rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform" data-alt="A macro photograph of a vintage-style airline boarding pass with elegant serif typography and minimalist design. The paper has a slight yellowed texture, resembling a premium travel journal. Soft morning light casts gentle shadows across the document. The overall aesthetic is refined and journalistic, using a palette of warm whites and deep charcoal ink to evoke a sense of organized luxury travel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASxT8zyGwKyO5dTEACfVTc7nQy-QVYt6Xc8lwTib4NWGVVfAFBOWONoFwmkLpbCSshkakwDTD2DdLqZmhy0k56QoVdEAVLC3Hb3afjw_wC5SjolJ6HTvritg2BlwJ4Lvd5r9mq8bEhHjHh0IGWxL4vExmD4fWajg0X00otXbhhhVrxaICS-k1CTmZ3ZbRWWbTdkQSYxy37XZRoxKAQ1g7E5b02AysZlrQehFXqOHYNTTq4pc-Pbcf5XhKg8Yzzkg3vUDBqvDlbEQvE"/>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-[10px] text-secondary tracking-widest uppercase mb-1 block">Flight · Confirmed</span>
+<h4 class="font-headline-sm text-headline-sm text-ink-text leading-tight">IndiGo 6E-235 / Mumbai → Goa</h4>
+</div>
+<span class="material-symbols-outlined text-muted-text hover:text-primary cursor-pointer">open_in_new</span>
+</div>
+<div class="mt-base grid grid-cols-2 gap-gutter border-t border-surface-container-highest pt-base">
+<div>
+<p class="font-label-caps text-label-caps text-muted-text uppercase">Date &amp; Time</p>
+<p class="font-body-md text-body-md text-ink-text">Jan 15, 6:10 AM</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-muted-text uppercase">PNR</p>
+<p class="font-body-md text-body-md text-ink-text font-semibold">XK4P2Q</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Stays Card -->
+<div class="bg-card-cream rounded-xl analog-border p-container-padding flex flex-row gap-gutter hover:shadow-sm transition-all group">
+<div class="w-20 h-24 bg-surface-dim rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform" data-alt="A serene architectural detail of a luxury coastal resort, featuring white-washed walls and tropical lush greenery under a clear blue sky. The lighting is crisp and midday-bright, emphasizing clean lines and natural textures. The color palette is dominated by airy whites, sage greens, and ocean blues, maintaining a high-end, editorial travel journal aesthetic that feels both tranquil and organized." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZpULlwcynSyQuC8WkYPdcImbPTAGsZlUEfE7W1JGApKNoJsrLdA4rJz98rMk6r7cPfyUisKqwD-27YPvzG_iOXzyAW0GQ4NFmu1bJSUS6yzj817HfLuBTGlMr_4q9cEKc6ipNcZTPhX-3j2fga1Sq5wDdNdG6q0gILqNeppBGm9wjUKQzq-uBp0U2f5Bq5Q0Ch2VqBz4wZoNs6EiiAq_CMg5VlCWTWD89J9RnHKf8KHheBDju4GE4g4CDIGqEcxpFZMs91xfMF9Ju"/>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-[10px] text-primary tracking-widest uppercase mb-1 block">Stay · Check-in Soon</span>
+<h4 class="font-headline-sm text-headline-sm text-ink-text leading-tight">Taj Holiday Village</h4>
+</div>
+<span class="material-symbols-outlined text-muted-text hover:text-primary cursor-pointer">download</span>
+</div>
+<div class="mt-base grid grid-cols-2 gap-gutter border-t border-surface-container-highest pt-base">
+<div>
+<p class="font-label-caps text-label-caps text-muted-text uppercase">Jan 15 — Jan 20</p>
+<p class="font-body-md text-body-md text-ink-text">5 Nights</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-muted-text uppercase">Conf #</p>
+<p class="font-body-md text-body-md text-ink-text">88241</p>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Suggested Item -->
+<div class="bg-ai-sage-tint rounded-xl border border-primary-fixed-dim p-container-padding flex flex-row gap-gutter relative">
+<div class="absolute -top-3 left-4 bg-primary text-on-primary font-label-caps text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI NOTATION
+                        </div>
+<div class="w-20 h-24 bg-white/50 rounded-lg flex-shrink-0 flex items-center justify-center border border-primary-fixed-dim overflow-hidden">
+<span class="material-symbols-outlined text-primary-container text-4xl">scuba_diving</span>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-[10px] text-primary-container tracking-widest uppercase mb-1 block">Activity · Draft detected</span>
+<h4 class="font-headline-sm text-headline-sm text-primary">Scuba — Grand Island</h4>
+</div>
+<div class="flex gap-2">
+<button class="text-primary hover:bg-white/40 p-1 rounded transition-colors"><span class="material-symbols-outlined">check</span></button>
+<button class="text-error hover:bg-white/40 p-1 rounded transition-colors"><span class="material-symbols-outlined">close</span></button>
+</div>
+</div>
+<div class="mt-base grid grid-cols-2 gap-gutter border-t border-primary-fixed-dim/30 pt-base">
+<div>
+<p class="font-label-caps text-label-caps text-primary-container uppercase">Jan 17, 9:00 AM</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Confirmed via email</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary-container uppercase">Voucher</p>
+<p class="font-body-md text-body-md text-ink-text">GI-7782</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Contacts & Emergency (4 Columns) -->
+<aside class="lg:col-span-4 flex flex-col gap-stack-md sticky top-24">
+<div class="bg-card-cream rounded-xl analog-border p-container-padding">
+<h3 class="font-headline-sm text-headline-sm text-ink-text mb-stack-sm border-b border-border-warm-grey pb-base flex items-center gap-2">
+<span class="material-symbols-outlined text-error">emergency</span>
+                        Contacts &amp; Emergency
+                    </h3>
+<ul class="flex flex-col gap-gutter">
+<!-- Contact 1 -->
+<li class="flex items-center justify-between group">
+<div class="flex items-center gap-base">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-primary">
+                                    S
+                                </div>
+<div>
+<p class="font-body-md text-body-md text-ink-text font-semibold">Driver सुरेश</p>
+<p class="font-label-caps text-[10px] text-muted-text uppercase">Private Pickup</p>
+</div>
+</div>
+<div class="flex gap-2">
+<a class="w-8 h-8 rounded-full border border-border-warm-grey flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="tel:+919800000000">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</a>
+<button class="w-8 h-8 rounded-full border border-border-warm-grey flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+</button>
+</div>
+</li>
+<!-- Contact 2 -->
+<li class="flex items-center justify-between group">
+<div class="flex items-center gap-base">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">hotel</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-ink-text font-semibold">Hotel Front Desk</p>
+<p class="font-label-caps text-[10px] text-muted-text uppercase">Taj Holiday Village</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-full border border-border-warm-grey flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</button>
+</div>
+</li>
+<!-- Contact 3 -->
+<li class="flex items-center justify-between group opacity-60 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-base">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-muted-text">local_hospital</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-ink-text font-semibold">Local Clinic (Candolim)</p>
+<p class="font-label-caps text-[10px] text-muted-text uppercase">Emergency Only</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-full border border-border-warm-grey flex items-center justify-center text-muted-text hover:bg-error hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</button>
+</div>
+</li>
+</ul>
+<!-- Action Button -->
+<button class="w-full mt-stack-md py-base bg-secondary/10 text-secondary font-label-caps text-label-caps border border-secondary/20 rounded-lg hover:bg-secondary/20 transition-colors uppercase tracking-widest">
+                        Add New Contact
+                    </button>
+</div>
+<!-- Quick Share Note -->
+<div class="bg-surface-container p-container-padding rounded-xl border border-border-warm-grey flex gap-base items-start">
+<span class="material-symbols-outlined text-primary">ios_share</span>
+<div>
+<p class="font-label-caps text-label-caps text-primary uppercase mb-1">Collaborative Vault</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Everyone in the Goa Trip group can view these documents. Changes are synced instantly.</p>
+</div>
+</div>
+</aside></div>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        // Simple scale effect on card click
+        document.querySelectorAll('.bg-card-cream').forEach(card => {
+            card.addEventListener('mousedown', () => card.style.transform = 'scale(0.98)');
+            card.addEventListener('mouseup', () => card.style.transform = 'scale(1)');
+            card.addEventListener('mouseleave', () => card.style.transform = 'scale(1)');
+        });
+
+        // Simulating upload trigger
+        const uploadBox = document.querySelector('.border-dashed');
+        uploadBox.addEventListener('click', () => {
+            alert('Opening file picker for your travel documents...');
+        });
+    </script>
+</body></html>

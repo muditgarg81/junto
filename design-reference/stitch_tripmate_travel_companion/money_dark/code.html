@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wandertogether - Money</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#141310",
+                        "on-background": "#f6f0e4",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#1f4d3f",
+                        "on-tertiary-fixed-variant": "#ffddaf",
+                        "outline": "#8a938e",
+                        "on-primary-fixed-variant": "#bcedda",
+                        "on-tertiary-fixed": "#ffddaf",
+                        "on-secondary-fixed-variant": "#ffdbcf",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1d1b18",
+                        "inverse-primary": "#023629",
+                        "on-primary-container": "#a1d1be",
+                        "surface-container": "#211f1a",
+                        "primary": "#a1d1be",
+                        "on-secondary-fixed": "#380d00",
+                        "inverse-surface": "#f6f0e4",
+                        "ink-text": "#f6f0e4",
+                        "on-surface-variant": "#c0c8c3",
+                        "on-primary": "#00382b",
+                        "primary-fixed-dim": "#a1d1be",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#281800",
+                        "surface-dim": "#141310",
+                        "tertiary": "#f3be6a",
+                        "ai-sage-tint": "#1b241e",
+                        "error-container": "#93000a",
+                        "surface-variant": "#404945",
+                        "tertiary-fixed": "#ffddaf",
+                        "outline-variant": "#404945",
+                        "border-warm-grey": "#333028",
+                        "inverse-on-surface": "#1d1c14",
+                        "secondary-fixed": "#ffdbcf",
+                        "on-tertiary-container": "#f3be6a",
+                        "secondary-container": "#ff8759",
+                        "surface-tint": "#a1d1be",
+                        "surface-bright": "#3b3935",
+                        "card-cream": "#1d1b18",
+                        "on-secondary-container": "#ffdbcf",
+                        "on-surface": "#f6f0e4",
+                        "primary-fixed": "#bcedda",
+                        "tertiary-container": "#5f3f00",
+                        "muted-text": "#a09b91",
+                        "secondary": "#ffb59a",
+                        "on-primary-fixed": "#002118",
+                        "surface-container-lowest": "#0f0e0b",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "background": "#141310",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "surface-container-highest": "#333028"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "base": "8px",
+                        "stack-md": "24px",
+                        "stack-sm": "12px",
+                        "stack-lg": "40px",
+                        "container-padding": "20px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Fraunces"],
+                        "headline-lg": ["Fraunces"],
+                        "mono-price": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "display": ["Fraunces"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-ink-text font-body-md min-h-screen pb-32">
+<!-- Top AppBar -->
+<header class="bg-surface w-full top-0 sticky z-40 border-b border-border-warm-grey">
+<div class="flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high border border-border-warm-grey">
+<img alt="Traveler Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFlJvblTapsuZIbtHXMYICkoXgpNmD_hp7wWV5g7BM1kCW0amEVoa6-4MeLMy68Y1TgHQ6feBaYDDkWU1eH1BGXNlvQCgAl-rqd8zYkyoVOhr7YhEPcuFtIqxP3mH7VbG9-sTeKH8dgPKoh77HaRc0BQ9IMCK8QMLdBHOF4_N4fviy8NJsbeiB0kXngETytsb47xrxwE-VCUDpaT5nAcj4wDaVCIDjVmlTvGi64S-NsO7ckDbighX1dDEikuKiMDxcxwoPeTL8T54L"/>
+</div>
+<h1 class="font-display text-headline-md text-primary">Wandertogether</h1>
+</div>
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95">
+<span class="material-symbols-outlined">group</span>
+</button>
+</div>
+</header>
+<main class="max-w-[390px] mx-auto px-gutter pt-stack-sm space-y-stack-md">
+<!-- Header Section -->
+<header class="space-y-1">
+<h2 class="font-headline-lg text-headline-lg text-ink-text">Money</h2>
+<p class="text-muted-text font-body-md">₹26,400 spent · 5 people</p>
+</header>
+<!-- AI Draft Card -->
+<section class="bg-ai-sage-tint p-5 rounded-xl border border-border-warm-grey relative overflow-hidden">
+<div class="flex items-center justify-between mb-3">
+<span class="bg-primary-container text-on-primary-container text-[10px] px-2 py-0.5 rounded font-label-caps uppercase">AI</span>
+<button class="text-muted-text hover:opacity-70"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+<p class="text-ink-text font-body-md italic mb-4 leading-relaxed">
+                From chat — "I paid 4000 for the cab". Log it, split 3 ways?
+            </p>
+<div class="flex gap-3">
+<button class="flex-1 bg-primary text-on-primary font-label-caps py-3 rounded-lg hover:opacity-90 active:scale-95 transition-all">
+                    Log expense
+                </button>
+<button class="px-6 border border-border-warm-grey text-ink-text font-label-caps py-3 rounded-lg hover:bg-surface-container-low active:scale-95 transition-all">
+                    Edit
+                </button>
+</div>
+</section>
+<!-- Balances Section -->
+<section class="space-y-stack-sm">
+<h3 class="font-label-caps text-muted-text tracking-widest uppercase">Balances</h3>
+<div class="bg-card-cream border border-border-warm-grey rounded-xl divide-y divide-border-warm-grey">
+<!-- Mudit (Positive) -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-border-warm-grey overflow-hidden">
+<img alt="Mudit" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3Lh9kxISWPlbFyQkz6qmqhNEJuT3yZAre5mDgdoAzoe_Xu3A0oKsrn5MGD0_5eLRuV92zJJNtHDqg-p-CeePVdgH7iZ5vdsLEGSORrp6Vd_gP0r-v_fP3cKVX3hWmzufiUY1cv3CvhHO67GwyKd5AS5-eSEPauLhQNMhD3-jn8GfIXp9qd4I9hHoEfd3E56wXXrXrlUS528NYYu83YzjU9iy4kyOHA8Ea8nqYVHngeqTjUaexVVm5B5LKKCIwfhL_jvU6nU7DVIUg"/>
+</div>
+<span class="font-body-md font-semibold">Mudit</span>
+</div>
+<span class="font-mono-price text-mono-price text-primary tabular-nums">+₹2,400</span>
+</div>
+<!-- Vriti (Negative) -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-border-warm-grey overflow-hidden">
+<img alt="Vriti" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGcJlm0XGB6d45sEOHc98snDBGeN7qidTncSmOCaqKIfmt4DB0o7SIbAnRetyG0Ls464BO94yXAqX9RsbDclOli8BY0qfy2K1-bELCrSdGNBX5n_B8wsYoNxlGbn-I6cW7Ffg_73fENhtGI47f1qUsTLqA4ECr7gX30vDifvk_ueo5tT0fRAGAZt4c0dVu5SqBno86QWzD0_JnazJGAo2WkFAgtT7K8u_tU5oThdg59cW6nOzh4SYJTZa652emyWGRO1CgOg0Yh038"/>
+</div>
+<span class="font-body-md font-semibold">Vriti</span>
+</div>
+<span class="font-mono-price text-mono-price text-secondary tabular-nums">−₹1,600</span>
+</div>
+<!-- Aditi (Negative) -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-border-warm-grey overflow-hidden">
+<img alt="Aditi" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWwBm6nsRaucKIquwAdCGKiGOIF0rEJIU8VHNGEnsmWlzN51ypajRWS-14jIm1EjR8RcVvEy4w35_VTid6wNgLRtEHnZ04BDz4jCnx_g0d1DV9mlQrImCaTE_O29nUoVuUN3tAS8l8bYgjCyrgpkIH81qMwoYkAhm6HixeTRyLfWIz-unQyhbaZ2KbQrmYOOgjHjPwkno17HJW4bNLCu2wFpG-ovPvwD8PNivYIhQwjjjdL97q1iuI5RJwBx9GKExPlZuwRaYcnHFX"/>
+</div>
+<span class="font-body-md font-semibold">Aditi</span>
+</div>
+<span class="font-mono-price text-mono-price text-secondary tabular-nums">−₹800</span>
+</div>
+</div>
+</section>
+<!-- Settle Up Card -->
+<section class="bg-primary-container text-on-primary-container p-5 rounded-xl space-y-4 shadow-lg border border-primary/20">
+<h3 class="font-label-caps text-on-primary-container flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+                Settle up · 2 transfers
+            </h3>
+<div class="space-y-3">
+<!-- Row 1 -->
+<div class="flex items-center justify-between py-2 border-b border-on-primary-container/20">
+<div class="font-body-md flex items-center gap-2">
+<span>Vriti</span>
+<span class="material-symbols-outlined text-sm">trending_flat</span>
+<span>Mudit</span>
+<span class="mx-1">·</span>
+<span class="tabular-nums font-mono-price">₹1,600</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded-full font-label-caps text-[10px] flex items-center gap-1 active:scale-90 transition-transform">
+                        Pay · UPI
+                    </button>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center justify-between py-2">
+<div class="font-body-md flex items-center gap-2">
+<span>Aditi</span>
+<span class="material-symbols-outlined text-sm">trending_flat</span>
+<span>Mudit</span>
+<span class="mx-1">·</span>
+<span class="tabular-nums font-mono-price">₹800</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded-full font-label-caps text-[10px] flex items-center gap-1 active:scale-90 transition-transform">
+                        Pay · UPI
+                    </button>
+</div>
+</div>
+</section>
+<!-- Recent Expenses -->
+<section class="space-y-stack-sm pb-10">
+<h3 class="font-label-caps text-muted-text tracking-widest uppercase">Recent</h3>
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-4 flex items-start justify-between">
+<div class="space-y-1">
+<p class="font-body-md font-semibold text-ink-text">Cab to hotel</p>
+<p class="text-body-sm text-muted-text">Mudit paid · split 3 ways</p>
+</div>
+<div class="text-right">
+<p class="font-mono-price text-mono-price text-ink-text tabular-nums">₹4,000</p>
+<p class="text-[10px] font-label-caps text-muted-text">TODAY</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface border-t border-border-warm-grey shadow-[0_-2px_10px_rgba(0,0,0,0.3)] rounded-t-xl z-50">
+<!-- Chat -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<!-- Plan -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</a>
+<!-- Money (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-primary rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</a>
+<!-- Vault -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.add('scale-95');
+                setTimeout(() => this.classList.remove('scale-95'), 100);
+            });
+        });
+    </script>
+</body></html>

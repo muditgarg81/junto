@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#333028",
+                        "secondary": "#a04018",
+                        "outline": "#717975",
+                        "tertiary": "#422b00",
+                        "on-primary-container": "#8dbdab",
+                        "secondary-fixed": "#ffdbcf",
+                        "surface-variant": "#e8e2d6",
+                        "on-background": "#1d1c14",
+                        "ink-text": "#211F1A",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#ff8759",
+                        "surface-tint": "#3a6758",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#a1d1be",
+                        "on-surface-variant": "#404945",
+                        "surface-container-high": "#ede8dc",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f6f0e4",
+                        "ai-sage-tint": "#E8F0EA",
+                        "surface-dim": "#dfd9ce",
+                        "on-tertiary-container": "#ddaa59",
+                        "on-secondary-container": "#712300",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#281800",
+                        "primary-container": "#1f4d3f",
+                        "primary-fixed": "#bcedda",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#fff9ed",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e8e2d6",
+                        "surface": "#fff9ed",
+                        "outline-variant": "#c0c8c3",
+                        "border-warm-grey": "#D9D4CB",
+                        "muted-text": "#5E594E",
+                        "card-cream": "#FCFAF4",
+                        "on-primary-fixed": "#002118",
+                        "surface-container": "#f3ede1",
+                        "tertiary-fixed": "#ffddaf",
+                        "primary": "#023629",
+                        "on-secondary-fixed-variant": "#802901",
+                        "on-primary": "#ffffff",
+                        "background": "#fff9ed",
+                        "on-primary-fixed-variant": "#214f41",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1d1c14",
+                        "tertiary-container": "#5f3f00",
+                        "surface-container-low": "#f9f3e7",
+                        "inverse-primary": "#a1d1be",
+                        "on-secondary-fixed": "#380d00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "12px",
+                        "stack-md": "24px",
+                        "gutter": "16px",
+                        "container-padding": "20px",
+                        "base": "8px",
+                        "stack-lg": "40px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Fraunces"],
+                        "display": ["Fraunces"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"],
+                        "headline-md": ["Fraunces"],
+                        "mono-price": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff9ed;
+            color: #211F1A;
+        }
+        .chat-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #D9D4CB;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface border-b border-border-warm-grey z-50">
+<div class="flex items-center justify-between px-gutter py-base w-full max-w-[1280px] mx-auto h-16">
+<div class="flex items-center gap-8">
+<span class="font-display text-headline-md text-primary tracking-tight">Wandertogether</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-primary dark:text-on-primary-fixed bg-primary-container/10 px-4 py-1 rounded-full font-label-caps text-label-caps transition-opacity hover:opacity-80" href="#">Chat</a>
+<a class="text-muted-text hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Plan</a>
+<a class="text-muted-text hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Money</a>
+<a class="text-muted-text hover:text-primary font-label-caps text-label-caps transition-colors" href="#">Vault</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border-warm-grey bg-card-cream cursor-pointer hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="group">group</span>
+<span class="text-body-sm font-body-sm text-ink-text">5 Members</span>
+</div>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Traveler Profile" class="h-full w-full object-cover" data-alt="A close-up portrait of a young person with a warm, friendly expression, looking into the distance with a natural outdoor background. The lighting is soft and golden, characteristic of a late afternoon. The overall aesthetic is clean, sophisticated, and slightly editorial, fitting a modern travel journal brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMRowqs4S0u9h9rat914HpEYXmBz_PWVMRaEsEX4q1118rnXw8phxEl1YsJ-q9uIlRRRqjLldxb3Xp8eaV9IlM9FnI61gSH9hDmJox77OcQPXMAb5FFJFmav72yLCesjV1rsm3IVtRzYgHBXCf3Q5GuNjkNyk1myZhDQA4u9RxQM2NRanGL_vaS-Iwy6JUDvCwe_0DqzGOBndnm-EBeJvfhcpT3H19VRXgCBhnGrKPVvMrz0bU4KZblAthoya_JGyMYYchq8khVVou"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden max-w-[1280px] mx-auto w-full">
+<!-- Main Chat Column -->
+<section class="flex-1 flex flex-col relative border-r border-border-warm-grey bg-background">
+<div class="flex-1 overflow-y-auto px-container-padding py-stack-lg chat-scroll">
+<div class="max-w-[700px] mx-auto space-y-stack-md pb-stack-lg">
+<!-- Date Divider -->
+<div class="flex items-center justify-center gap-4 py-4">
+<div class="h-[1px] bg-border-warm-grey flex-1"></div>
+<span class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest">Today</span>
+<div class="h-[1px] bg-border-warm-grey flex-1"></div>
+</div>
+<!-- Incoming Message 1 -->
+<div class="flex flex-col items-start space-y-1">
+<span class="text-body-sm font-body-sm text-muted-text ml-4">Vriti</span>
+<div class="bg-card-cream border border-border-warm-grey rounded-2xl rounded-tl-none p-4 max-w-[80%] shadow-sm">
+<p class="text-ink-text text-body-md font-body-md">can we just lock dates already</p>
+</div>
+</div>
+<!-- Outgoing Message -->
+<div class="flex flex-col items-end space-y-1">
+<div class="bg-primary-container text-on-primary rounded-2xl rounded-tr-none p-4 max-w-[80%] shadow-md">
+<p class="text-white text-body-md font-body-md">jan 15–20 works for me</p>
+</div>
+<span class="text-body-sm font-body-sm text-muted-text mr-4">Mudit · 14:20</span>
+</div>
+<!-- Incoming Message 2 -->
+<div class="flex flex-col items-start space-y-1">
+<span class="text-body-sm font-body-sm text-muted-text ml-4">Aditi</span>
+<div class="bg-card-cream border border-border-warm-grey rounded-2xl rounded-tl-none p-4 max-w-[80%] shadow-sm">
+<p class="text-ink-text text-body-md font-body-md">same, that week's good</p>
+</div>
+</div>
+<!-- AI Assistant Card -->
+<div class="pt-stack-md">
+<div class="bg-ai-sage-tint border border-outline-variant rounded-xl p-5 relative shadow-sm">
+<div class="absolute -top-3 left-6 px-2 bg-primary text-on-primary text-[10px] font-label-caps uppercase tracking-tighter rounded">AI Draft</div>
+<div class="flex gap-4">
+<div class="bg-white/50 rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="space-y-3">
+<p class="text-ink-text text-body-md font-body-md">Looks like Jan 15–20 works for 3 of you. Want me to make it a proposal?</p>
+<button class="bg-primary-container text-white px-6 py-2 rounded-lg text-body-sm font-body-sm hover:opacity-90 transition-all active:scale-95 flex items-center gap-2">
+                                        Make it a proposal
+                                        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Proposal Card -->
+<div class="pt-stack-md">
+<div class="bg-card-cream border border-border-warm-grey border-t-4 border-t-secondary rounded-xl p-6 shadow-md transition-transform hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-secondary font-label-caps text-label-caps uppercase tracking-widest">PROPOSAL · DATES</span>
+<h3 class="font-headline-sm text-headline-sm text-ink-text mt-1">Jan 15 – 20, 2026</h3>
+<p class="text-muted-text text-body-sm font-body-sm">Proposed by Mudit · open for votes</p>
+</div>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-[10px] font-label-caps uppercase">Active</span>
+</div>
+<!-- Progress Bar -->
+<div class="space-y-2 mb-6">
+<div class="flex justify-between text-body-sm font-body-sm text-muted-text mb-1">
+<span>3 of 4 agreed</span>
+<span>75%</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container rounded-full overflow-hidden flex gap-0.5">
+<div class="flex-1 bg-primary-container h-full"></div>
+<div class="flex-1 bg-primary-container h-full"></div>
+<div class="flex-1 bg-primary-container h-full"></div>
+<div class="flex-1 bg-border-warm-grey h-full"></div>
+</div>
+</div>
+<div class="flex gap-3 items-center">
+<button class="flex-1 bg-primary-container text-white font-body-sm py-3 rounded-lg hover:opacity-90 active:scale-95 transition-all">Confirm</button>
+<button class="flex-1 bg-transparent border border-border-warm-grey text-ink-text font-body-sm py-3 rounded-lg hover:bg-surface-container transition-all">Object</button>
+</div>
+<div class="mt-4 pt-4 border-t border-border-warm-grey flex items-center justify-between">
+<p class="text-secondary text-body-sm font-body-sm italic">Riya hasn't voted. <span class="font-bold">Nudge →</span></p>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-card-cream bg-primary h-full"></div>
+<div class="w-6 h-6 rounded-full border-2 border-card-cream bg-tertiary h-full"></div>
+<div class="w-6 h-6 rounded-full border-2 border-card-cream bg-secondary h-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Message Input Bar -->
+<div class="p-container-padding bg-surface border-t border-border-warm-grey">
+<div class="max-w-[700px] mx-auto flex items-center gap-4 bg-card-cream border border-border-warm-grey rounded-2xl p-2 pl-4 shadow-sm focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<button class="text-muted-text hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-body-md font-body-md placeholder:text-muted-text" placeholder="Type a message or draft a plan..." type="text"/>
+<button class="bg-primary-container text-white p-2.5 rounded-xl hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Trip Details -->
+<aside class="w-[320px] bg-card-cream p-gutter hidden lg:flex flex-col gap-stack-lg overflow-y-auto">
+<div class="space-y-stack-sm">
+<div class="rounded-xl overflow-hidden h-32 w-full border border-border-warm-grey">
+<img alt="Goa Beach" class="w-full h-full object-cover" data-alt="A breathtaking sunset over a serene Goa beach, with gentle waves lapping against the shore and palm trees silhouetted against an orange and violet sky. The photograph has an analog, cinematic quality with rich textures and a warm, nostalgic mood that evokes the feeling of a cherished travel journal entry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGqykBSizT4eQ81yMEF7JSJoarsHS0xc-NjUhPazY0U1wLJecYQwPxxmwdc7FzQYxuNOXiMvhhQFAn5Gk9dB4fyrzC3a0JSonL35Oe33Jmu0Al7sKfqxGNg4reuTlnbBaXSGH-3I7kOf9NbByxhwOtdb1hkFIJE9XfccxQEV-M0u9caA-bE49p5pDgpSRmoaDQtPIjV2ob4_a4SAiwpqAUOaRfmsIf2J014JAOi9enTxe6VnPMNTycumKLRW1-ZFKIQOQ2twkoJtkM"/>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-md text-headline-md text-ink-text">Goa · January</h2>
+<p class="text-body-sm font-body-sm text-muted-text flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="group">group</span>
+                        4 going · 1 maybe
+                    </p>
+</div>
+</div>
+<div class="space-y-stack-sm">
+<h3 class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest border-b border-border-warm-grey pb-2">Members</h3>
+<ul class="space-y-3">
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold">MU</div>
+<span class="text-body-md font-body-md text-ink-text flex-1">Mudit</span>
+<div class="w-2 h-2 rounded-full bg-primary" title="Confirmed"></div>
+</li>
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-[10px] font-bold">VR</div>
+<span class="text-body-md font-body-md text-ink-text flex-1">Vriti</span>
+<div class="w-2 h-2 rounded-full bg-primary" title="Confirmed"></div>
+</li>
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-[10px] font-bold">AD</div>
+<span class="text-body-md font-body-md text-ink-text flex-1">Aditi</span>
+<div class="w-2 h-2 rounded-full bg-primary" title="Confirmed"></div>
+</li>
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-dim flex items-center justify-center text-[10px] font-bold">KA</div>
+<span class="text-body-md font-body-md text-ink-text flex-1">Karan</span>
+<div class="w-2 h-2 rounded-full bg-primary" title="Confirmed"></div>
+</li>
+<li class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center text-[10px] font-bold">RI</div>
+<span class="text-body-md font-body-md text-ink-text flex-1">Riya</span>
+<div class="w-2 h-2 rounded-full bg-secondary" title="Maybe"></div>
+</li>
+</ul>
+</div>
+<div class="space-y-stack-sm">
+<h3 class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest border-b border-border-warm-grey pb-2">Quick Links</h3>
+<div class="grid grid-cols-1 gap-3">
+<a class="flex items-center gap-3 p-3 bg-white border border-border-warm-grey rounded-xl hover:bg-surface-container transition-colors shadow-sm" href="#">
+<span class="material-symbols-outlined text-primary" data-icon="checklist">checklist</span>
+<span class="text-body-sm font-body-sm text-ink-text">Trip Checklist</span>
+</a>
+<a class="flex items-center gap-3 p-3 bg-white border border-border-warm-grey rounded-xl hover:bg-surface-container transition-colors shadow-sm" href="#">
+<span class="material-symbols-outlined text-secondary" data-icon="payments">payments</span>
+<span class="text-body-sm font-body-sm text-ink-text">Recent Expenses</span>
+</a>
+</div>
+</div>
+<div class="mt-auto pt-stack-md">
+<div class="p-4 bg-ai-sage-tint/50 rounded-xl border border-outline-variant italic text-body-sm font-body-sm text-muted-text">
+                    "A journey is best measured in friends, rather than miles."
+                </div>
+</div>
+</aside>
+</main>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+        });
+
+        // Simple input interaction
+        const input = document.querySelector('input');
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && input.value.trim() !== '') {
+                // Mimic sending message
+                const val = input.value;
+                input.value = '';
+                console.log('Sending message:', val);
+            }
+        });
+    </script>
+</body></html>

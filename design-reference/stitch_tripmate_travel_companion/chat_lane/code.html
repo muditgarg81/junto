@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D9D4CB;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#ede8dc",
+                      "on-background": "#1d1c14",
+                      "on-secondary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#1f4d3f",
+                      "on-tertiary-fixed-variant": "#614000",
+                      "outline": "#717975",
+                      "on-primary-fixed-variant": "#214f41",
+                      "on-tertiary-fixed": "#281800",
+                      "on-secondary-fixed-variant": "#802901",
+                      "on-error": "#ffffff",
+                      "surface-container-low": "#f9f3e7",
+                      "inverse-primary": "#a1d1be",
+                      "on-primary-container": "#8dbdab",
+                      "surface-container": "#f3ede1",
+                      "primary": "#023629",
+                      "on-secondary-fixed": "#380d00",
+                      "inverse-surface": "#333028",
+                      "ink-text": "#211F1A",
+                      "on-surface-variant": "#404945",
+                      "surface": "#fff9ed",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#a1d1be",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#dfd9ce",
+                      "tertiary": "#422b00",
+                      "ai-sage-tint": "#E8F0EA",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e8e2d6",
+                      "tertiary-fixed": "#ffddaf",
+                      "outline-variant": "#c0c8c3",
+                      "border-warm-grey": "#D9D4CB",
+                      "inverse-on-surface": "#f6f0e4",
+                      "secondary-fixed": "#ffdbcf",
+                      "on-tertiary-container": "#ddaa59",
+                      "secondary-container": "#ff8759",
+                      "surface-tint": "#3a6758",
+                      "surface-bright": "#fff9ed",
+                      "card-cream": "#FCFAF4",
+                      "on-secondary-container": "#712300",
+                      "on-surface": "#1d1c14",
+                      "primary-fixed": "#bcedda",
+                      "tertiary-container": "#5f3f00",
+                      "muted-text": "#5E594E",
+                      "secondary": "#a04018",
+                      "on-primary-fixed": "#002118",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed-dim": "#f3be6a",
+                      "background": "#fff9ed",
+                      "secondary-fixed-dim": "#ffb59a",
+                      "surface-container-highest": "#e8e2d6",
+                      "terracotta": "#C2592F",
+                      "pine-green": "#1F4D3F"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "base": "8px",
+                      "stack-md": "24px",
+                      "stack-sm": "12px",
+                      "stack-lg": "40px",
+                      "container-padding": "20px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Fraunces"],
+                      "headline-lg": ["Fraunces"],
+                      "mono-price": ["Hanken Grotesk"],
+                      "label-caps": ["Hanken Grotesk"],
+                      "display": ["Fraunces"],
+                      "body-md": ["Hanken Grotesk"],
+                      "body-sm": ["Hanken Grotesk"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "headline-sm": ["Fraunces"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-background font-body-md overflow-x-hidden min-h-screen flex flex-col items-center">
+<!-- Top AppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-border-warm-grey max-w-[390px] mx-auto">
+<div class="flex items-center justify-between px-gutter py-base w-full">
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm text-primary">Goa · January</h1>
+<p class="font-body-sm text-muted-text">4 going · 1 maybe</p>
+</div>
+<div class="flex -space-x-3 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-on-primary-fixed">VR</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-secondary-fixed flex items-center justify-center text-[10px] font-bold text-on-secondary-fixed">AD</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-tertiary-fixed flex items-center justify-center text-[10px] font-bold text-on-tertiary-fixed">MU</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-surface-container-highest flex items-center justify-center text-[10px] font-bold text-on-surface-variant">RI</div>
+</div>
+</div>
+</header>
+<!-- Main Chat Body -->
+<main class="flex-1 w-full max-w-[390px] mx-auto px-gutter py-stack-md flex flex-col space-y-stack-md overflow-y-auto custom-scrollbar pb-32">
+<!-- Date Divider -->
+<div class="flex items-center justify-center space-x-4">
+<div class="h-[1px] flex-1 bg-border-warm-grey"></div>
+<span class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest">Today</span>
+<div class="h-[1px] flex-1 bg-border-warm-grey"></div>
+</div>
+<!-- Incoming Message: Vriti -->
+<div class="flex flex-col space-y-1 items-start max-w-[85%]">
+<span class="font-label-caps text-[10px] text-muted-text px-1">Vriti</span>
+<div class="bg-card-cream border border-border-warm-grey px-4 py-3 rounded-tr-xl rounded-br-xl rounded-bl-xl shadow-sm">
+<p class="font-body-md text-ink-text">can we just lock dates already</p>
+</div>
+</div>
+<!-- Incoming Message: Aditi -->
+<div class="flex flex-col space-y-1 items-start max-w-[85%]">
+<span class="font-label-caps text-[10px] text-muted-text px-1">Aditi</span>
+<div class="bg-card-cream border border-border-warm-grey px-4 py-3 rounded-tr-xl rounded-br-xl rounded-bl-xl shadow-sm">
+<p class="font-body-md text-ink-text">same, that week's good</p>
+</div>
+</div>
+<!-- Outgoing Message: Mudit (Self) -->
+<div class="flex flex-col space-y-1 items-end ml-auto max-w-[85%]">
+<div class="bg-pine-green px-4 py-3 rounded-tl-xl rounded-bl-xl rounded-br-xl shadow-sm">
+<p class="font-body-md text-on-primary">jan 15–20 works for me</p>
+</div>
+</div>
+<!-- AI Message/Draft -->
+<div class="w-full bg-ai-sage-tint border border-outline-variant p-gutter rounded-xl flex flex-col space-y-stack-sm relative overflow-hidden group transition-all duration-300 hover:shadow-md">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-4xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="bg-pine-green text-[10px] font-bold text-white px-2 py-0.5 rounded-full uppercase tracking-tighter">AI</div>
+<span class="font-body-sm text-on-surface-variant italic">Suggested notation</span>
+</div>
+<p class="font-body-md text-ink-text">Looks like Jan 15–20 works for 3 of you. Want me to make it a proposal?</p>
+<button class="w-full bg-pine-green text-surface py-2.5 rounded-lg font-label-caps text-label-caps hover:opacity-90 active:scale-95 transition-all">
+                Make it a proposal
+            </button>
+</div>
+<!-- Proposal Card -->
+<div class="w-full bg-card-cream border-t-4 border-t-terracotta border-x border-b border-border-warm-grey p-gutter rounded-b-xl shadow-sm flex flex-col space-y-stack-sm">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-terracotta">PROPOSAL · DATES</span>
+<span class="material-symbols-outlined text-muted-text text-sm" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-ink-text">Jan 15 – 20, 2026</h2>
+<p class="font-body-sm text-muted-text italic">Proposed by Mudit · open for votes</p>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="space-y-2">
+<div class="flex w-full space-x-1 h-2">
+<div class="flex-1 bg-pine-green rounded-l-full"></div>
+<div class="flex-1 bg-pine-green"></div>
+<div class="flex-1 bg-pine-green"></div>
+<div class="flex-1 bg-surface-variant rounded-r-full"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-muted-text">3 confirmed · 1 pending</span>
+</div>
+</div>
+<!-- Proposal Actions -->
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-pine-green text-surface py-3 rounded-lg font-label-caps text-label-caps hover:opacity-90 active:scale-95 transition-all">Confirm</button>
+<button class="bg-transparent border border-border-warm-grey text-ink-text py-3 rounded-lg font-label-caps text-label-caps hover:bg-surface-container-low active:scale-95 transition-all">Object</button>
+</div>
+<!-- Nudge Line -->
+<div class="pt-2 flex items-center justify-center space-x-1 cursor-pointer group">
+<p class="font-body-sm text-terracotta">Riya hasn't voted. <span class="font-bold underline decoration-1 underline-offset-2 group-hover:no-underline">Nudge →</span></p>
+</div>
+</div>
+</main>
+<!-- Message Input Bar -->
+<div class="fixed bottom-[68px] w-full max-w-[390px] px-gutter py-3 bg-surface z-40">
+<div class="flex items-center bg-card-cream border border-border-warm-grey rounded-full px-4 py-2 space-x-3 focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-muted-text" data-icon="add_circle">add_circle</span>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-body-md placeholder:text-muted-text" placeholder="Type a message..." type="text"/>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-muted-text" data-icon="mic">mic</span>
+<div class="w-8 h-8 bg-pine-green rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-surface text-sm" data-icon="send" data-weight="fill" style="font-variation-settings: 'FILL' 1;">send</span>
+</div>
+</div>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface rounded-t-xl border-t border-border-warm-grey shadow-[0_-2px_10px_rgba(33,31,26,0.05)] z-50">
+<!-- Chat Active -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble" data-weight="fill" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<!-- Plan Inactive -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</a>
+<!-- Money Inactive -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</a>
+<!-- Vault Inactive -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for the Nudge button
+        document.querySelector('.group-hover\\:no-underline')?.parentElement.addEventListener('click', function() {
+            alert('Nudge sent to Riya!');
+        });
+
+        // Add a subtle entrance animation for bubbles
+        document.querySelectorAll('.rounded-xl, .rounded-br-xl').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                el.style.transition = 'all 0.4s ease-out';
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+    </script>
+</body></html>

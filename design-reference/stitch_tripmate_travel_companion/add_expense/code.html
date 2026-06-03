@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wandertogether - Add Expense</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "surface-container": "#f3ede1",
+                        "on-secondary": "#ffffff",
+                        "ai-sage-tint": "#E8F0EA",
+                        "surface-container-highest": "#e8e2d6",
+                        "tertiary-fixed": "#ffddaf",
+                        "outline-variant": "#c0c8c3",
+                        "inverse-surface": "#333028",
+                        "primary": "#023629",
+                        "surface-variant": "#e8e2d6",
+                        "on-primary-fixed-variant": "#214f41",
+                        "on-background": "#1d1c14",
+                        "on-primary-fixed": "#002118",
+                        "background": "#fff9ed",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "tertiary-container": "#5f3f00",
+                        "on-surface": "#1d1c14",
+                        "on-secondary-fixed-variant": "#802901",
+                        "ink-text": "#211F1A",
+                        "primary-container": "#1f4d3f",
+                        "secondary": "#a04018",
+                        "on-primary-container": "#8dbdab",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#3a6758",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#ede8dc",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "muted-text": "#5E594E",
+                        "tertiary": "#422b00",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#ddaa59",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f6f0e4",
+                        "surface-dim": "#dfd9ce",
+                        "on-surface-variant": "#404945",
+                        "outline": "#717975",
+                        "card-cream": "#FCFAF4",
+                        "secondary-fixed": "#ffdbcf",
+                        "border-warm-grey": "#D9D4CB",
+                        "secondary-container": "#ff8759",
+                        "inverse-primary": "#a1d1be",
+                        "on-secondary-container": "#712300",
+                        "surface": "#fff9ed",
+                        "primary-fixed": "#bcedda",
+                        "on-tertiary-fixed": "#281800",
+                        "primary-fixed-dim": "#a1d1be",
+                        "surface-bright": "#fff9ed",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "on-secondary-fixed": "#380d00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "40px",
+                        "gutter": "16px",
+                        "container-padding": "20px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "display": ["Fraunces"],
+                        "headline-md": ["Fraunces"],
+                        "mono-price": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Fraunces"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fff9ed;
+            color: #211F1A;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D9D4CB;
+            border-radius: 10px;
+        }
+        .ink-shadow {
+            box-shadow: 0 4px 12px -2px rgba(33, 31, 26, 0.08);
+        }
+        input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex justify-center">
+<main class="w-full max-w-[390px] min-h-screen bg-background relative pb-24">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-40 bg-surface flex items-center justify-between px-gutter py-base border-b border-border-warm-grey">
+<button class="flex items-center justify-center w-10 h-10 hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-ink-text">Add expense</h1>
+<button class="font-label-caps text-label-caps text-primary hover:opacity-80 transition-opacity px-2">SAVE</button>
+</header>
+<div class="px-gutter pt-stack-md space-y-stack-lg">
+<!-- Amount Input Section -->
+<section class="flex flex-col items-center justify-center">
+<div class="flex items-baseline gap-2">
+<span class="font-display text-headline-lg text-muted-text">₹</span>
+<input class="w-48 bg-transparent font-display text-display text-ink-text text-center border-none p-0 focus:ring-0" placeholder="0" type="text" value="4,000"/>
+</div>
+<div class="mt-4 w-full">
+<input class="w-full bg-transparent font-body-lg text-body-lg text-ink-text text-center border-none border-b border-border-warm-grey/50 pb-2 focus:ring-0 focus:border-primary" placeholder="What was this for?" type="text" value="Cab to hotel"/>
+</div>
+</section>
+<!-- Category Selector -->
+<section class="space-y-base">
+<p class="font-label-caps text-label-caps text-muted-text uppercase tracking-wider">Category</p>
+<div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-border-warm-grey text-ink-text font-body-sm text-body-sm hover:bg-surface-container transition-colors">Food</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-body-sm text-body-sm shadow-sm transition-transform active:scale-95">Transport</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-border-warm-grey text-ink-text font-body-sm text-body-sm hover:bg-surface-container transition-colors">Stay</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-border-warm-grey text-ink-text font-body-sm text-body-sm hover:bg-surface-container transition-colors">Activity</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-border-warm-grey text-ink-text font-body-sm text-body-sm hover:bg-surface-container transition-colors">Other</button>
+</div>
+</section>
+<!-- Paid By Section -->
+<section class="flex items-center justify-between p-4 bg-card-cream border border-border-warm-grey rounded-xl ink-shadow">
+<div class="flex items-center gap-3">
+<p class="font-body-md text-body-md text-ink-text">Paid by</p>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-surface-container-highest transition-colors">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-container">
+<img alt="Mudit" class="w-full h-full object-cover" data-alt="A clean, minimalist vector avatar portrait of a young man named Mudit with a friendly expression. He has short dark hair and is wearing a simple casual shirt. The background is a warm off-white, matching the organic journal aesthetic of the app. The style is modern, approachable, and refined with professional digital illustration quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-29vje3CDwB88N8liXPRUiV1gl3FiucZ5nosYw2TrUDexZzAsJm2S7Rh46Usib-yiwN9eQZBt-UnRDxQZJAlAbse5_xWtqwZ3EgSNFSMR_HiYmldsUyG39VBYp7djmuKo4rLCNETZ4tHdWRxJ1sgmulOnc_98YZ8cXQv9KqDstUIJSUUNRsE-9ZztINtA42WvfeZ0iCdTB6du_YG0NeTYgz-ttZv6eIh5K6T-L7zdmvSEE4m4US-1Eby0yh3yBjGtM7isoC1jzw--"/>
+</div>
+<span class="font-body-md text-body-md text-primary font-semibold">Mudit</span>
+<span class="material-symbols-outlined text-muted-text text-[18px]">expand_more</span>
+</button>
+</section>
+<!-- Split Section -->
+<section class="space-y-stack-md">
+<div class="flex flex-col gap-base">
+<p class="font-label-caps text-label-caps text-muted-text uppercase tracking-wider">Split</p>
+<div class="flex p-1 bg-surface-container rounded-lg border border-border-warm-grey/50">
+<button class="flex-1 py-1.5 rounded-md bg-card-cream text-primary font-label-caps text-label-caps shadow-sm">EQUALLY</button>
+<button class="flex-1 py-1.5 rounded-md text-muted-text font-label-caps text-label-caps hover:text-ink-text transition-colors">SHARES</button>
+<button class="flex-1 py-1.5 rounded-md text-muted-text font-label-caps text-label-caps hover:text-ink-text transition-colors">EXACT</button>
+</div>
+</div>
+<!-- Member Split List -->
+<div class="space-y-base">
+<!-- Mudit -->
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input checked="" class="w-5 h-5 border-2 border-primary rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Mudit" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAPFxqiOeGBif87S91Egjo4QJsHs67S1IvvOf2oggzi-GPECPVvB9BQksJJUrsS89qHupm9EiYEGj04yBNdfRzPpOpSf634s5CqK6E7OD47IZT_2cZXM9G2o09yBC9_hhP8Viye82ZWpVPOi--cwPSuBNi2s0jIc6hymzt6KLIVfnnbSLigv4fpHMo0fWuecWRdJkeMzyCpE1SBeEL81Xw2js2u0O0i3P04NQuxKCizCR63TqxYJyvNdBudVsNiZbm-FG7ndFC0WPQ"/>
+</div>
+<span class="font-body-md text-body-md text-ink-text">Mudit</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-ink-text">₹1,333</span>
+</div>
+<!-- Vriti -->
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input checked="" class="w-5 h-5 border-2 border-primary rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Vriti" class="w-full h-full object-cover" data-alt="A clean vector avatar of a young woman named Vriti with a gentle smile and dark wavy hair. She is set against a warm, cream-colored background consistent with a high-end travel journal app. The illustration style is sophisticated, utilizing soft line work and a professional, modern color palette that feels organic and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxR9RKilqOGy-iKDLPFDC-NaXvHmJ00v3kcv5FQSme3Dq-m7_8q3nfwra2lLGIqyRL7nh6nLO0N9Uh03Oj7P0aunrHtXfEZghhQo2pBI-MXkKf--uotTIDTwVh7s2Fjua2Lf4Vy27g6yEaOe3N10z9q7Je2nzEJP5SG7OiPn3Yk9zf96rlh5M7blQAS1uC8vQ2Ymm5sjNq4b9sjDbKfsnmrtGzbUVpS0hB14j5RgZrkoKxuTtrqL5lM9hez9mbi4KYQcgZjGhGCqFR"/>
+</div>
+<span class="font-body-md text-body-md text-ink-text">Vriti</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-ink-text">₹1,333</span>
+</div>
+<!-- Aditi -->
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input checked="" class="w-5 h-5 border-2 border-primary rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Aditi" class="w-full h-full object-cover" data-alt="A refined digital avatar of a woman named Aditi, featuring a professional and friendly look with stylish accessories. The portrait is executed in a modern vector style with a soft light-mode color scheme. The background is a subtle, warm paper texture that aligns with the premium editorial aesthetic of a collaborative travel planning application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ZsfNMYJozTMsHHHqzN6mPPD0rmrdh0nwqpZYjldYnYwk5Pu58XdXIXCgoKpGrL5ClGiBYnxpSrihAjOKBGuxKDbk2zWI_GfBVtAPruR6iGsNnaV8qwAp6nlndL8ljC7sfj5Fn6pPVbv25dQ0X4pa0W7hpmK91k6j4SJeb0MAmSR2ksQVKx_eukZXp4uIFc3VhggqtNWqGRj9Ss1gf_S_ZTfr110xcSm5f10WXmD9fLr7WwNeJfSyFObufTecmwQQTjRC0E132iy0"/>
+</div>
+<span class="font-body-md text-body-md text-ink-text">Aditi</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-ink-text">₹1,334</span>
+</div>
+<!-- Karan -->
+<div class="flex items-center justify-between py-2 opacity-50">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input class="w-5 h-5 border-2 border-outline rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-warm-grey grayscale">
+<img alt="Karan" class="w-full h-full object-cover" data-alt="A minimalist vector portrait of a man named Karan, presented as a digital avatar. He has a clean-cut appearance with short dark hair. The image is rendered with a sophisticated, professional aesthetic suitable for a high-end mobile UI. The color palette is muted and warm, ensuring it blends seamlessly into a journal-themed application interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUeWnIsQiY7ozYXjIJlHMwnnalqrExCWwb6dgg4aAHstW1X3KCnKX0sEA-CDlZuKET8wHR4BciZEW1anxF9JEeKSDmIHdiuLhzsGNJGOhGiKuoS4tA-jU2mXAICxHEsYqeO_6obi6Rlg6D-MtOy6OV1BXL30TNqMWHMl_Lqm2dI60mLRovD52lV8Jwn9eHmMuHciYDm05FeC7cqpiq3O5YtWptfTQ48uU1Ybw3G9d6K9JNyA-bglN3Hxir0w1te1uZkg7iJgN20qti"/>
+</div>
+<span class="font-body-md text-body-md text-ink-text">Karan</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-muted-text">₹0</span>
+</div>
+<!-- Riya -->
+<div class="flex items-center justify-between py-2 opacity-50">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input class="w-5 h-5 border-2 border-outline rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-warm-grey grayscale">
+<img alt="Riya" class="w-full h-full object-cover" data-alt="A high-quality vector illustration of a woman named Riya, styled as a modern user avatar. She has long dark hair and a pleasant, calm expression. The visual style is contemporary and polished, designed for a refined travel expense application. The portrait uses organic tones and a warm paper-like background to maintain design consistency across the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl0v0ZOaQQtjH28ZM0XiSjn_VioqZB9gVf-34wpulHqNclTz5I6DOnuH_ws4KMGFvTgygsL-uJ9roneaMbADryTcUz3VVfYW8dpRyRIeXbcXpnTMTUUiBotRphiL2ApAhIOYSl01SzLFa6GIPEVU9Zkzn8-e3zXUkHEmrg-6NKFf5Dp6ZjE6SdP8u5YEwkXZFhvqzXPFergRjabu3k2_JuU8ZzPiYT2_bHMiQq97yVXLtkvcFMmSkTH06x3CbI24HE2KUiaZicKhGw"/>
+</div>
+<span class="font-body-md text-body-md text-ink-text">Riya</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-muted-text">₹0</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-muted-text italic text-center">Only people you check are included.</p>
+</section>
+</div>
+<!-- Sticky Bottom Action -->
+<footer class="fixed bottom-0 w-full max-w-[390px] p-gutter bg-gradient-to-t from-background via-background/95 to-transparent">
+<button class="w-full bg-primary text-on-primary font-headline-sm text-headline-sm py-4 rounded-xl shadow-lg hover:opacity-90 active:scale-95 transition-all">
+                Save expense
+            </button>
+</footer>
+</main>
+<script>
+        // Simple interactivity for demonstration
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const row = e.target.closest('.flex.items-center.justify-between');
+                if (e.target.checked) {
+                    row.classList.remove('opacity-50');
+                    row.querySelector('img').classList.remove('grayscale');
+                } else {
+                    row.classList.add('opacity-50');
+                    row.querySelector('img').classList.add('grayscale');
+                }
+            });
+        });
+    </script>
+</body></html>

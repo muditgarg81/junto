@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b3935;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#141310",
+                      "on-background": "#f6f0e4",
+                      "surface-tint": "#4da68f",
+                      "outline": "#8a8882",
+                      "outline-variant": "#494742",
+                      "on-surface-variant": "#c0c8c3",
+                      "surface-variant": "#404945",
+                      "surface-dim": "#141310",
+                      "surface-bright": "#3b3935",
+                      "surface-container-lowest": "#0f0e0b",
+                      "surface-container-low": "#1d1b18",
+                      "surface-container": "#211f1c",
+                      "surface-container-high": "#2b2a26",
+                      "surface-container-highest": "#363530",
+                      "on-surface": "#f6f0e4",
+                      "primary": "#4da68f",
+                      "on-primary": "#00382d",
+                      "primary-container": "#005141",
+                      "on-primary-container": "#bcedda",
+                      "secondary": "#ffb59a",
+                      "on-secondary": "#5a1d00",
+                      "secondary-container": "#a04018",
+                      "on-secondary-container": "#ffdbcf",
+                      "tertiary": "#f3be6a",
+                      "on-tertiary": "#422b00",
+                      "tertiary-container": "#5f3f00",
+                      "on-tertiary-container": "#ffddaf",
+                      "error": "#ffb4ab",
+                      "on-error": "#690005",
+                      "error-container": "#93000a",
+                      "on-error-container": "#ffdad6",
+                      "background": "#141310",
+                      "ink-text": "#f6f0e4",
+                      "muted-text": "#a29f95",
+                      "card-cream": "#211f1c",
+                      "ai-sage-tint": "#1a241f",
+                      "border-warm-grey": "#363530",
+                      "pine-green": "#4da68f",
+                      "terracotta": "#ff8759"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.5rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "base": "8px",
+                      "stack-md": "24px",
+                      "stack-sm": "12px",
+                      "stack-lg": "40px",
+                      "container-padding": "20px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Fraunces"],
+                      "headline-lg": ["Fraunces"],
+                      "mono-price": ["Hanken Grotesk"],
+                      "label-caps": ["Hanken Grotesk"],
+                      "display": ["Fraunces"],
+                      "body-md": ["Hanken Grotesk"],
+                      "body-sm": ["Hanken Grotesk"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "headline-sm": ["Fraunces"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-background font-body-md overflow-x-hidden min-h-screen flex flex-col items-center">
+<!-- Top AppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface/95 backdrop-blur-sm border-b border-border-warm-grey max-w-[390px] mx-auto">
+<div class="flex items-center justify-between px-gutter py-base w-full">
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm text-primary">Goa · January</h1>
+<p class="font-body-sm text-muted-text">4 going · 1 maybe</p>
+</div>
+<div class="flex -space-x-3 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-primary text-[10px] font-bold text-on-primary flex items-center justify-center">VR</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-secondary text-[10px] font-bold text-on-secondary flex items-center justify-center">AD</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-tertiary text-[10px] font-bold text-on-tertiary flex items-center justify-center">MU</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface bg-surface-container-highest text-[10px] font-bold text-on-surface-variant flex items-center justify-center">RI</div>
+</div>
+</div>
+</header>
+<!-- Main Chat Body -->
+<main class="flex-1 w-full max-w-[390px] mx-auto px-gutter py-stack-md flex flex-col space-y-stack-md overflow-y-auto custom-scrollbar pb-32">
+<!-- Date Divider -->
+<div class="flex items-center justify-center space-x-4">
+<div class="h-[1px] flex-1 bg-outline-variant"></div>
+<span class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest">Today</span>
+<div class="h-[1px] flex-1 bg-outline-variant"></div>
+</div>
+<!-- Incoming Message: Vriti -->
+<div class="flex flex-col space-y-1 items-start max-w-[85%]">
+<span class="font-label-caps text-[10px] text-muted-text px-1">Vriti</span>
+<div class="bg-surface-container border border-outline-variant px-4 py-3 rounded-tr-xl rounded-br-xl rounded-bl-xl shadow-sm">
+<p class="font-body-md text-ink-text">can we just lock dates already</p>
+</div>
+</div>
+<!-- Incoming Message: Aditi -->
+<div class="flex flex-col space-y-1 items-start max-w-[85%]">
+<span class="font-label-caps text-[10px] text-muted-text px-1">Aditi</span>
+<div class="bg-surface-container border border-outline-variant px-4 py-3 rounded-tr-xl rounded-br-xl rounded-bl-xl shadow-sm">
+<p class="font-body-md text-ink-text">same, that week's good</p>
+</div>
+</div>
+<!-- Outgoing Message: Mudit (Self) -->
+<div class="flex flex-col space-y-1 items-end ml-auto max-w-[85%]">
+<div class="bg-primary-container px-4 py-3 rounded-tl-xl rounded-bl-xl rounded-br-xl shadow-sm">
+<p class="font-body-md text-on-primary-container">jan 15–20 works for me</p>
+</div>
+</div>
+<!-- AI Message/Draft -->
+<div class="w-full bg-ai-sage-tint border border-primary/20 p-gutter rounded-xl flex flex-col space-y-stack-sm relative overflow-hidden group transition-all duration-300 hover:shadow-md">
+<div class="absolute top-0 right-0 p-2 opacity-20">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="bg-primary text-[10px] font-bold text-on-primary px-2 py-0.5 rounded-full uppercase tracking-tighter">AI</div>
+<span class="font-body-sm text-on-surface-variant italic">Suggested notation</span>
+</div>
+<p class="font-body-md text-on-surface">Looks like Jan 15–20 works for 3 of you. Want me to make it a proposal?</p>
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-caps text-label-caps hover:opacity-90 active:scale-95 transition-all">
+                Make it a proposal
+            </button>
+</div>
+<!-- Proposal Card -->
+<div class="w-full bg-surface-container-high border-t-4 border-t-terracotta border-x border-b border-outline-variant p-gutter rounded-b-xl shadow-sm flex flex-col space-y-stack-sm">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-terracotta">PROPOSAL · DATES</span>
+<span class="material-symbols-outlined text-muted-text text-sm" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-ink-text">Jan 15 – 20, 2026</h2>
+<p class="font-body-sm text-muted-text italic">Proposed by Mudit · open for votes</p>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="space-y-2">
+<div class="flex w-full space-x-1 h-2">
+<div class="flex-1 bg-primary rounded-l-full"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-surface-container-highest rounded-r-full"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-muted-text">3 confirmed · 1 pending</span>
+</div>
+</div>
+<!-- Proposal Actions -->
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-primary text-on-primary py-3 rounded-lg font-label-caps text-label-caps hover:opacity-90 active:scale-95 transition-all">Confirm</button>
+<button class="bg-transparent border border-outline-variant text-ink-text py-3 rounded-lg font-label-caps text-label-caps hover:bg-surface-container active:scale-95 transition-all">Object</button>
+</div>
+<!-- Nudge Line -->
+<div class="pt-2 flex items-center justify-center space-x-1 cursor-pointer group">
+<p class="font-body-sm text-terracotta">Riya hasn't voted. <span class="font-bold underline decoration-1 underline-offset-2 group-hover:no-underline">Nudge →</span></p>
+</div>
+</div>
+</main>
+<!-- Message Input Bar -->
+<div class="fixed bottom-[68px] w-full max-w-[390px] px-gutter py-3 bg-surface/90 backdrop-blur-sm z-40">
+<div class="flex items-center bg-surface-container border border-outline-variant rounded-full px-4 py-2 space-x-3 focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-muted-text" data-icon="add_circle">add_circle</span>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-body-md text-ink-text placeholder:text-muted-text" placeholder="Type a message..." type="text"/>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-muted-text" data-icon="mic">mic</span>
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-sm" data-icon="send" data-weight="fill" style="font-variation-settings: 'FILL' 1;">send</span>
+</div>
+</div>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface-container border-t border-outline-variant shadow-[0_-2px_10px_rgba(0,0,0,0.3)] z-50">
+<!-- Chat Active -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble" data-weight="fill" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<!-- Plan Inactive -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:text-on-surface transition-colors duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</a>
+<!-- Money Inactive -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:text-on-surface transition-colors duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</a>
+<!-- Vault Inactive -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:text-on-surface transition-colors duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for the Nudge button
+        document.querySelector('.group-hover\\:no-underline')?.parentElement.addEventListener('click', function() {
+            alert('Nudge sent to Riya!');
+        });
+
+        // Add a subtle entrance animation for bubbles
+        document.querySelectorAll('.rounded-xl, .rounded-br-xl').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                el.style.transition = 'all 0.4s ease-out';
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+    </script>
+</body></html>

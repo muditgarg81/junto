@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wandertogether - Add Expense</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#0f0e0b",
+                        "surface-container-highest": "#363531",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#002019",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#006b58",
+                        "secondary-container": "#7f301b",
+                        "secondary-fixed": "#ffdbd2",
+                        "on-secondary-container": "#ffa087",
+                        "inverse-on-surface": "#32302d",
+                        "surface-container-high": "#2b2a27",
+                        "tertiary-container": "#cca72f",
+                        "secondary-fixed-dim": "#ffb4a1",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "surface-container": "#211f1c",
+                        "primary-fixed-dim": "#7fd7be",
+                        "on-tertiary-container": "#4e3d00",
+                        "background": "#141310",
+                        "tertiary": "#e9c349",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-primary": "#00382d",
+                        "surface-container-low": "#1d1b18",
+                        "primary-container": "#4da68f",
+                        "on-secondary-fixed": "#3c0800",
+                        "outline-variant": "#3e4945",
+                        "secondary": "#ffb4a1",
+                        "outline": "#88938e",
+                        "on-surface": "#e6e2dc",
+                        "on-primary-container": "#00372c",
+                        "surface-tint": "#7fd7be",
+                        "on-secondary-fixed-variant": "#7c2e19",
+                        "on-secondary": "#5d1805",
+                        "tertiary-fixed": "#ffe088",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-surface-variant": "#bdc9c4",
+                        "on-tertiary": "#3c2f00",
+                        "surface-dim": "#141310",
+                        "surface-bright": "#3b3935",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e6e2dc",
+                        "inverse-surface": "#e6e2dc",
+                        "surface": "#141310",
+                        "primary-fixed": "#9bf3d9",
+                        "primary": "#7fd7be",
+                        "on-primary-fixed-variant": "#005142",
+                        "surface-variant": "#363531",
+                        /* Kept legacy naming from source for stability where applicable */
+                        "ink-text": "#e6e2dc",
+                        "muted-text": "#bdc9c4",
+                        "border-warm-grey": "#3e4945",
+                        "card-cream": "#211f1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "40px",
+                        "gutter": "16px",
+                        "container-padding": "20px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "display": ["Fraunces"],
+                        "headline-md": ["Fraunces"],
+                        "mono-price": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Fraunces"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #141310;
+            color: #e6e2dc;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3e4945;
+            border-radius: 10px;
+        }
+        .ink-shadow {
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+        }
+        input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="flex justify-center">
+<main class="w-full max-w-[390px] min-h-screen bg-background relative pb-24">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-40 bg-surface flex items-center justify-between px-gutter py-base border-b border-outline-variant">
+<button class="flex items-center justify-center w-10 h-10 hover:opacity-80 transition-opacity active:scale-95">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Add expense</h1>
+<button class="font-label-caps text-label-caps text-primary hover:opacity-80 transition-opacity px-2">SAVE</button>
+</header>
+<div class="px-gutter pt-stack-md space-y-stack-lg">
+<!-- Amount Input Section -->
+<section class="flex flex-col items-center justify-center">
+<div class="flex items-baseline gap-2">
+<span class="font-display text-headline-lg text-on-surface-variant">₹</span>
+<input class="w-48 bg-transparent font-display text-display text-on-surface text-center border-none p-0 focus:ring-0" placeholder="0" type="text" value="4,000"/>
+</div>
+<div class="mt-4 w-full">
+<input class="w-full bg-transparent font-body-lg text-body-lg text-on-surface text-center border-none border-b border-outline-variant/50 pb-2 focus:ring-0 focus:border-primary" placeholder="What was this for?" type="text" value="Cab to hotel"/>
+</div>
+</section>
+<!-- Category Selector -->
+<section class="space-y-base">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Category</p>
+<div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface font-body-sm text-body-sm hover:bg-surface-container transition-colors">Food</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-body-sm text-body-sm shadow-sm transition-transform active:scale-95">Transport</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface font-body-sm text-body-sm hover:bg-surface-container transition-colors">Stay</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface font-body-sm text-body-sm hover:bg-surface-container transition-colors">Activity</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface font-body-sm text-body-sm hover:bg-surface-container transition-colors">Other</button>
+</div>
+</section>
+<!-- Paid By Section -->
+<section class="flex items-center justify-between p-4 bg-surface-container border border-outline-variant rounded-xl ink-shadow">
+<div class="flex items-center gap-3">
+<p class="font-body-md text-body-md text-on-surface">Paid by</p>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-surface-container-highest transition-colors">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-container-low">
+<img alt="Mudit" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-29vje3CDwB88N8liXPRUiV1gl3FiucZ5nosYw2TrUDexZzAsJm2S7Rh46Usib-yiwN9eQZBt-UnRDxQZJAlAbse5_xWtqwZ3EgSNFSMR_HiYmldsUyG39VBYp7djmuKo4rLCNETZ4tHdWRxJ1sgmulOnc_98YZ8cXQv9KqDstUIJSUUNRsE-9ZztINtA42WvfeZ0iCdTB6du_YG0NeTYgz-ttZv6eIh5K6T-L7zdmvSEE4m4US-1Eby0yh3yBjGtM7isoC1jzw--"/>
+</div>
+<span class="font-body-md text-body-md text-primary font-semibold">Mudit</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span>
+</button>
+</section>
+<!-- Split Section -->
+<section class="space-y-stack-md">
+<div class="flex flex-col gap-base">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Split</p>
+<div class="flex p-1 bg-surface-container-low rounded-lg border border-outline-variant/50">
+<button class="flex-1 py-1.5 rounded-md bg-surface-container-highest text-primary font-label-caps text-label-caps shadow-sm">EQUALLY</button>
+<button class="flex-1 py-1.5 rounded-md text-on-surface-variant font-label-caps text-label-caps hover:text-on-surface transition-colors">SHARES</button>
+<button class="flex-1 py-1.5 rounded-md text-on-surface-variant font-label-caps text-label-caps hover:text-on-surface transition-colors">EXACT</button>
+</div>
+</div>
+<!-- Member Split List -->
+<div class="space-y-base">
+<!-- Mudit -->
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input checked="" class="w-5 h-5 border-2 border-primary bg-transparent rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Mudit" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAPFxqiOeGBif87S91Egjo4QJsHs67S1IvvOf2oggzi-GPECPVvB9BQksJJUrsS89qHupm9EiYEGj04yBNdfRzPpOpSf634s5CqK6E7OD47IZT_2cZXM9G2o09yBC9_hhP8Viye82ZWpVPOi--cwPSuBNi2s0jIc6hymzt6KLIVfnnbSLigv4fpHMo0fWuecWRdJkeMzyCpE1SBeEL81Xw2js2u0O0i3P04NQuxKCizCR63TqxYJyvNdBudVsNiZbm-FG7ndFC0WPQ"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Mudit</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-on-surface">₹1,333</span>
+</div>
+<!-- Vriti -->
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input checked="" class="w-5 h-5 border-2 border-primary bg-transparent rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Vriti" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxR9RKilqOGy-iKDLPFDC-NaXvHmJ00v3kcv5FQSme3Dq-m7_8q3nfwra2lLGIqyRL7nh6nLO0N9Uh03Oj7P0aunrHtXfEZghhQo2pBI-MXkKf--uotTIDTwVh7s2Fjua2Lf4Vy27g6yEaOe3N10z9q7Je2nzEJP5SG7OiPn3Yk9zf96rlh5M7blQAS1uC8vQ2Ymm5sjNq4b9sjDbKfsnmrtGzbUVpS0hB14j5RgZrkoKxuTtrqL5lM9hez9mbi4KYQcgZjGhGCqFR"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Vriti</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-on-surface">₹1,333</span>
+</div>
+<!-- Aditi -->
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input checked="" class="w-5 h-5 border-2 border-primary bg-transparent rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Aditi" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ZsfNMYJozTMsHHHqzN6mPPD0rmrdh0nwqpZYjldYnYwk5Pu58XdXIXCgoKpGrL5ClGiBYnxpSrihAjOKBGuxKDbk2zWI_GfBVtAPruR6iGsNnaV8qwAp6nlndL8ljC7sfj5Fn6pPVbv25dQ0X4pa0W7hpmK91k6j4SJeb0MAmSR2ksQVKx_eukZXp4uIFc3VhggqtNWqGRj9Ss1gf_S_ZTfr110xcSm5f10WXmD9fLr7WwNeJfSyFObufTecmwQQTjRC0E132iy0"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Aditi</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-on-surface">₹1,334</span>
+</div>
+<!-- Karan -->
+<div class="flex items-center justify-between py-2 opacity-40 border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input class="w-5 h-5 border-2 border-outline bg-transparent rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant grayscale">
+<img alt="Karan" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUeWnIsQiY7ozYXjIJlHMwnnalqrExCWwb6dgg4aAHstW1X3KCnKX0sEA-CDlZuKET8wHR4BciZEW1anxF9JEeKSDmIHdiuLhzsGNJGOhGiKuoS4tA-jU2mXAICxHEsYqeO_6obi6Rlg6D-MtOy6OV1BXL30TNqMWHMl_Lqm2dI60mLRovD52lV8Jwn9eHmMuHciYDm05FeC7cqpiq3O5YtWptfTQ48uU1Ybw3G9d6K9JNyA-bglN3Hxir0w1te1uZkg7iJgN20qti"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Karan</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-on-surface-variant">₹0</span>
+</div>
+<!-- Riya -->
+<div class="flex items-center justify-between py-2 opacity-40">
+<div class="flex items-center gap-4">
+<div class="relative">
+<input class="w-5 h-5 border-2 border-outline bg-transparent rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant grayscale">
+<img alt="Riya" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl0v0ZOaQQtjH28ZM0XiSjn_VioqZB9gVf-34wpulHqNclTz5I6DOnuH_ws4KMGFvTgygsL-uJ9roneaMbADryTcUz3VVfYW8dpRyRIeXbcXpnTMTUUiBotRphiL2ApAhIOYSl01SzLFa6GIPEVU9Zkzn8-e3zXUkHEmrg-6NKFf5Dp6ZjE6SdP8u5YEwkXZFhvqzXPFergRjabu3k2_JuU8ZzPiYT2_bHMiQq97yVXLtkvcFMmSkTH06x3CbI24HE2KUiaZicKhGw"/>
+</div>
+<span class="font-body-md text-body-md text-on-surface">Riya</span>
+</div>
+</div>
+<span class="font-mono-price text-mono-price text-on-surface-variant">₹0</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic text-center">Only people you check are included.</p>
+</section>
+</div>
+<!-- Sticky Bottom Action -->
+<footer class="fixed bottom-0 w-full max-w-[390px] p-gutter bg-gradient-to-t from-background via-background/95 to-transparent">
+<button class="w-full bg-primary text-on-primary font-headline-sm text-headline-sm py-4 rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                Save expense
+            </button>
+</footer>
+</main>
+<script>
+        // Interactivity for checkbox toggles
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const row = e.target.closest('.flex.items-center.justify-between');
+                if (e.target.checked) {
+                    row.classList.remove('opacity-40');
+                    row.querySelector('img').classList.remove('grayscale');
+                } else {
+                    row.classList.add('opacity-40');
+                    row.querySelector('img').classList.add('grayscale');
+                }
+            });
+        });
+    </script>
+</body></html>

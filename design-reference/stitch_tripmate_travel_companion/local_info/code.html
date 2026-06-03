@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wandertogether - Local Info</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#214f41",
+                        "surface-tint": "#3a6758",
+                        "on-secondary-container": "#712300",
+                        "on-secondary-fixed": "#380d00",
+                        "border-warm-grey": "#D9D4CB",
+                        "secondary-fixed": "#ffdbcf",
+                        "primary-fixed-dim": "#a1d1be",
+                        "tertiary-container": "#5f3f00",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffddaf",
+                        "inverse-surface": "#333028",
+                        "on-secondary-fixed-variant": "#802901",
+                        "surface-variant": "#e8e2d6",
+                        "on-primary-container": "#8dbdab",
+                        "outline": "#717975",
+                        "surface-container-high": "#ede8dc",
+                        "on-tertiary-container": "#ddaa59",
+                        "on-surface-variant": "#404945",
+                        "background": "#fff9ed",
+                        "surface-bright": "#fff9ed",
+                        "on-primary-fixed": "#002118",
+                        "surface-dim": "#dfd9ce",
+                        "primary-fixed": "#bcedda",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#281800",
+                        "surface-container-low": "#f9f3e7",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "secondary": "#a04018",
+                        "primary": "#023629",
+                        "on-error": "#ffffff",
+                        "muted-text": "#5E594E",
+                        "tertiary": "#422b00",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#a1d1be",
+                        "on-primary": "#ffffff",
+                        "surface": "#fff9ed",
+                        "ai-sage-tint": "#E8F0EA",
+                        "primary-container": "#1f4d3f",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "surface-container-highest": "#e8e2d6",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "on-surface": "#1d1c14",
+                        "card-cream": "#FCFAF4",
+                        "inverse-on-surface": "#f6f0e4",
+                        "secondary-container": "#ff8759",
+                        "surface-container": "#f3ede1",
+                        "ink-text": "#211F1A",
+                        "outline-variant": "#c0c8c3",
+                        "error": "#ba1a1a",
+                        "on-background": "#1d1c14"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "20px",
+                        "gutter": "16px",
+                        "stack-sm": "12px",
+                        "stack-lg": "40px",
+                        "base": "8px",
+                        "stack-md": "24px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"],
+                        "display": ["Fraunces"],
+                        "headline-md": ["Fraunces"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Fraunces"],
+                        "mono-price": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fff9ed; /* Matching surface variable */
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-ink-text selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky bg-surface dark:bg-surface-dim border-b border-border-warm-grey dark:border-outline-variant z-50">
+<div class="flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-3">
+<button aria-label="Go back" class="hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm text-primary dark:text-on-surface">Local info</h1>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Profile" data-alt="A close-up portrait of a traveler with a warm, friendly expression, set against a soft-focus outdoor background. The lighting is natural and golden, reflecting a refined and approachable editorial style. The color palette is composed of organic tones, consistent with a warm-toned travel journal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAASWSb-v_eoH13-7gMQ1JG6PzmBRN5Iugj0uVnxQbe6CMNkZo0jgxHYEQrxJXHV3fAzLLpz9JUyHMNAr_wZqvxiQgP5yJpR_Xihd7FcRg3QygzvvA-xcgRniHG9DCrA-3vtXsS5hMEFnJ-Wvea96aQHOMlGlqUun-hWBjSZxE18lOPFn-xcDUZ5w2P5bMEcS_hJ2_EI_itAjzoQLbqpUQSIBba0xvL6LuWffKEpBt-JZmfSnZx_SvD58jihGt9mQ5YORqpkU2ffdts"/>
+</div>
+</div>
+</header>
+<main class="max-w-[390px] mx-auto px-gutter pb-32">
+<!-- Subtitle and Offline Status -->
+<div class="pt-stack-md pb-stack-sm flex items-center gap-2">
+<span class="font-body-md text-muted-text">Goa, India · saved offline</span>
+</div>
+<!-- Primary Emergency Card -->
+<section class="mt-base">
+<div class="bg-card-cream border-2 border-secondary rounded-xl p-stack-md shadow-sm relative overflow-hidden">
+<!-- Subtle background pattern or texture could go here -->
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<span class="font-label-caps text-label-caps text-secondary">PRIMARY HOTLINE</span>
+<h2 class="font-headline-lg text-headline-lg text-secondary tabular-nums">Emergency · 112</h2>
+</div>
+<span class="material-symbols-outlined text-secondary text-4xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+<button class="mt-stack-md w-full bg-secondary text-on-secondary py-4 rounded-lg font-headline-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">call</span>
+                    Call Now
+                </button>
+</div>
+</section>
+<!-- Secondary Support Contacts -->
+<section class="mt-stack-lg flex flex-col gap-gutter">
+<!-- Police Card -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-gutter flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">local_police</span>
+</div>
+<div>
+<p class="font-body-md font-semibold text-ink-text">Police</p>
+<p class="font-headline-sm tabular-nums text-primary-container">100</p>
+</div>
+</div>
+<button class="text-secondary p-2 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+<!-- Ambulance Card -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-gutter flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">ambulance</span>
+</div>
+<div>
+<p class="font-body-md font-semibold text-ink-text">Ambulance</p>
+<p class="font-headline-sm tabular-nums text-secondary">108</p>
+</div>
+</div>
+<button class="text-secondary p-2 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+<!-- Nearest Hospital Card (Bento Style) -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-gutter space-y-4">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined">medical_services</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="font-body-md font-semibold text-ink-text">Nearest hospital</p>
+<span class="font-label-caps text-label-caps text-muted-text">4.2 km away</span>
+</div>
+<p class="font-body-md text-muted-text mt-1">Manipal Hospital, Dona Paula</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-3 rounded-lg font-label-caps flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined text-[20px]">directions</span>
+                        DIRECTIONS
+                    </button>
+<button class="px-4 border border-border-warm-grey rounded-lg text-ink-text flex items-center justify-center active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+</div>
+<!-- Tourist Helpline -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-gutter flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed-dim/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<div>
+<p class="font-body-md font-semibold text-ink-text">Tourist helpline</p>
+<p class="font-headline-sm tabular-nums text-tertiary">1363</p>
+</div>
+</div>
+<button class="text-secondary p-2 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+</section>
+<!-- Footer Offline Note -->
+<footer class="mt-stack-lg flex flex-col items-center gap-base">
+<div class="flex items-center gap-2 text-muted-text bg-surface-container rounded-full px-4 py-2 border border-border-warm-grey">
+<span class="material-symbols-outlined text-[18px]">offline_pin</span>
+<span class="font-label-caps text-label-caps">Cached for offline — works without signal.</span>
+</div>
+</footer>
+</main>
+<!-- Bottom Navigation Bar (No active tab as per utility context) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface dark:bg-surface-dim border-t border-border-warm-grey dark:border-outline-variant shadow-[0_-2px_10px_rgba(33,31,26,0.05)] left-1/2 -translate-x-1/2 max-w-[390px]">
+<div class="flex justify-around items-center px-4 py-3">
+<a class="flex flex-col items-center justify-center text-muted-text dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-label-caps mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps mt-1">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps mt-1">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">Vault</span>
+</a>
+</div>
+</nav>
+<script>
+        // Simple haptic-like interaction for primary buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.classList.add('opacity-90');
+            });
+            button.addEventListener('touchend', function() {
+                this.classList.remove('opacity-90');
+            });
+        });
+    </script>
+</body></html>

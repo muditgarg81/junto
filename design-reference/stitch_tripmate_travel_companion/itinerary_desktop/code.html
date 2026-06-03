@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#614000",
+                        "on-tertiary-container": "#ddaa59",
+                        "primary-fixed": "#bcedda",
+                        "on-secondary-container": "#712300",
+                        "muted-text": "#5E594E",
+                        "inverse-on-surface": "#f6f0e4",
+                        "tertiary-fixed": "#ffddaf",
+                        "ai-sage-tint": "#E8F0EA",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#f3ede1",
+                        "on-surface-variant": "#404945",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "on-primary-fixed": "#002118",
+                        "primary-container": "#1f4d3f",
+                        "surface-container-high": "#ede8dc",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#214f41",
+                        "surface": "#fff9ed",
+                        "on-secondary-fixed": "#380d00",
+                        "on-error-container": "#93000a",
+                        "card-cream": "#FCFAF4",
+                        "border-warm-grey": "#D9D4CB",
+                        "surface-bright": "#fff9ed",
+                        "primary-fixed-dim": "#a1d1be",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "on-tertiary-fixed": "#281800",
+                        "outline-variant": "#c0c8c3",
+                        "on-surface": "#1d1c14",
+                        "background": "#fff9ed",
+                        "primary": "#023629",
+                        "inverse-primary": "#a1d1be",
+                        "surface-container-highest": "#e8e2d6",
+                        "surface-tint": "#3a6758",
+                        "on-secondary-fixed-variant": "#802901",
+                        "surface-variant": "#e8e2d6",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f9f3e7",
+                        "surface-dim": "#dfd9ce",
+                        "secondary-container": "#ff8759",
+                        "inverse-surface": "#333028",
+                        "on-error": "#ffffff",
+                        "tertiary": "#422b00",
+                        "on-secondary": "#ffffff",
+                        "ink-text": "#211F1A",
+                        "tertiary-container": "#5f3f00",
+                        "secondary-fixed": "#ffdbcf",
+                        "on-primary-container": "#8dbdab",
+                        "on-background": "#1d1c14",
+                        "secondary": "#a04018",
+                        "outline": "#717975"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "12px",
+                        "stack-md": "24px",
+                        "base": "8px",
+                        "container-padding": "20px",
+                        "gutter": "16px",
+                        "stack-lg": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Fraunces"],
+                        "headline-sm": ["Fraunces"],
+                        "mono-price": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display": ["Fraunces"],
+                        "headline-lg": ["Fraunces"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fff9ed;
+            color: #1d1c14;
+            -webkit-font-smoothing: antialiased;
+        }
+        .paper-shadow {
+            box-shadow: 0 4px 20px -2px rgba(33, 31, 26, 0.08);
+        }
+        .timeline-line {
+            width: 1px;
+            background: #D9D4CB;
+            position: absolute;
+            left: 11px;
+            top: 24px;
+            bottom: -24px;
+        }
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 9999px;
+            background: #fff9ed;
+            border: 1px solid #D9D4CB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D9D4CB;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md min-h-screen">
+<!-- Top Navigation Bar (Shared Component Desktop Implementation) -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-border-warm-grey flex items-center justify-between px-12 py-4">
+<div class="flex items-center gap-12">
+<span class="font-display text-headline-md text-primary">Wandertogether</span>
+<nav class="hidden md:flex items-center gap-8">
+<a class="flex flex-col items-center justify-center text-muted-text hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<!-- Active State for Plan -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1.5 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full border border-border-warm-grey overflow-hidden bg-surface-container">
+<img alt="Traveler Profile" class="w-full h-full object-cover" data-alt="A professional, warm-toned headshot of a traveler in their late 20s, smiling softly against a blurred natural background. The lighting is soft and golden, characteristic of a high-end editorial travel magazine. The overall aesthetic is refined and humanistic, using a natural color palette of creams and subtle greens to align with the journal-inspired UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn2W-4F_yc7L80AtqbgjaPnzUGfIS2XQBpYhfIUzqLD4zdrzOsFZySGtKAXn1IEc55BIUwp_w9YFdo-t7Dh0_1xgTtgy9a9YJuXVSYiksKQOTPrehFnwCFl__RllJ6d-GnHT3ANP8Cf2jhqGNFrc3rs0yv3BLxvDMRuy1PBib83cOrT620LMz5_Wd3dShC35l0JEwjVRK5nE4REqZY-YyUr7i_ndC3WLTwvQKC2S4roEm60MsM34IsP67dvD7XbiVC0_iTE_hy65aN"/>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-80 transition-opacity" data-icon="group">group</span>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-12 py-12">
+<!-- Header Area -->
+<div class="mb-stack-lg border-l-4 border-primary pl-8 py-2">
+<h1 class="font-display text-display text-ink-text">Itinerary</h1>
+<p class="font-body-lg text-muted-text mt-2">Jan 15 – 20 · Goa, India</p>
+</div>
+<div class="flex gap-12">
+<!-- Main Content: Masonry Grid for Days -->
+<div class="flex-grow grid grid-cols-1 xl:grid-cols-2 gap-12 items-start">
+<!-- Day 1 -->
+<section class="space-y-6">
+<div class="flex items-center justify-between border-b border-border-warm-grey pb-4">
+<h2 class="font-headline-md text-headline-md text-ink-text flex items-center gap-3">
+<span class="text-primary-container bg-primary-fixed rounded-lg px-3 py-1 text-sm font-label-caps">DAY 1</span>
+                            Jan 15
+                        </h2>
+<span class="material-symbols-outlined text-muted-text cursor-pointer" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="relative space-y-10 pl-4">
+<!-- Vertical line -->
+<div class="timeline-line"></div>
+<!-- Item 1: Flight -->
+<div class="relative flex gap-6">
+<div class="timeline-dot">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="airplane_ticket">airplane_ticket</span>
+</div>
+<div class="bg-card-cream border border-border-warm-grey p-5 rounded-xl paper-shadow flex-grow">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest">6:10 AM</span>
+<span class="bg-ai-sage-tint text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter">AI DRAFT</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-text mb-1">Flight to Goa</h3>
+<p class="text-muted-text font-body-sm">Indigo 6E-2134 · Terminal 2</p>
+</div>
+</div>
+<!-- Item 2: Check-in -->
+<div class="relative flex gap-6">
+<div class="timeline-dot">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="apartment">apartment</span>
+</div>
+<div class="bg-card-cream border border-border-warm-grey p-5 rounded-xl paper-shadow flex-grow">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest">2:00 PM</span>
+<div class="flex gap-2">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded text-[10px] font-bold uppercase">VOUCHER</span>
+<span class="bg-secondary text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase">TIGHT CONNECTION — 40 MIN</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-text mb-1">Check in · Taj Holiday Village</h3>
+<p class="text-muted-text font-body-sm mb-4">Sinquerim, Candolim, Goa 403515</p>
+<div class="w-full h-32 rounded-lg overflow-hidden border border-border-warm-grey grayscale hover:grayscale-0 transition-all duration-500">
+<img alt="Taj Holiday Village" class="w-full h-full object-cover" data-alt="An expansive aerial view of a luxury coastal resort in Goa, featuring terracotta-roofed cottages nestled among lush tropical palm trees and manicured gardens. The Indian Ocean is visible in the background under a warm, late-afternoon sun. The aesthetic is sophisticated and serene, with high-contrast shadows and a warm 'paper-and-ink' color philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvmnL71eLKQ-8E1Up1UejpNzlNNP_JBlZp2TIK5R0m3rZv8JaagxFscVyLUfpP_5zAI8Zh9kkkseHZ3Qa2jWN9ZJk485QOjg0j9tgp8idmoTvyCgl4qK2-FuKrbIrreVIlE-DI77fCjnMiKPTllFbbOtr0TjFuiubpwLjE2MAz6NbSy8YJKRyExrkJAOYWyEbXA-fsgsjcaNNTKgwO55gU2TIh5dAocA5MS7RcWFD8T_lwbi7Q9o8Qho7AfiPddCitIQjoKJ3abYmj"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Day 2 (Placeholder to show grid) -->
+<section class="space-y-6 opacity-60">
+<div class="flex items-center justify-between border-b border-border-warm-grey pb-4">
+<h2 class="font-headline-md text-headline-md text-ink-text flex items-center gap-3">
+<span class="text-muted-text bg-surface-container-highest rounded-lg px-3 py-1 text-sm font-label-caps">DAY 2</span>
+                            Jan 16
+                        </h2>
+</div>
+<div class="bg-surface-container-low border border-dashed border-border-warm-grey p-10 rounded-xl text-center">
+<span class="material-symbols-outlined text-outline text-4xl mb-2" data-icon="edit_calendar">edit_calendar</span>
+<p class="font-body-md text-muted-text">No activities planned yet. <br/><span class="text-primary cursor-pointer font-bold">Add from Vault?</span></p>
+</div>
+</section>
+<!-- Day 3 -->
+<section class="space-y-6">
+<div class="flex items-center justify-between border-b border-border-warm-grey pb-4">
+<h2 class="font-headline-md text-headline-md text-ink-text flex items-center gap-3">
+<span class="text-primary-container bg-primary-fixed rounded-lg px-3 py-1 text-sm font-label-caps">DAY 3</span>
+                            Jan 17
+                        </h2>
+<span class="material-symbols-outlined text-muted-text cursor-pointer" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="relative space-y-10 pl-4">
+<div class="timeline-line"></div>
+<div class="relative flex gap-6">
+<div class="timeline-dot">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="waves" style="font-variation-settings: 'FILL' 1;">waves</span>
+</div>
+<div class="bg-card-cream border border-border-warm-grey p-5 rounded-xl paper-shadow flex-grow">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-muted-text uppercase tracking-widest">9:00 AM</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded text-[10px] font-bold uppercase">VOUCHER</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-ink-text mb-1">Scuba diving · Grand Island</h3>
+<p class="text-muted-text font-body-sm mb-4">Pick up from North Goa main road.</p>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-secondary-fixed flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary-fixed flex items-center justify-center text-[10px] font-bold">AM</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">+2</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sidebar: Trip Summary -->
+<aside class="hidden lg:block w-80 shrink-0">
+<div class="sticky top-28 space-y-8">
+<!-- Quick Links Card -->
+<div class="bg-card-cream border border-border-warm-grey p-6 rounded-xl paper-shadow">
+<h4 class="font-headline-sm text-headline-sm text-ink-text mb-4">Trip Summary</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-muted-text">Confirmed Nodes</span>
+<span class="font-mono-price text-ink-text">12</span>
+</div>
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-muted-text">Shared Expenses</span>
+<span class="font-mono-price text-primary">₹42,000</span>
+</div>
+<div class="pt-4 border-t border-border-warm-grey">
+<p class="font-label-caps text-label-caps text-muted-text mb-3 uppercase">Related Areas</p>
+<div class="grid grid-cols-1 gap-2">
+<button class="flex items-center gap-3 w-full p-3 rounded-lg border border-border-warm-grey hover:bg-surface-container-low transition-colors text-left group">
+<span class="material-symbols-outlined text-secondary" data-icon="checklist">checklist</span>
+<span class="font-body-md group-hover:text-primary">Checklist</span>
+</button>
+<button class="flex items-center gap-3 w-full p-3 rounded-lg border border-border-warm-grey hover:bg-surface-container-low transition-colors text-left group">
+<span class="material-symbols-outlined text-primary" data-icon="receipt_long">receipt_long</span>
+<span class="font-body-md group-hover:text-primary">Money Splitter</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Suggestion Draft (Sage Tinted) -->
+<div class="bg-ai-sage-tint border border-border-warm-grey p-6 rounded-xl relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-16 h-16 bg-primary opacity-5 rounded-full"></div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-[10px] font-bold text-primary uppercase">AI Suggestion</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Dinner at Thalassa?</h4>
+<p class="text-body-sm text-on-surface-variant mb-4">Based on your Day 3 location, Thalassa is just 15 mins away from your diving drop-off. Most groups book 2 days in advance.</p>
+<button class="w-full bg-primary text-white py-3 rounded-lg font-label-caps uppercase tracking-widest text-[11px] hover:opacity-90 active:scale-[0.98] transition-all">Add to Drafts</button>
+</div>
+<!-- Map Preview -->
+<div class="rounded-xl overflow-hidden h-48 border border-border-warm-grey relative group">
+<img alt="Map of Goa" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" data-alt="A stylized map-like view of the Goan coastline with deep blue waters and lush green landmasses. The image has a textured, printed-on-canvas aesthetic that matches the travel journal theme. The lighting is diffused, giving it a vintage editorial feel, consistent with the Wandertogether brand identity." data-location="Goa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqkhGIrriGDbTr-uwFxaujO1QLZ3bPzmVjZZFM_2z3xcd0rJAAghKxVZUu27NZMZtgCl8ZC0zRzhLKiku0MxEh7KtXntGQZJx2xBEDaULMltB8zCuXvVw4JuMyQaInJuhlo5LKznsSImhLktRYssod7Ahbxe3bDgRtEb38P--t-LkVQWz69gTzgK4E36fjfaw1QHUTuuCBBRyoU21KNHsbWVvb95Za4N-lUq0GxBYQUhJ0Ew4Pi509qBQS1OyJ6TFvsdGxQh2iBqiW"/>
+<div class="absolute inset-0 bg-primary/10 flex items-center justify-center">
+<button class="bg-white/90 backdrop-blur-sm text-primary font-label-caps px-4 py-2 rounded-full shadow-lg text-[10px] uppercase">Open Live Map</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Floating Action Button for Adding Items -->
+<button class="fixed bottom-12 right-12 w-16 h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<script>
+        // Micro-interaction: Smooth hover for cards
+        const cards = document.querySelectorAll('.paper-shadow');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.transition = 'all 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Atmospheric effect: Subtle grain/texture overlay could be added here, 
+        // but sticking to CSS/Vanilla JS as requested.
+    </script>
+</body></html>

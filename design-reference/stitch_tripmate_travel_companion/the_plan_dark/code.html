@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#141310",
+            "surface-dim": "#141310",
+            "surface-bright": "#3b3935",
+            "surface-container-lowest": "#0f0e0b",
+            "surface-container-low": "#1d1b18",
+            "surface-container": "#211f1c",
+            "surface-container-high": "#2b2a26",
+            "surface-container-highest": "#363430",
+            "on-surface": "#e7e2d9",
+            "on-surface-variant": "#c9c7be",
+            "outline": "#939189",
+            "outline-variant": "#484741",
+            "primary": "#4da68f",
+            "on-primary": "#00382d",
+            "primary-container": "#005142",
+            "on-primary-container": "#b0f2da",
+            "secondary": "#ffb596",
+            "on-secondary": "#561f02",
+            "secondary-container": "#762e0c",
+            "on-secondary-container": "#ffdbcf",
+            "tertiary": "#f3be6a",
+            "on-tertiary": "#422c00",
+            "tertiary-container": "#5f4100",
+            "on-tertiary-container": "#ffddaf",
+            "error": "#ffb4ab",
+            "on-error": "#690005",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6",
+            "background": "#141310",
+            "on-background": "#e7e2d9",
+            "card-cream": "#1d1b18",
+            "ink-text": "#e7e2d9",
+            "muted-text": "#c9c7be",
+            "ai-sage-tint": "#1f4d3f",
+            "border-warm-grey": "#484741"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "16px",
+            "base": "8px",
+            "stack-md": "24px",
+            "stack-sm": "12px",
+            "stack-lg": "40px",
+            "container-padding": "20px"
+          },
+          "fontFamily": {
+            "headline-md": ["Fraunces"],
+            "headline-lg": ["Fraunces"],
+            "mono-price": ["Hanken Grotesk"],
+            "label-caps": ["Hanken Grotesk"],
+            "display": ["Fraunces"],
+            "body-md": ["Hanken Grotesk"],
+            "body-sm": ["Hanken Grotesk"],
+            "body-lg": ["Hanken Grotesk"],
+            "headline-sm": ["Fraunces"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+            "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+            "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+            "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #141310;
+      color: #e7e2d9;
+      -webkit-font-smoothing: antialiased;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .paper-edge {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    }
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="flex justify-center min-h-screen">
+<div class="w-full max-w-[390px] bg-background min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-border-warm-grey flex items-center justify-between px-gutter py-base w-full mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-border-warm-grey">
+<img alt="Traveler Profile" class="w-full h-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp_BzQ7l70D7FH4b4iuZHb5a0ygd91Q6R8yV5e92MUdjIZ5y8h1bVx05hdWkLmXoVCb9WI_r3W-US9PTm8CWz4WfMA1AJorBSfN-AkpZvW63Ma1xgua1_Ubn3ElV7L5616enDGsK7oGL4DdTlDiJAowDRsDxQe_o0_3GX5C5rwLcnzdcpqBuOYGIKQyT_rU6xq98Bc1PvcNxLSgSXVMZZ1iIMqagcZZqjxkjM59f7Kg7TSPb7GbWE1EjruStdAXScaZwy1ghimdbN4"/>
+</div>
+<span class="font-display text-headline-md text-primary">Wandertogether</span>
+</div>
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95">group</button>
+</header>
+<main class="flex-1 px-container-padding py-stack-md pb-32">
+<!-- Header Section -->
+<section class="mb-stack-lg">
+<h1 class="font-headline-lg text-headline-lg mb-1 text-on-surface">The plan</h1>
+<p class="font-body-md text-muted-text">Goa · 4 going · 1 maybe</p>
+</section>
+<!-- Decided Section -->
+<section class="mb-stack-lg">
+<h2 class="font-label-caps text-label-caps text-muted-text mb-stack-sm tracking-widest">DECIDED</h2>
+<div class="space-y-stack-sm">
+<!-- Date Card -->
+<div class="bg-surface-container-low border border-border-warm-grey rounded-xl p-4 flex items-center gap-4 paper-edge active:scale-[0.98] transition-transform duration-200 cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<div class="flex-1">
+<p class="font-body-lg font-semibold leading-tight text-on-surface">Jan 15 – 20</p>
+<p class="font-body-sm text-muted-text">Dates · locked unanimously</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Destination Card -->
+<div class="bg-surface-container-low border border-border-warm-grey rounded-xl p-4 flex items-center gap-4 paper-edge active:scale-[0.98] transition-transform duration-200 cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">explore</span>
+</div>
+<div class="flex-1">
+<p class="font-body-lg font-semibold leading-tight text-on-surface">Goa</p>
+<p class="font-body-sm text-muted-text">Destination · locked</p>
+</div>
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Open Section -->
+<section class="mb-stack-lg">
+<h2 class="font-label-caps text-label-caps text-muted-text mb-stack-sm tracking-widest">OPEN</h2>
+<div class="space-y-stack-sm">
+<!-- Hotel Row -->
+<div class="bg-surface-container border border-border-warm-grey border-t-2 border-t-secondary rounded-xl p-4 flex items-center gap-4 paper-edge active:scale-[0.98] transition-transform duration-200 cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined">hotel</span>
+</div>
+<div class="flex-1">
+<p class="font-body-lg font-semibold leading-tight text-on-surface">Hotel</p>
+<p class="font-body-sm text-muted-text">2 options · voting now</p>
+</div>
+<div class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-caps font-bold">
+              3 VOTED
+            </div>
+</div>
+<!-- Budget Row -->
+<div class="bg-surface-container border border-border-warm-grey border-t-2 border-t-secondary rounded-xl p-4 flex items-center gap-4 paper-edge active:scale-[0.98] transition-transform duration-200 cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="flex-1">
+<p class="font-body-lg font-semibold leading-tight text-on-surface">Budget band</p>
+<p class="font-body-sm text-muted-text">Proposed · ₹18–22k each</p>
+</div>
+<button class="bg-primary text-on-primary px-4 py-1 rounded-full text-label-caps font-bold hover:opacity-90 active:scale-95 transition-all">
+              VOTE
+            </button>
+</div>
+</div>
+</section>
+<!-- Who's In Section -->
+<section class="mb-stack-lg">
+<h2 class="font-label-caps text-label-caps text-muted-text mb-stack-sm tracking-widest">WHO'S IN</h2>
+<div class="flex flex-wrap gap-2">
+<!-- Member Chips -->
+<div class="flex items-center gap-2 bg-surface-container border border-border-warm-grey rounded-full pl-1 pr-3 py-1">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Arjun" class="w-full h-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI9xD1gQ_aRz9ylpvEMk0F5XLPwDZjGhquT5X-8c7J46KD2QhbRfUmDTelGyh_CqV7ocRbaYzjV7R5_oId1MTsPT4lFOXccUV_76MjJFdV6-o6rxur9jOZ2DCBrDJ4civNVUxWhh7EC0wOCLr9CUBmDBrfPuYiSr6XY02yPNgDwhbCHmtNFstft-CMXYqVhJKwndHtUjcglgMGIzXvlmxn7zFbfQCSwK72oPl-qc6QjcqEZQwKlTbhmGqw_xo-euUKU5AQUs7aGR4T"/>
+</div>
+<span class="font-body-sm font-semibold text-on-surface">Arjun</span>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container border border-border-warm-grey rounded-full pl-1 pr-3 py-1">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Sarah" class="w-full h-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZy-4gOlKJ-9S9vo0In2VpHoQyfSq4VjTGSgLwrHBvq4b9ZXnUlhBDWE39hVC1rkp11ERNZC3_BHPKKwd8zA8UY2WaSoxNEYLM7gUFTg1_qSFC-SORiCT__8nwynDKG9WPBaGH9hfVz29L4GUeY_f3CBLo0XpV3792HxiTBajeSbwSBxmczKLZon-3rtnq-f3bU5WXEysyYKn9N5nl2mcT89iRNml5iiWtgBwO2A84c2gHhKCMF-nx_l6YhU5ATzec5jWufGhL6N2w"/>
+</div>
+<span class="font-body-sm font-semibold text-on-surface">Sarah</span>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container border border-border-warm-grey rounded-full pl-1 pr-3 py-1">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Maya" class="w-full h-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPU7YJmW33KF8L3G1zF3Cvye2JIOXlr7TV3gMqTzeFds8vDtaX1OxLOE4LzDbkIXaqbr6CiB_DECW81vYZYyE2qHS9otgD2jKUOp4ca7Xg5aZuMpPaPsGcX9zR4KqE1B70y9hQ3j_P4V--dGqYjWgApskUll9o75I2XBswQN71U5PnUWTOhmGGf_hnyUr1FmeThuhCDxG72Cr33x3Tyv0w9KF5tEEP8JS2ffGcHggrCN-hdsSxZHUXGst0yElkzzNF5_RULMla4Mw1"/>
+</div>
+<span class="font-body-sm font-semibold text-on-surface">Maya</span>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container border border-border-warm-grey rounded-full pl-1 pr-3 py-1">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Kabir" class="w-full h-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAkOWwlzezcTZGQNJdL6oZn0queocSx3dNnXxJ4LSVxhjQrORZeZ9-m4afevVawHdesBZNw6BRLoCF8uYfto3n-gx2ksBZWEGw2OtQZJ7xcDDBiHmBpNbNB7_Eq_aOterkspHU2v-fWj8J2Y7JPM1nZJqbE_rerd6GrEZlTt7TjhnCYcyyOLn5HMmyGe5yUyHGU_oIVZlYHLThE4Yt1xwSgkgCk0nbAs8hqWsYFMfVrVtKx5HyMVmhaeE0_lw4v9kqGnDbQ7MKmmHJ"/>
+</div>
+<span class="font-body-sm font-semibold text-on-surface">Kabir</span>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container border border-border-warm-grey rounded-full pl-1 pr-3 py-1">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Rohan" class="w-full h-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbFU-lE7wkpQBTMaJmRT-Kh2J1veAZWuNLKXvNuPe-aVzrqJf3BBn9Hz9gDiRKODbfAkvQSSwZAiaZMVtr2EtLUw3Wb0Ha8a6DkFRCt9gFKBLuock6oDk3FCOE54YZm66iSO7hXZu_yVbsu-RlJ9DOvWBRBAuaOxpK8SacmUqR8KEhg9RDns4AWtw6VCBAA4wnl8BIlchj-9a1owyBNr0ftMS473t4cYv91vGUMqyMcSPilSxFdtnjeNRIwnGUy3wpTAz0pjCYQ_r9"/>
+</div>
+<span class="font-body-sm font-semibold text-on-surface">Rohan</span>
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface-container-high border-t border-border-warm-grey shadow-[0_-2px_10px_rgba(0,0,0,0.4)] rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-muted-text hover:text-on-surface transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-label-caps mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-caps text-label-caps mt-1">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:text-on-surface transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps mt-1">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-muted-text hover:text-on-surface transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">Vault</span>
+</a>
+</nav>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    document.querySelectorAll('.active\\:scale-\\[0\\.98\\]').forEach(card => {
+      card.addEventListener('mousedown', () => card.style.transform = 'scale(0.98)');
+      card.addEventListener('mouseup', () => card.style.transform = 'scale(1)');
+      card.addEventListener('mouseleave', () => card.style.transform = 'scale(1)');
+    });
+  </script>
+</body></html>

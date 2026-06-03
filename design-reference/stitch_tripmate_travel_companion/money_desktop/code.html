@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fff9ed;
+            color: #211F1A;
+            -webkit-font-smoothing: antialiased;
+        }
+        .paper-texture {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-blend-mode: multiply;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#614000",
+                    "primary-fixed-dim": "#a1d1be",
+                    "secondary": "#a04018",
+                    "surface-variant": "#e8e2d6",
+                    "on-error-container": "#93000a",
+                    "muted-text": "#5E594E",
+                    "on-surface": "#1d1c14",
+                    "card-cream": "#FCFAF4",
+                    "error": "#ba1a1a",
+                    "primary": "#023629",
+                    "on-primary-fixed-variant": "#214f41",
+                    "inverse-surface": "#333028",
+                    "tertiary": "#422b00",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#ffdbcf",
+                    "surface": "#fff9ed",
+                    "on-secondary-fixed-variant": "#802901",
+                    "on-secondary-fixed": "#380d00",
+                    "error-container": "#ffdad6",
+                    "background": "#fff9ed",
+                    "on-primary-container": "#8dbdab",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#002118",
+                    "primary-container": "#1f4d3f",
+                    "outline": "#717975",
+                    "surface-bright": "#fff9ed",
+                    "primary-fixed": "#bcedda",
+                    "outline-variant": "#c0c8c3",
+                    "ai-sage-tint": "#E8F0EA",
+                    "tertiary-fixed": "#ffddaf",
+                    "border-warm-grey": "#D9D4CB",
+                    "on-surface-variant": "#404945",
+                    "on-tertiary-container": "#ddaa59",
+                    "secondary-container": "#ff8759",
+                    "surface-container-lowest": "#ffffff",
+                    "ink-text": "#211F1A",
+                    "surface-container-low": "#f9f3e7",
+                    "on-secondary-container": "#712300",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb59a",
+                    "surface-container-highest": "#e8e2d6",
+                    "inverse-primary": "#a1d1be",
+                    "surface-container": "#f3ede1",
+                    "on-tertiary-fixed": "#281800",
+                    "surface-dim": "#dfd9ce",
+                    "inverse-on-surface": "#f6f0e4",
+                    "on-background": "#1d1c14",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#ede8dc",
+                    "surface-tint": "#3a6758",
+                    "tertiary-fixed-dim": "#f3be6a",
+                    "tertiary-container": "#5f3f00",
+                    "terracotta": "#C2592F"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "24px",
+                    "stack-lg": "40px",
+                    "base": "8px",
+                    "container-padding": "20px",
+                    "stack-sm": "12px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Hanken Grotesk"],
+                    "display": ["Fraunces"],
+                    "body-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Fraunces"],
+                    "body-md": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "mono-price": ["Hanken Grotesk"],
+                    "headline-lg": ["Fraunces"],
+                    "headline-sm": ["Fraunces"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="bg-surface sticky top-0 z-50 border-b border-border-warm-grey">
+<div class="max-w-7xl mx-auto flex items-center justify-between px-gutter py-4">
+<!-- Left: Brand -->
+<div class="flex items-center gap-12">
+<span class="font-display text-headline-md text-primary tracking-tight">Wandertogether</span>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-caps text-label-caps text-muted-text hover:opacity-80 transition-opacity" href="#">Chat</a>
+<a class="font-label-caps text-label-caps text-muted-text hover:opacity-80 transition-opacity" href="#">Plan</a>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<a class="font-label-caps text-label-caps" href="#">Money</a>
+</div>
+<a class="font-label-caps text-label-caps text-muted-text hover:opacity-80 transition-opacity" href="#">Vault</a>
+</nav>
+</div>
+<!-- Right: Identity -->
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity" data-icon="group">group</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-border-warm-grey">
+<img alt="Traveler Profile" class="w-full h-full object-cover" data-alt="A close-up photographic portrait of a stylish young man with a warm smile and gentle eyes. He is wearing a minimalist linen shirt in a soft off-white tone. The lighting is warm and natural, suggesting an outdoor golden hour setting. The background is softly blurred to keep focus on the person, maintaining a premium editorial travel journal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIWKUl_wzm4NOEA4UeQb4oXkMaVxMnUcubYYph7sAyituk2BJx9Kb3ol0gf-TDB4gX7u2Z9yjXvjlB5B9OCjR6uTAfZnPt5Sl0e0WGDhiwVuLd5s19kEAJ2KVwsyS3u0Fyv-66vSrVQSAfA1WSSuQTC6kYKtCISfQ_uc7z6GOwLbK2wypL3R0HEWV_0HauE1RhzitLfNpV28LrTLbYNV8P4Iuynr1SFoTNdMEWzWw2rROswMhBnbrTaiKWFeDEfNiazntuIzvEHVBm"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-gutter py-stack-lg grid grid-cols-12 gap-gutter">
+<!-- Left/Main Column -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-stack-md">
+<!-- Header Section -->
+<div class="mb-4">
+<h1 class="font-headline-lg text-headline-lg text-ink-text">Money</h1>
+<p class="font-body-md text-body-md text-muted-text mt-1">₹26,400 spent · 5 people</p>
+</div>
+<!-- AI Draft Card -->
+<div class="bg-ai-sage-tint rounded-xl border border-border-warm-grey p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-start gap-4">
+<div class="mt-1 flex-shrink-0 w-8 h-8 bg-white/50 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-ink-text leading-snug">
+                            From chat — <span class="italic opacity-80">"I paid 4000 for the cab"</span>.
+                        </p>
+<p class="font-body-sm text-body-sm text-muted-text mt-1">Log it, split 3 ways?</p>
+</div>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none px-5 py-2 bg-primary text-card-cream font-label-caps text-label-caps rounded-full active:scale-95 transition-all">
+                        Log expense
+                    </button>
+<button class="flex-1 sm:flex-none px-5 py-2 border border-border-warm-grey text-ink-text font-label-caps text-label-caps rounded-full active:scale-95 transition-all bg-white/30">
+                        Edit
+                    </button>
+</div>
+</div>
+<!-- Recent Transactions Section -->
+<div class="mt-4">
+<h3 class="font-label-caps text-label-caps text-muted-text tracking-widest mb-6">RECENT</h3>
+<div class="flex flex-col gap-3">
+<!-- Expense Row 1 -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-5 hover:shadow-sm transition-shadow group cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="local_taxi">local_taxi</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-ink-text font-semibold">Cab to hotel</h4>
+<p class="font-body-sm text-body-sm text-muted-text">Mudit paid · split 3 ways</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-price text-mono-price text-ink-text text-xl">₹4,000</p>
+<p class="font-label-caps text-label-caps text-primary opacity-60">Pending</p>
+</div>
+</div>
+</div>
+<!-- Expense Row 2 -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-5 hover:shadow-sm transition-shadow group cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-ink-text font-semibold">Dinner at Thalassa</h4>
+<p class="font-body-sm text-body-sm text-muted-text">Aditi paid · split 5 ways</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-price text-mono-price text-ink-text text-xl">₹12,000</p>
+<p class="font-label-caps text-label-caps text-primary opacity-60">Pending</p>
+</div>
+</div>
+</div>
+<!-- Expense Row 3 -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-5 hover:shadow-sm transition-shadow group cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-ink-text font-semibold">Museum Tickets</h4>
+<p class="font-body-sm text-body-sm text-muted-text">You paid · split 5 ways</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-price text-mono-price text-ink-text text-xl">₹2,500</p>
+<div class="flex items-center justify-end gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<p class="font-label-caps text-label-caps text-primary">Confirmed</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Expense Row 4 -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-5 hover:shadow-sm transition-shadow group cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-ink-text font-semibold">Groceries</h4>
+<p class="font-body-sm text-body-sm text-muted-text">Vriti paid · split 5 ways</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-price text-mono-price text-ink-text text-xl">₹3,900</p>
+<p class="font-label-caps text-label-caps text-primary opacity-60">Pending</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar -->
+<aside class="col-span-12 lg:col-span-4 flex flex-col gap-stack-md">
+<!-- Balances Section -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-6">
+<h3 class="font-label-caps text-label-caps text-muted-text tracking-widest mb-6">BALANCES</h3>
+<ul class="space-y-6">
+<!-- Member 1 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Mudit" class="w-10 h-10 rounded-full object-cover grayscale-[0.5]" data-alt="A portrait of a cheerful man with glasses in a vibrant outdoor market. The image has a soft focus on the colorful fruit stalls behind him. Warm sunlight filters through, creating a friendly and refined editorial aesthetic for a group travel context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr-GdEW_MiIxWHQXdgyUqFaM48SYe0lkHXkVcJaJhg_l8R-M12gbfK9f5UmPn_ZsltWjQf1Tq-ihs6UM50B8YHp2QxyUPdF6kKHMviVekN5ysU-jE9H-1NMNac7D5L_o4eOnFe_Ltsq467msCokOKnMuAqImOF_BpsYcc5Zh4G8WhCNkT-fd9rOE0e4jEX35WV7gEmh-cXK8Nw1G9ZdBzQSn6Eh2s7VAdOAolTVJAZyCMkGezsin85gyP7HRVn0HeF_J6LNmlIQkgT"/>
+<span class="font-body-md text-body-md text-ink-text">Mudit</span>
+</div>
+<span class="font-mono-price text-mono-price text-primary">+₹2,400</span>
+</li>
+<!-- Member 2 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Vriti" class="w-10 h-10 rounded-full object-cover grayscale-[0.5]" data-alt="A medium shot of a confident young woman with braided hair, standing in front of a rustic wooden door with lush greenery peeking from the sides. The image is captured in soft, natural morning light, emphasizing a high-end travel journal feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyUeHQOM3NClGKazJ-63dVqn3MfrGV1_n4fVa3nA_Vzaozh7Ydk8kpH4cxJEZmafRO0O9oUnioH3XgJ_R2IwQxmA8eZfky2jcdHN7q_T73BIPjbP9Q6altjRcfHKJo2QnzmBeOMLk7jFEBjGXDSkJwSNONm3-Wuv36Ab3YcmOIqTxC0mcFSuEj5oAoCeVoJVCXtAkCvdfloAN46Vow5s3IGm9XLJMxLBJrep5NOR4kFZsoWhjrtBl_X_ELaUNN2merZaD0z5T7BOf1"/>
+<span class="font-mono-price text-mono-price text-terracotta">−₹1,600</span>
+</div></li>
+<!-- Member 3 -->
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Aditi" class="w-10 h-10 rounded-full object-cover grayscale-[0.5]" data-alt="A portrait of a serene man with a short beard, wearing a classic khaki travel jacket. He is standing against a textured stone wall in an ancient European city. The lighting is diffused and elegant, maintaining the sophisticated analog paper style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtC4MbauxU1hTewMwb3XQGycJLE6_qgRhtW5-urR2qneYFKWa2sf8cc7R94SSHUpz2sB6aBJoheww1GkWa20261FV2CdSwUZh26rrL1C7OXJWm1QQAOQE2THr-6IjfywXl_hWu2j6FoepvaawWJ2XLmEgxJpul9hpCUGw3mSJVNQT7jgd88dRerNPNLZ1holug1_QX7IBYFSL0gMPu9d0J4RIpAwtPHmt54-C5t3vIzuIhp8F19HcWKlXrGtS2bSv83IibPnt2l3pD"/>
+<span class="font-mono-price text-mono-price text-terracotta">−₹800</span>
+</div></li>
+<!-- Member 4 (You) -->
+<li class="flex items-center justify-between opacity-60">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-display text-primary italic">You</div>
+<span class="font-body-md text-body-md text-ink-text">Viraaj</span>
+</div>
+<span class="font-mono-price text-mono-price text-muted-text">₹0</span>
+</li>
+</ul>
+</div>
+<!-- Settle Up Card -->
+<div class="bg-primary text-card-cream rounded-xl p-6 shadow-xl shadow-primary/10">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SETTLE UP</h3>
+<span class="font-label-caps text-label-caps bg-primary-container px-3 py-1 rounded-full text-on-primary-container">2 TRANSFERS</span>
+</div>
+<div class="space-y-6">
+<!-- Transfer 1 -->
+<div class="flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-body-md font-semibold">Vriti</span>
+<span class="material-symbols-outlined text-[14px] opacity-50" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-body-md font-semibold">Mudit</span>
+</div>
+<span class="font-mono-price text-mono-price text-2xl mt-1">₹1,600</span>
+</div>
+<button class="bg-card-cream text-primary px-4 py-2 rounded-full font-label-caps text-label-caps active:scale-95 transition-all">
+                            Pay · UPI
+                        </button>
+</div>
+<div class="border-t border-white/10"></div>
+<!-- Transfer 2 -->
+<div class="flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-body-md font-semibold">Aditi</span>
+<span class="material-symbols-outlined text-[14px] opacity-50" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-body-md font-semibold">Mudit</span>
+</div>
+<span class="font-mono-price text-mono-price text-2xl mt-1">₹800</span>
+</div>
+<button class="bg-card-cream text-primary px-4 py-2 rounded-full font-label-caps text-label-caps active:scale-95 transition-all">
+                            Pay · UPI
+                        </button>
+</div>
+</div>
+</div>
+<!-- Secondary CTA Card -->
+<div class="bg-surface-variant/30 border border-border-warm-grey border-dashed rounded-xl p-6 flex flex-col items-center text-center gap-3">
+<span class="material-symbols-outlined text-muted-text" data-icon="receipt_long">receipt_long</span>
+<p class="font-body-sm text-body-sm text-muted-text">Planning to add more expenses later? Just mention them in the chat.</p>
+<button class="font-label-caps text-label-caps text-primary underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-all">
+                    View full ledger
+                </button>
+</div>
+</aside>
+</main>
+<!-- Floating Action Button (Responsive Contextual) -->
+<button class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-card-cream rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<script>
+        // Micro-interaction for list items
+        document.querySelectorAll('.bg-card-cream').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.995)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

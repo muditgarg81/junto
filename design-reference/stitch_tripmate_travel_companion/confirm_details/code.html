@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#717975",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e8e2d6",
+                        "on-primary-container": "#8dbdab",
+                        "surface-tint": "#3a6758",
+                        "on-primary-fixed-variant": "#214f41",
+                        "border-warm-grey": "#D9D4CB",
+                        "primary-fixed": "#bcedda",
+                        "tertiary": "#422b00",
+                        "on-primary-fixed": "#002118",
+                        "surface-container-high": "#ede8dc",
+                        "tertiary-container": "#5f3f00",
+                        "on-surface-variant": "#404945",
+                        "secondary-container": "#ff8759",
+                        "background": "#fff9ed",
+                        "surface-container-low": "#f9f3e7",
+                        "outline-variant": "#c0c8c3",
+                        "inverse-surface": "#333028",
+                        "surface-bright": "#fff9ed",
+                        "card-cream": "#FCFAF4",
+                        "primary-fixed-dim": "#a1d1be",
+                        "on-secondary-fixed": "#380d00",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#712300",
+                        "muted-text": "#5E594E",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "secondary": "#a04018",
+                        "secondary-fixed": "#ffdbcf",
+                        "inverse-on-surface": "#f6f0e4",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "tertiary-fixed": "#ffddaf",
+                        "error": "#ba1a1a",
+                        "primary-container": "#1f4d3f",
+                        "on-tertiary-container": "#ddaa59",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dfd9ce",
+                        "surface-container-highest": "#e8e2d6",
+                        "inverse-primary": "#a1d1be",
+                        "on-background": "#1d1c14",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "on-secondary-fixed-variant": "#802901",
+                        "on-tertiary-fixed": "#281800",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "ink-text": "#211F1A",
+                        "primary": "#023629",
+                        "on-surface": "#1d1c14",
+                        "surface-container": "#f3ede1",
+                        "ai-sage-tint": "#E8F0EA",
+                        "surface": "#fff9ed"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "40px",
+                        "gutter": "16px",
+                        "container-padding": "20px",
+                        "base": "8px",
+                        "stack-md": "24px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"],
+                        "display": ["Fraunces"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "mono-price": ["Hanken Grotesk"],
+                        "headline-md": ["Fraunces"],
+                        "headline-lg": ["Fraunces"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff9ed; /* Matching theme.colors.background */
+            -webkit-font-smoothing: antialiased;
+        }
+        .paper-shadow {
+            box-shadow: 0 4px 12px -2px rgba(33, 31, 26, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-ink-text min-h-screen pb-stack-lg">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-border-warm-grey flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-base">
+<button class="active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-primary">Confirm details</h1>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity" data-icon="help_outline">help_outline</span>
+</div>
+</header>
+<main class="max-w-[390px] mx-auto px-gutter pt-stack-sm flex flex-col">
+<!-- Voucher Thumbnail -->
+<section class="mb-stack-md">
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-border-warm-grey paper-shadow">
+<img class="w-full h-full object-cover grayscale-[20%] brightness-95" data-alt="A macro close-up photograph of a printed luxury hotel voucher resting on a warm wooden desk. The document shows elegant serif typography and a subtle textured paper grain. Warm, golden afternoon sunlight streams across the page, creating soft shadows and highlighting the refined, tactile editorial aesthetic of a high-end travel journal. The color palette is composed of rich inks and soft cream tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn4Skgpe-JjxHBaYZkTIe-dVomJ53W8EnulGmmPSqOUPUytmM7oFZiyXsh0mRGTfbj63uGNmTdDXKPqjt6qGaQPyyp4b1Ls8iKLQzXyAwDar2_kGMbzzhKBIbdCTJbQpOJcSmlCqPX57ku6gKxi3XVS3mLDM2aW0uK376dBcUlXt--CmQvblRi5Mt1C5pTDWcXQyOFbJGXt9cL8FnKmDpdz_gr3s0OyxGm4B7hUg8zdVA-hiMTJZ_PT6BKDMLSyE8v_2QqNnfbhnhR"/>
+<div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-border-warm-grey flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="zoom_in">zoom_in</span>
+<span class="font-label-caps text-label-caps">View Full</span>
+</div>
+</div>
+</section>
+<!-- AI Insights Strip -->
+<section class="mb-stack-md">
+<div class="bg-ai-sage-tint p-gutter rounded-xl border border-outline-variant flex items-start gap-3">
+<div class="bg-primary-container text-on-primary-container rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<p class="font-body-md text-ink-text leading-tight">
+                        I read this hotel voucher — <span class="font-bold">please check the dates.</span>
+</p>
+<div class="mt-2 inline-flex items-center gap-1 bg-white/40 px-2 py-0.5 rounded border border-outline-variant/30">
+<span class="font-label-caps text-[10px] text-primary">AI SCAN COMPLETE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Editable Rows -->
+<section class="flex flex-col gap-base mb-stack-lg">
+<!-- Hotel Name -->
+<div class="bg-card-cream border border-border-warm-grey p-4 rounded-xl">
+<label class="font-label-caps text-muted-text block mb-1">Hotel</label>
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-ink-text">Taj Holiday Village</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="edit">edit</span>
+</div>
+</div>
+<!-- Check-in (Highlighted Warning) -->
+<div class="bg-card-cream border-2 border-secondary p-4 rounded-xl relative">
+<div class="flex justify-between items-start mb-1">
+<label class="font-label-caps text-secondary block">Check-in</label>
+<div class="bg-secondary text-white font-label-caps text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+                        NEEDS REVIEW
+                    </div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-ink-text">Jan 15, 2026</span>
+<span class="material-symbols-outlined text-secondary" data-icon="calendar_month">calendar_month</span>
+</div>
+<p class="mt-2 font-body-sm text-secondary italic">
+                    Please verify — date format was ambiguous
+                </p>
+</div>
+<!-- Check-out -->
+<div class="bg-card-cream border border-border-warm-grey p-4 rounded-xl">
+<label class="font-label-caps text-muted-text block mb-1">Check-out</label>
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-ink-text">Jan 20, 2026</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="calendar_month">calendar_month</span>
+</div>
+</div>
+<!-- Confirmation Code -->
+<div class="bg-card-cream border border-border-warm-grey p-4 rounded-xl">
+<label class="font-label-caps text-muted-text block mb-1">Confirmation</label>
+<div class="flex items-center justify-between">
+<span class="font-mono-price text-ink-text tracking-widest uppercase">88241</span>
+<span class="material-symbols-outlined text-outline-variant" data-icon="content_copy">content_copy</span>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<section class="mt-auto space-y-4">
+<button class="w-full bg-primary-container text-on-primary py-4 rounded-full font-body-lg font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform paper-shadow">
+<span class="material-symbols-outlined" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+                Add to vault &amp; itinerary
+            </button>
+<button class="w-full text-center py-2 font-body-md text-ink-text/60 underline hover:text-ink-text transition-colors">
+                Edit manually
+            </button>
+</section>
+</main>
+<!-- Bottom Navigation (Filtered: Not visible on transactional/focused confirmation screens per UX logic) -->
+<script>
+        // Micro-interactions for tactile feel
+        document.querySelectorAll('.active\\:scale-95').forEach(button => {
+            button.addEventListener('touchstart', () => {
+                button.style.transform = 'scale(0.98)';
+            });
+            button.addEventListener('touchend', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Subtle animation for AI message
+        const aiStrip = document.querySelector('.bg-ai-sage-tint');
+        if (aiStrip) {
+            aiStrip.style.opacity = '0';
+            aiStrip.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                aiStrip.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                aiStrip.style.opacity = '1';
+                aiStrip.style.transform = 'translateY(0)';
+            }, 300);
+        }
+    </script>
+</body></html>

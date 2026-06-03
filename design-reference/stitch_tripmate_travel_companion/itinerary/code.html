@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@100..900&amp;family=Hanken+Grotesk:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, transparent 0%, #D9D4CB 15%, #D9D4CB 85%, transparent 100%);
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#422b00",
+                        "surface-tint": "#3a6758",
+                        "surface-container-highest": "#e8e2d6",
+                        "surface-bright": "#fff9ed",
+                        "on-error": "#ffffff",
+                        "secondary": "#a04018",
+                        "inverse-surface": "#333028",
+                        "primary-container": "#1f4d3f",
+                        "inverse-primary": "#a1d1be",
+                        "on-surface": "#1d1c14",
+                        "tertiary-fixed-dim": "#f3be6a",
+                        "background": "#fff9ed",
+                        "secondary-fixed": "#ffdbcf",
+                        "primary-fixed-dim": "#a1d1be",
+                        "surface-container-lowest": "#ffffff",
+                        "border-warm-grey": "#D9D4CB",
+                        "on-tertiary-fixed-variant": "#614000",
+                        "on-primary-fixed": "#002118",
+                        "primary": "#023629",
+                        "surface-variant": "#e8e2d6",
+                        "on-secondary-fixed": "#380d00",
+                        "on-secondary-fixed-variant": "#802901",
+                        "on-tertiary": "#ffffff",
+                        "ai-sage-tint": "#E8F0EA",
+                        "surface": "#fff9ed",
+                        "on-tertiary-fixed": "#281800",
+                        "tertiary-container": "#5f3f00",
+                        "on-error-container": "#93000a",
+                        "muted-text": "#5E594E",
+                        "surface-dim": "#dfd9ce",
+                        "outline-variant": "#c0c8c3",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#ff8759",
+                        "on-secondary-container": "#712300",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "surface-container": "#f3ede1",
+                        "outline": "#717975",
+                        "on-primary": "#ffffff",
+                        "ink-text": "#211F1A",
+                        "card-cream": "#FCFAF4",
+                        "primary-fixed": "#bcedda",
+                        "on-surface-variant": "#404945",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffddaf",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f6f0e4",
+                        "on-primary-fixed-variant": "#214f41",
+                        "on-background": "#1d1c14",
+                        "surface-container-high": "#ede8dc",
+                        "on-primary-container": "#8dbdab",
+                        "on-tertiary-container": "#ddaa59",
+                        "surface-container-low": "#f9f3e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "24px",
+                        "stack-lg": "40px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "stack-sm": "12px",
+                        "container-padding": "20px"
+                    },
+                    "fontFamily": {
+                        "display": ["Fraunces"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "mono-price": ["Hanken Grotesk"],
+                        "headline-md": ["Fraunces"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-sm": ["Fraunces"],
+                        "headline-lg": ["Fraunces"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "mono-price": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-ink-text font-body-md min-h-screen pb-32">
+<!-- Top App Bar (Shared Component Strategy) -->
+<header class="w-full top-0 sticky bg-surface border-b border-border-warm-grey z-50">
+<div class="flex items-center justify-between px-gutter py-base w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-border-warm-grey">
+<img alt="Traveler Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe7vj58Osy9YriOUoU0zXuMR-Sh_uGrqyQ0QCLsF9ZaBgQu8L6fubsI_lwhN4jIV0hjKaIOwbyXiC1DiV_NgcCeAWRW-9F10rq-xtd8UtyMofl-Dk5_Nq2BWgIL_mdrThMTzjmUKhyBYN_TWyXV2hzVSFvke2deJJA9CbWhK7RSSboTS-4FoGDYK126yDr3vpTni-VVjKTzt4nViB-h4-Imll1dsAcJvOjbsWCFSEzcsFmUROC__QMJT81wQ9WbMjuzSy29C5eSQ92"/>
+</div>
+<h1 class="font-display text-headline-md text-primary">Wandertogether</h1>
+</div>
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</button>
+</div>
+</header>
+<main class="max-w-[390px] mx-auto px-gutter pt-stack-md">
+<!-- Header Section -->
+<section class="mb-stack-lg">
+<h2 class="font-display text-headline-lg text-ink-text">Itinerary</h2>
+<p class="font-body-md text-muted-text">Jan 15 – 20 · Goa</p>
+</section>
+<!-- Timeline Container -->
+<div class="relative">
+<!-- Continuous Vertical Line -->
+<div class="absolute left-[19px] top-4 bottom-4 w-px timeline-line z-0"></div>
+<!-- DAY 1 -->
+<div class="mb-stack-lg relative z-10">
+<div class="flex items-center gap-4 mb-stack-md">
+<div class="w-10 h-10 rounded-full bg-card-cream border border-border-warm-grey flex items-center justify-center shadow-sm">
+<span class="font-display text-headline-sm text-primary">1</span>
+</div>
+<h3 class="font-display text-headline-sm text-ink-text">DAY 1 · JAN 15</h3>
+</div>
+<div class="ml-10 space-y-stack-md">
+<!-- Flight Node -->
+<div class="bg-card-cream border border-border-warm-grey rounded-xl p-4 shadow-[0_2px_8px_-2px_rgba(31,77,63,0.05)] relative overflow-hidden group active:scale-[0.98] transition-transform">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-10 h-10 bg-primary-fixed rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-sm text-ink-text">Flight to Goa</h4>
+<span class="font-label-caps text-muted-text">6:10 AM</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-caps bg-surface-container-highest px-2 py-0.5 rounded text-muted-text">from voucher</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stay Node (With AI Flag) -->
+<div class="relative">
+<!-- AI Warning Flag -->
+<div class="absolute -top-3 right-4 z-20 flex items-center gap-1.5 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full border border-secondary shadow-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-caps text-[10px]">Tight connection — 40 min</span>
+</div>
+<div class="bg-card-cream border border-secondary rounded-xl p-4 shadow-[0_2px_8px_-2px_rgba(160,64,24,0.1)] relative group active:scale-[0.98] transition-transform">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-10 h-10 bg-secondary-fixed rounded-lg flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-sm text-ink-text">Check in · Taj Holiday Village</h4>
+<span class="font-label-caps text-muted-text">2:00 PM</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-caps bg-surface-container-highest px-2 py-0.5 rounded text-muted-text">from voucher</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- DAY 3 -->
+<div class="mb-stack-lg relative z-10">
+<div class="flex items-center gap-4 mb-stack-md">
+<div class="w-10 h-10 rounded-full bg-card-cream border border-border-warm-grey flex items-center justify-center shadow-sm">
+<span class="font-display text-headline-sm text-primary">3</span>
+</div>
+<h3 class="font-display text-headline-sm text-ink-text">DAY 3 · JAN 17</h3>
+</div>
+<div class="ml-10">
+<!-- Activity Node -->
+<div class="bg-ai-sage-tint border border-outline-variant rounded-xl p-4 shadow-sm relative group active:scale-[0.98] transition-transform">
+<!-- AI Suggestion Badge -->
+<div class="absolute top-2 right-2 flex items-center gap-1 opacity-60">
+<span class="font-label-caps text-[10px] text-primary">AI</span>
+<span class="material-symbols-outlined text-[12px] text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="waves">waves</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-headline-sm text-ink-text">Scuba diving</h4>
+<p class="font-body-sm text-muted-text">Grand Island</p>
+</div>
+<span class="font-label-caps text-muted-text">9:00 AM</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="font-label-caps bg-surface-container-highest px-2 py-0.5 rounded text-muted-text">from voucher</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State/Placeholder for further days -->
+<div class="mt-stack-lg border-2 border-dashed border-border-warm-grey rounded-xl p-8 flex flex-col items-center text-center opacity-60">
+<span class="material-symbols-outlined text-muted-text mb-2" data-icon="add_circle">add_circle</span>
+<p class="font-display text-headline-sm text-muted-text">Expand Jan 18 – 20</p>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<!-- Bottom Navigation Bar (Shared Component Strategy) -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 max-w-[390px] left-1/2 -translate-x-1/2 bg-surface border-t border-border-warm-grey shadow-[0_-2px_10px_rgba(33,31,26,0.05)] rounded-t-xl z-50">
+<!-- Chat -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<!-- Plan (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-caps text-label-caps">Plan</span>
+</a>
+<!-- Money -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Money</span>
+</a>
+<!-- Vault -->
+<a class="flex flex-col items-center justify-center text-muted-text hover:bg-surface-container-low transition-colors px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for cards
+        document.querySelectorAll('.active\\:scale-\\[0\\.98\\]').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>
