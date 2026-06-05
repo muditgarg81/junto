@@ -44,8 +44,11 @@ export default async function ChecklistPage({ params }: PageProps) {
 
   // 3. Fetch Checklist Items
   const checklistItemsRes = await query(
-    'SELECT * FROM checklist_items WHERE trip_id = $1 ORDER BY created_at ASC',
-    [tripId]
+    `SELECT * FROM checklist_items 
+     WHERE trip_id = $1 
+       AND (category = 'shared' OR assigned_to = $2)
+     ORDER BY created_at ASC`,
+    [tripId, authMember.id]
   );
   const checklistItems: ChecklistItem[] = checklistItemsRes.rows;
 

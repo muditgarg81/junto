@@ -21,7 +21,7 @@ export async function GET(
 
   try {
     // Gating check
-    await authorizeTripAccess(tripId);
+    const { member: authMember } = await authorizeTripAccess(tripId);
     // 1. Fetch Trip
     const tripRes = await query('SELECT * FROM trips WHERE id = $1', [tripId]);
     if (tripRes.rows.length === 0) {
@@ -112,8 +112,11 @@ export async function GET(
 
     // 10. Fetch Checklist Items
     const checklistItemsRes = await query(
-      'SELECT * FROM checklist_items WHERE trip_id = $1 ORDER BY created_at ASC',
-      [tripId]
+      `SELECT * FROM checklist_items 
+       WHERE trip_id = $1 
+         AND (category = 'shared' OR assigned_to = $2)
+       ORDER BY created_at ASC`,
+      [tripId, authMember.id]
     );
     const checklistItems: ChecklistItem[] = checklistItemsRes.rows;
 

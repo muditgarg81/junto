@@ -55,15 +55,19 @@ export async function importChecklistAction(targetTripId: string, sourceTripId: 
 
     // 2. Fetch checklist items from source trip
     const sourceItemsRes = await query(
-      'SELECT label, category FROM checklist_items WHERE trip_id = $1',
-      [sourceTripId]
+      `SELECT label, category FROM checklist_items 
+       WHERE trip_id = $1 
+         AND (category = 'shared' OR assigned_to = $2)`,
+      [sourceTripId, memberSource.rows[0].id]
     );
     const sourceItems = sourceItemsRes.rows;
 
     // 3. Fetch existing checklist items in target trip to de-dupe
     const existingItemsRes = await query(
-      'SELECT label, category FROM checklist_items WHERE trip_id = $1',
-      [targetTripId]
+      `SELECT label, category FROM checklist_items 
+       WHERE trip_id = $1 
+         AND (category = 'shared' OR assigned_to = $2)`,
+      [targetTripId, memberTarget.rows[0].id]
     );
     const existingSet = new Set(
       existingItemsRes.rows.map(item => `${item.label.toLowerCase()}:${item.category}`)
@@ -77,10 +81,11 @@ export async function importChecklistAction(targetTripId: string, sourceTripId: 
         continue; // skip duplicate
       }
 
+      const assignedTo = item.category === 'personal' ? memberTarget.rows[0].id : null;
       await query(
         `INSERT INTO checklist_items (id, trip_id, label, category, assigned_to, per_person, done, source, imported_from_trip_id)
-         VALUES ($1, $2, $3, $4, NULL, false, false, 'imported', $5)`,
-        [crypto.randomUUID(), targetTripId, item.label, item.category, sourceTripId]
+         VALUES ($1, $2, $3, $4, $5, false, false, 'imported', $6)`,
+        [crypto.randomUUID(), targetTripId, item.label, item.category, assignedTo, sourceTripId]
       );
       importedCount++;
     }

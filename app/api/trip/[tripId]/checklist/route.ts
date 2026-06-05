@@ -63,10 +63,17 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Item ID is required' }, { status: 400 });
     }
 
-    // 2. Check if the item belongs to the trip (fixes Gap C IDOR)
-    const checkRes = await query('SELECT 1 FROM checklist_items WHERE id = $1 AND trip_id = $2', [id, tripId]);
+    // 2. Check if the item belongs to the trip (fixes Gap C IDOR) and verify authorization
+    const checkRes = await query(
+      'SELECT category, assigned_to FROM checklist_items WHERE id = $1 AND trip_id = $2',
+      [id, tripId]
+    );
     if (checkRes.rows.length === 0) {
       return NextResponse.json({ error: 'Item not found in this trip' }, { status: 404 });
+    }
+    const existingItem = checkRes.rows[0];
+    if (existingItem.category === 'personal' && existingItem.assigned_to !== member.id) {
+      return NextResponse.json({ error: 'Unauthorized: Personal item belongs to another member' }, { status: 403 });
     }
 
     const updates: string[] = [];
@@ -130,13 +137,26 @@ export async function DELETE(req: NextRequest, { params }: RouteParams) {
   const { tripId } = await params;
   try {
     // 1. Authorize session member access
-    await authorizeTripAccess(tripId);
+    const { member } = await authorizeTripAccess(tripId);
 
     const body = await req.json();
     const { id } = body;
 
     if (!id) {
       return NextResponse.json({ error: 'Item ID is required' }, { status: 400 });
+    }
+
+    // Check if the item belongs to the trip and verify authorization
+    const checkRes = await query(
+      'SELECT category, assigned_to FROM checklist_items WHERE id = $1 AND trip_id = $2',
+      [id, tripId]
+    );
+    if (checkRes.rows.length === 0) {
+      return NextResponse.json({ error: 'Item not found in this trip' }, { status: 404 });
+    }
+    const existingItem = checkRes.rows[0];
+    if (existingItem.category === 'personal' && existingItem.assigned_to !== member.id) {
+      return NextResponse.json({ error: 'Unauthorized: Personal item belongs to another member' }, { status: 403 });
     }
 
     const result = await query(
