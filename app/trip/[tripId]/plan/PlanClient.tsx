@@ -262,7 +262,7 @@ export default function PlanClient({ initialState, currentMember }: PlanClientPr
       {/* Plan Page Content */}
       <div className="flex-grow px-6 py-6 space-y-8 z-10 pb-24">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="sticky top-0 z-20 -mx-6 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <div className="min-w-0 text-left">
               <h1 className="font-display text-4xl text-ink-text leading-tight font-bold truncate max-w-[150px] md:max-w-[180px]" title={trip.name}>

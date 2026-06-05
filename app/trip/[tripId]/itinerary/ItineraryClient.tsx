@@ -202,7 +202,7 @@ export default function ItineraryClient({
       <div className="flex-grow px-6 py-6 space-y-6 pb-24 z-10">
         
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="sticky top-0 z-20 -mx-6 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href={`/trip/${trip.id}/vault`} className="text-ink-text hover:text-secondary transition p-1">
               <ArrowLeft className="w-6 h-6" />

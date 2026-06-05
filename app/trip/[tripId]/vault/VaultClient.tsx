@@ -421,7 +421,7 @@ export default function VaultClient({
     <div className="relative min-h-screen bg-surface flex flex-col justify-between max-w-md mx-auto w-full border-x border-border-warm-grey shadow-sm">
       <div className="flex-grow px-6 py-6 space-y-6 pb-24 z-10">
         
-        <div className="flex items-center justify-between">
+        <div className="sticky top-0 z-20 -mx-6 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
               <div className="flex items-center gap-2 flex-wrap">
