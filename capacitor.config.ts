@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'junto.package.app',
-  appName: 'Junto',
+  appName: 'Juntofun',
   webDir: 'out',
   server: {
     url: 'https://junto-three.vercel.app',

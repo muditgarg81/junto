@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Junto</string>
-    <string name="title_activity_main">Junto</string>
+    <string name="app_name">Juntofun</string>
+    <string name="title_activity_main">Juntofun</string>
     <string name="package_name">junto.package.app</string>
     <string name="custom_url_scheme">junto.package.app</string>
 </resources>
