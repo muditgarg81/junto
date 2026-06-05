@@ -91,8 +91,8 @@ export async function POST(
     }
 
     if (action === 'lock') {
-      // 1. Authorize organizer access
-      const { member } = await authorizeTripAccess(tripId, { role: 'organizer' });
+      // 1. Authorize member access
+      const { member } = await authorizeTripAccess(tripId);
       
       const { decisionId, optionId } = body;
 
@@ -169,8 +169,8 @@ export async function DELETE(
   }
   const { tripId } = await params;
   try {
-    // 1. Authorize organizer access for deletion
-    await authorizeTripAccess(tripId, { role: 'organizer' });
+    // 1. Authorize member access for deletion
+    await authorizeTripAccess(tripId);
     
     const { decisionId } = await req.json();
     if (!decisionId) {

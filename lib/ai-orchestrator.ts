@@ -315,8 +315,10 @@ FOUR triggers fires:
                 discussed). Flag it briefly and non-blockingly. Never flag a disagreement
                 between people as a conflict — disagreement is normal, not an error.
   3. EMERGING_DECISION — the conversation has clearly converged on a date, destination,
-                hotel, budget, or plan item that is not yet a locked decision. Offer to turn
-                it into a proposal. Do not pre-decide which option wins.
+                hotel, budget, or plan item that is not yet a locked decision. ALSO trigger this
+                if the group discusses changing, revising, or amending an already LOCKED decision
+                (e.g., they talk about changing dates when dates are already locked). Offer to turn
+                it into a proposal to amend the plan. Do not pre-decide which option wins.
   4. CHECKLIST_ASSIGNMENT — someone clearly assigns packing or gear responsibility to a person 
                 (e.g. "Vriti please bring the bluetooth speaker", "Karan can you get sunscreen").
 
@@ -333,6 +335,7 @@ Rules:
 - Resolve the person to a member of this trip from the provided roster. If you cannot match
   confidently, set assigneeMemberId = null (the item will be added unassigned).
 - Classify category as 'shared_gear' (group item) or 'personal'.
+- AMENDMENTS: If a user suggests changing or revising an already LOCKED/confirmed plan (e.g., "I want to change travel dates" or "Ok let's do 12th June to 15th June" when dates are already locked), detect this intent and suggest a new proposal to amend that locked decision. Formulate it as trigger 'emerging_decision' and draft a proposalDraft with a title like "Amend [Plan type]: [New Value]" (e.g. "Amend Dates: 12th June to 15th June").
 
 Add to your JSON output:
 "checklistItem": { "label": "...", "assigneeMemberId": "<id|null>", "category": "shared_gear|personal" } | null
