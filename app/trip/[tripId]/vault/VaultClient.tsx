@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 'use client';
 
@@ -547,7 +547,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <a 
-                              href={item.source_file_url} 
+                              href={`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`} 
                               download 
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg" 
                               title="Download Document"
@@ -605,7 +605,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <a 
-                              href={item.source_file_url} 
+                              href={`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`} 
                               download 
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg" 
                               title="Download Document"
@@ -680,7 +680,7 @@ export default function VaultClient({
                           <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                             {item.source_file_url && (
                               <a
-                                href={item.source_file_url}
+                                href={`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`}
                                 download
                                 className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg"
                                 title="Download Document"
@@ -730,7 +730,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <a 
-                              href={item.source_file_url} 
+                              href={`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`} 
                               download 
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg" 
                               title="Download Document"
@@ -779,7 +779,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <a 
-                              href={item.source_file_url} 
+                              href={`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`} 
                               download 
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg" 
                               title="Download Document"
@@ -1424,7 +1424,7 @@ export default function VaultClient({
                     </span>
                     {selectedVaultItem.source_file_url && (
                       <a 
-                        href={selectedVaultItem.source_file_url} 
+                        href={`/api/trip/${tripId}/vault/download?vaultItemId=${selectedVaultItem.id}`} 
                         download
                         className="text-[#1f4d3f] hover:underline font-bold text-xs flex items-center gap-1"
                       >
