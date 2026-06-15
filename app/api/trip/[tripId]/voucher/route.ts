@@ -21,10 +21,21 @@ export async function POST(
     // Gating check
     await authorizeTripAccess(tripId);
 
-    // Fetch trip start date so the OCR prompt can resolve "Day 1" → calendar date
-    const tripRow = await query('SELECT start_date FROM trips WHERE id = $1', [tripId]);
-    const tripStartDate: string | null = tripRow.rows[0]?.start_date
-      ? String(tripRow.rows[0].start_date).split('T')[0]
+    // Fetch trip start date from the locked dates decision so the OCR prompt
+    // can resolve "Day 1" → actual calendar date for day-wise itineraries.
+    const datesRes = await query(
+      `SELECT o.payload FROM decisions d
+       JOIN options o ON d.resolved_option_id = o.id
+       WHERE d.trip_id = $1 AND d.type = 'dates' AND d.status = 'locked'
+       LIMIT 1`,
+      [tripId]
+    );
+    const datesPayload = datesRes.rows[0]?.payload;
+    const parsedDates = datesPayload
+      ? (typeof datesPayload === 'string' ? JSON.parse(datesPayload) : datesPayload)
+      : null;
+    const tripStartDate: string | null = parsedDates?.startDate
+      ? String(parsedDates.startDate).split('T')[0]
       : null;
 
     const formData = await req.formData();
