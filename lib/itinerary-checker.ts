@@ -334,9 +334,18 @@ export interface ItineraryConflict {
 export function checkItineraryConflicts(items: ItineraryItem[]): ItineraryConflict[] {
   const conflicts: ItineraryConflict[] = [];
 
+  // Deduplicate before comparing (same logic as checkAllItineraryIssues).
+  const seen = new Set<string>();
+  const deduped = items.filter(it => {
+    const key = `${it.type}|${localDateString(it)}|${it.title}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
   // Group by local calendar date (tz-aware), then compare items within each day.
   const byDate: Record<string, ItineraryItem[]> = {};
-  for (const it of items) {
+  for (const it of deduped) {
     const d = localDateString(it);
     (byDate[d] ||= []).push(it);
   }
