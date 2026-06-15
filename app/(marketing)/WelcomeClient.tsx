@@ -16,6 +16,14 @@ export default function WelcomeClient({ user }: WelcomeClientProps) {
   const [inviteToken, setInviteToken] = useState('');
   const [error, setError] = useState('');
 
+  // Redirect logged-in users to their dashboard
+  React.useEffect(() => {
+    fetch('/api/user/me')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.id) router.replace('/home'); })
+      .catch(() => {});
+  }, [router]);
+
   const handleJoinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inviteToken.trim()) return;
