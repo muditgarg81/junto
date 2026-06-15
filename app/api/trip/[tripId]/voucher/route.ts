@@ -163,6 +163,33 @@ Return a JSON object in this exact format (do not include markdown code block st
       }
     } else if (kind === 'itinerary') {
       const accom = fields.accommodation;
+      const rawActivities: any[] = Array.isArray(fields.activities) ? fields.activities : [];
+
+      // Post-process activity dates: convert "Day N" / "Day N - <label>" / null
+      // to YYYY-MM-DD using the trip start date so day-wise itineraries work
+      // even when the LLM returns relative day references.
+      const resolvedActivities = rawActivities.map((a: any) => {
+        const d = String(a.date || '').trim();
+        // Already a valid date — keep as-is
+        if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return a;
+        // "Day N" or "Day N - ..." pattern
+        const dayMatch = d.match(/^day\s*(\d+)/i);
+        if (dayMatch && tripStartDate) {
+          const offset = parseInt(dayMatch[1], 10) - 1; // Day 1 = offset 0
+          const [y, m, day] = tripStartDate.split('-').map(Number);
+          const dt = new Date(y, m - 1, day + offset);
+          const resolved = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+          return { ...a, date: resolved };
+        }
+        // Try JS date parse for formats like "25 Jun 2026"
+        const parsed = new Date(d);
+        if (!isNaN(parsed.getTime())) {
+          return { ...a, date: parsed.toISOString().split('T')[0] };
+        }
+        // No date found — leave as-is (will be skipped by addActivity)
+        return a;
+      });
+
       fields = {
         tripName: fields.tripName || fields.title || 'Trip Itinerary',
         flights: Array.isArray(fields.flights) ? fields.flights.map(normalizeFlight) : [],
@@ -171,8 +198,9 @@ Return a JSON object in this exact format (do not include markdown code block st
           : accom
           ? [accom]
           : [],
-        activities: Array.isArray(fields.activities) ? fields.activities : [],
+        activities: resolvedActivities,
       };
+      console.log('Itinerary activities after date resolution (first 3):', resolvedActivities.slice(0, 3));
     }
 
     return NextResponse.json({
