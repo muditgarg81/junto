@@ -96,11 +96,20 @@ Return a JSON object in this exact format (do not include markdown code block st
       });
     }
 
-    // Clean JSON output (remove ```json wrappers if present)
+    // Extract JSON from the response — Gemini may wrap it in ```json fences or
+    // add preamble text when responseMimeType is not enforced.
     let cleanedJson = ocrResultText.trim();
-    if (cleanedJson.startsWith('```')) {
-      cleanedJson = cleanedJson.replace(/^```json\s*/, '').replace(/```$/, '').trim();
+    // Strip markdown fences
+    if (cleanedJson.includes('```')) {
+      cleanedJson = cleanedJson.replace(/```json\s*/gi, '').replace(/```/g, '').trim();
     }
+    // Extract the outermost JSON object if there is surrounding text
+    const firstBrace = cleanedJson.indexOf('{');
+    const lastBrace = cleanedJson.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      cleanedJson = cleanedJson.slice(firstBrace, lastBrace + 1);
+    }
+    console.log('Voucher OCR cleaned JSON (first 500):', cleanedJson.slice(0, 500));
 
     const parsedOcr = JSON.parse(cleanedJson);
 
