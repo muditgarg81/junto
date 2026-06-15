@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
@@ -55,7 +55,7 @@ export default function VaultClient({
   const [isDeleting, setIsDeleting] = useState(false);
 
   // Editable Form fields
-  const [formKind, setFormKind] = useState<'flight' | 'stay' | 'activity' | 'contact' | 'other'>('stay');
+  const [formKind, setFormKind] = useState<'flight' | 'stay' | 'activity' | 'contact' | 'other' | 'itinerary'>('stay');
   const [formFields, setFormFields] = useState<any>({});
   const [isSaving, setIsSaving] = useState(false);
 
@@ -84,11 +84,20 @@ export default function VaultClient({
     };
   }, [tripId]);
 
-  // Open details modal on load if URL parameter matches
+  // Open details modal on load if URL parameter matches. Only auto-open once —
+  // the vault polls /sync every ~3s, so without this guard (and stripping the
+  // param) the modal would re-open every poll even after the user closes it.
+  const handledOpenParam = useRef(false);
   useEffect(() => {
+    if (handledOpenParam.current) return;
     const searchParams = new URLSearchParams(window.location.search);
     const openId = searchParams.get('open');
     if (openId && vaultItems.length > 0) {
+      handledOpenParam.current = true;
+      // Strip ?open from the URL so re-renders don't re-trigger this.
+      searchParams.delete('open');
+      const newQuery = searchParams.toString();
+      window.history.replaceState(null, '', window.location.pathname + (newQuery ? `?${newQuery}` : ''));
       const found = vaultItems.find(item => item.id === openId);
       if (found) {
         handleOpenDetails(found);
@@ -406,6 +415,7 @@ export default function VaultClient({
   const stays = vaultItems.filter(item => item.kind === 'stay');
   const activities = vaultItems.filter(item => item.kind === 'activity');
   const contacts = vaultItems.filter(item => item.kind === 'contact' || item.kind === 'other');
+  const itineraries = vaultItems.filter(item => item.kind === 'itinerary');
 
   // Compute validation warnings for current input fields
   const currentWarnings = getValidationWarnings(
@@ -422,11 +432,11 @@ export default function VaultClient({
       <div className="flex-grow px-6 py-6 space-y-6 pb-24 z-10">
         
         <div className="sticky top-0 z-20 -mx-6 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="font-display text-4xl text-ink-text leading-tight font-bold">Logistics</h1>
-                <span className="font-body-sm text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-md font-semibold shrink-0">
+          <div className="flex items-center gap-3 min-w-0 flex-grow">
+            <div className="min-w-0 text-left">
+              <h1 className="font-display text-4xl text-ink-text leading-tight font-bold truncate max-w-[130px] md:max-w-[180px]" title="Logistics">Logistics</h1>
+              <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                <span className="font-body-sm text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-md font-semibold truncate max-w-[100px]" title={trip.name}>
                   {trip.name}
                 </span>
                 <Link 
@@ -436,10 +446,9 @@ export default function VaultClient({
                   Switch Vault
                 </Link>
               </div>
-              <p className="font-body-sm text-muted-text">Upload bookings and build the timeline</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <EmergencyShieldButton tripId={tripId} />
             {currentMember && (
               <Link
@@ -620,6 +629,82 @@ export default function VaultClient({
                 </div>
               )}
 
+              {/* TRIP PLANS (full itinerary imports) */}
+              {itineraries.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="font-label-caps text-xs text-muted-text tracking-wider flex items-center gap-1.5 font-bold">
+                    <Plane className="w-3.5 h-3.5 text-[#1f4d3f]" /> TRIP PLANS
+                  </h3>
+                  <div className="space-y-2">
+                    {itineraries.map((item) => {
+                      const legs = Array.isArray(item.fields.flights) ? item.fields.flights : [];
+                      const stayList = Array.isArray(item.fields.stays) ? item.fields.stays : [];
+                      const actList = Array.isArray(item.fields.activities) ? item.fields.activities : [];
+                      return (
+                        <div
+                          key={item.id}
+                          onClick={() => handleOpenDetails(item)}
+                          className="bg-card-cream border border-border-warm-grey hover:border-outline cursor-pointer rounded-xl p-4 flex justify-between items-start shadow-xs transition group"
+                        >
+                          <div className="space-y-1">
+                            <h4 className="font-body-md font-semibold text-ink-text leading-tight group-hover:text-primary transition">
+                              {item.fields.tripName || 'Full Itinerary'}
+                            </h4>
+                            <div className="flex flex-wrap gap-1.5 mt-1">
+                              {legs.length > 0 && (
+                                <span className="text-[10px] bg-[#1f4d3f]/10 text-[#1f4d3f] border border-[#1f4d3f]/20 px-2 py-0.5 rounded font-semibold">
+                                  {legs.length} flight{legs.length > 1 ? 's' : ''}
+                                </span>
+                              )}
+                              {stayList.length > 0 && (
+                                <span className="text-[10px] bg-[#1f4d3f]/10 text-[#1f4d3f] border border-[#1f4d3f]/20 px-2 py-0.5 rounded font-semibold">
+                                  {stayList.length} stay{stayList.length > 1 ? 's' : ''}
+                                </span>
+                              )}
+                              {actList.length > 0 && (
+                                <span className="text-[10px] bg-[#1f4d3f]/10 text-[#1f4d3f] border border-[#1f4d3f]/20 px-2 py-0.5 rounded font-semibold">
+                                  {actList.length} activit{actList.length > 1 ? 'ies' : 'y'}
+                                </span>
+                              )}
+                            </div>
+                            {legs.length > 0 && (
+                              <div className="space-y-0.5 mt-1">
+                                {legs.map((leg: any, i: number) => (
+                                  <p key={i} className="font-body-sm text-xs text-muted-text">
+                                    {leg.airline} {leg.flightNo} · {leg.departureDate}{leg.departureTime ? ` ${leg.departureTime}` : ''}{leg.departureAirport && leg.arrivalAirport ? ` · ${leg.departureAirport}→${leg.arrivalAirport}` : ''}
+                                  </p>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+                            {item.source_file_url && (
+                              <a
+                                href={item.source_file_url}
+                                download
+                                className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg"
+                                title="Download Document"
+                              >
+                                <Download className="w-4 h-4" />
+                              </a>
+                            )}
+                            {currentMemberId && (
+                              <button
+                                onClick={() => handleDeleteItemDirectly(item)}
+                                className="text-muted-text hover:text-[#ba1a1a] hover:bg-[#ffdad6]/50 p-1.5 border border-border-warm-grey rounded-lg transition cursor-pointer"
+                                title="Delete Booking"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* ACTIVITIES */}
               {activities.length > 0 && (
                 <div className="space-y-2">
@@ -772,10 +857,50 @@ export default function VaultClient({
                   <option value="stay">Hotel Stay</option>
                   <option value="flight">Flight</option>
                   <option value="activity">Activity</option>
+                  <option value="itinerary">Full Itinerary</option>
                   <option value="contact">Contact</option>
                   <option value="other">Other</option>
                 </select>
               </div>
+
+              {/* Full itinerary import — read-only summary of everything detected */}
+              {formKind === 'itinerary' && (
+                <div className="space-y-3">
+                  <div className="rounded-xl bg-ai-sage-tint/40 border border-[#1f4d3f]/20 p-3 text-[12px] text-ink-text">
+                    📋 <span className="font-semibold">{formFields.tripName || 'Trip Itinerary'}</span> — we detected a full trip plan. Everything below will be added to your itinerary timeline.
+                  </div>
+                  {Array.isArray(formFields.flights) && formFields.flights.length > 0 && (
+                    <div className="space-y-1">
+                      <label className="block font-label-caps text-muted-text text-[10px]">✈️ Flights ({formFields.flights.length})</label>
+                      <ul className="text-[12px] text-ink-text space-y-0.5">
+                        {formFields.flights.map((f: any, i: number) => (
+                          <li key={i}>• {f.airline || 'Flight'} {f.flightNo || ''} — {f.departureAirport || '?'}→{f.arrivalAirport || '?'} ({f.departureDate || '?'})</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {Array.isArray(formFields.stays) && formFields.stays.length > 0 && (
+                    <div className="space-y-1">
+                      <label className="block font-label-caps text-muted-text text-[10px]">🏨 Stays ({formFields.stays.length})</label>
+                      <ul className="text-[12px] text-ink-text space-y-0.5">
+                        {formFields.stays.map((s: any, i: number) => (
+                          <li key={i}>• {s.hotelName || 'Hotel'} ({s.checkInDate || '?'} → {s.checkOutDate || '?'})</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {Array.isArray(formFields.activities) && formFields.activities.length > 0 && (
+                    <div className="space-y-1">
+                      <label className="block font-label-caps text-muted-text text-[10px]">📍 Activities ({formFields.activities.length})</label>
+                      <ul className="text-[12px] text-ink-text space-y-0.5 max-h-40 overflow-y-auto">
+                        {formFields.activities.map((a: any, i: number) => (
+                          <li key={i}>• {a.activityName || 'Activity'} — {a.date || '?'} {a.time || ''}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Dynamic inputs based on Category */}
               {formKind === 'stay' && (
@@ -833,6 +958,11 @@ export default function VaultClient({
 
               {formKind === 'flight' && (
                 <div className="space-y-3">
+                  {Array.isArray(formFields.segments) && formFields.segments.length > 1 && (
+                    <div className="rounded-xl bg-ai-sage-tint/40 border border-[#1f4d3f]/20 p-3 text-[12px] text-ink-text">
+                      ✈️ <span className="font-semibold">{formFields.segments.length} flight legs detected</span> — all of them will be added to your itinerary. The fields below show the first leg ({formFields.segments[0]?.departureAirport || '—'} → {formFields.segments[0]?.arrivalAirport || '—'}).
+                    </div>
+                  )}
                   <div className="space-y-1">
                     <label className="block font-label-caps text-muted-text text-[10px]">Airline Name</label>
                     <input
@@ -949,7 +1079,7 @@ export default function VaultClient({
                 </div>
               )}
 
-              {formKind !== 'stay' && formKind !== 'flight' && formKind !== 'activity' && (
+              {formKind !== 'stay' && formKind !== 'flight' && formKind !== 'activity' && formKind !== 'itinerary' && (
                 <div className="space-y-3">
                   <div className="space-y-1">
                     <label className="block font-label-caps text-muted-text text-[10px]">Title</label>
@@ -997,7 +1127,9 @@ export default function VaultClient({
                 >
                   {isSaving ? 'Saving...' : (
                     <>
-                      <Check className="w-4 h-4" /> Save Item
+                      <Check className="w-4 h-4" /> {formKind === 'itinerary'
+                        ? `Import ${((formFields.flights?.length || 0) + (formFields.stays?.length || 0) + (formFields.activities?.length || 0))} items`
+                        : 'Save Item'}
                     </>
                   )}
                 </button>
