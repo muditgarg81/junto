@@ -44,15 +44,22 @@ export default async function ChecklistPage({ params }: PageProps) {
 
   // 3. Fetch Checklist Items
   const checklistItemsRes = await query(
-    `SELECT * FROM checklist_items 
-     WHERE trip_id = $1 
-       AND (category = 'shared' OR assigned_to = $2)
+    `SELECT * FROM checklist_items
+     WHERE trip_id = $1
+       AND (category = 'shared' OR assigned_to IN (SELECT id FROM members WHERE user_id = $2 OR auth_id = $3))
      ORDER BY created_at ASC`,
-    [tripId, authMember.id]
+    [tripId, authUser.id, authUser.auth_id]
   );
   const checklistItems: ChecklistItem[] = checklistItemsRes.rows;
 
-  // 4. Resolve current member session details from authorized DB record
+  // 4. Check if this trip has any flights (to decide whether to show aviation warnings)
+  const flightCountRes = await query(
+    `SELECT 1 FROM itinerary_items WHERE trip_id = $1 AND type = 'flight' LIMIT 1`,
+    [tripId]
+  );
+  const hasFlights = flightCountRes.rows.length > 0;
+
+  // 5. Resolve current member session details from authorized DB record
   const currentMember = {
     memberId: authMember.id,
     memberName: authMember.name || authUser.name,
@@ -66,6 +73,7 @@ export default async function ChecklistPage({ params }: PageProps) {
       members={members}
       initialChecklistItems={checklistItems}
       currentMember={currentMember}
+      hasFlights={hasFlights}
     />
   );
 }

@@ -42,7 +42,7 @@ export default function VaultClient({
   
   // OCR Temp Output
   const [tempOcrData, setTempOcrData] = useState<{
-    kind: 'flight' | 'stay' | 'activity' | 'contact' | 'other';
+    kind: 'flight' | 'stay' | 'activity' | 'contact' | 'other' | 'itinerary';
     fields: any;
     sourceFileUrl: string;
     ambiguousDateDetected: boolean;
@@ -227,7 +227,7 @@ export default function VaultClient({
 
   const handleOpenDetails = (item: VaultItem) => {
     setSelectedVaultItem(item);
-    setFormKind(item.kind);
+    setFormKind(item.kind as 'flight' | 'stay' | 'activity' | 'contact' | 'other' | 'itinerary');
     setFormFields(item.fields || {});
     setIsEditingMode(false);
     setShowDetailsModal(true);
@@ -252,7 +252,7 @@ export default function VaultClient({
       const data = await res.json();
 
       setTempOcrData(data);
-      setFormKind(data.kind);
+      setFormKind(data.kind as 'flight' | 'stay' | 'activity' | 'contact' | 'other' | 'itinerary');
       setFormFields(data.fields || {});
       setShowConfirmModal(true);
     } catch (err: any) {

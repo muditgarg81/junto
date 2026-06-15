@@ -103,7 +103,7 @@ export interface Split {
 export interface VaultItem {
   id: string;
   trip_id: string;
-  kind: 'flight' | 'stay' | 'activity' | 'contact' | 'other';
+  kind: 'flight' | 'stay' | 'activity' | 'contact' | 'other' | 'itinerary';
   doc_type?: 'pdf' | 'image' | null;
   source_file_url?: string | null;
   fields: any; // jsonb fields
@@ -113,8 +113,11 @@ export interface VaultItem {
 export interface ItineraryItem {
   id: string;
   trip_id: string;
-  date: string; // YYYY-MM-DD
-  time?: string | null; // HH:MM:SS
+  date: string;          // YYYY-MM-DD (legacy; prefer starts_at)
+  time?: string | null;  // HH:MM:SS   (legacy; prefer starts_at)
+  starts_at?: string | null; // ISO 8601 with tz — use for all time math
+  ends_at?: string | null;   // ISO 8601 with tz — enables interval-intersection overlap detection
+  tz?: string | null;        // IANA timezone, e.g. 'Asia/Kolkata'
   type: string; // 'flight' | 'stay' | 'activity' | 'other'
   title: string;
   location?: string | null;

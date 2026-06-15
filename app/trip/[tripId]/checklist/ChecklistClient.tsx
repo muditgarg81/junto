@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
-  Check, Plus, Trash2, AlertCircle, Sparkles, ChevronLeft, Loader2, UserPlus, Info
+  Check, Plus, Trash2, AlertCircle, Sparkles, ChevronLeft, Loader2, UserPlus, Info, X
 } from 'lucide-react';
 import { 
   getImportableTripsAction, 
@@ -16,19 +16,22 @@ import {
 import BottomNav from '@/components/BottomNav';
 import { Trip, Member, ChecklistItem } from '@/lib/types';
 import { EmergencyShieldButton } from '@/components/EmergencyShieldButton';
+import { getAviationRestriction, SEVERITY_LABEL, SEVERITY_COLOR } from '@/lib/aviation-restricted';
 
 interface ChecklistClientProps {
   trip: Trip;
   members: Member[];
   initialChecklistItems: ChecklistItem[];
   currentMember: { memberId: string; memberName: string; role: string; photoUrl: string | null } | null;
+  hasFlights?: boolean;
 }
 
 export default function ChecklistClient({
   trip,
   members,
   initialChecklistItems,
-  currentMember
+  currentMember,
+  hasFlights = false,
 }: ChecklistClientProps) {
   const router = useRouter();
   const [items, setItems] = useState<ChecklistItem[]>(initialChecklistItems);
@@ -38,6 +41,7 @@ export default function ChecklistClient({
   const [newCategory, setNewCategory] = useState<'personal' | 'shared'>('personal');
   const [newAssignedTo, setNewAssignedTo] = useState<string>('');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAiSuggestion, setShowAiSuggestion] = useState(true);
 
   // New features state
   const [importableTrips, setImportableTrips] = useState<any[]>([]);
@@ -322,6 +326,30 @@ export default function ChecklistClient({
           </div>
         </div>
 
+        {/* Aviation restrictions banner — only shown when the trip has flights */}
+        {hasFlights && (() => {
+          const restricted = items.filter(i => getAviationRestriction(i.label));
+          if (restricted.length === 0) return null;
+          const banned = restricted.filter(i => getAviationRestriction(i.label)?.severity === 'banned');
+          return (
+            <div className="bg-[#fff8ee] border border-[#f0a500]/30 rounded-2xl p-4 space-y-2 shadow-xs">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">✈️</span>
+                <span className="font-label-caps text-xs font-bold text-[#7c4b00] tracking-wider">AIRLINE RESTRICTIONS</span>
+              </div>
+              <p className="font-body-sm text-xs text-[#7c4b00] leading-relaxed">
+                {banned.length > 0
+                  ? `${banned.length} item${banned.length > 1 ? 's' : ''} on your list ${banned.length > 1 ? 'are' : 'is'} banned from flights. `
+                  : ''}
+                {restricted.length - banned.length > 0
+                  ? `${restricted.length - banned.length} item${restricted.length - banned.length > 1 ? 's have' : ' has'} packing rules (liquid limits, cabin-only, etc.).`
+                  : ''}
+                {' '}Items flagged below — tap for details.
+              </p>
+            </div>
+          );
+        })()}
+
         {/* Segmented Filter */}
         <nav className="flex bg-surface-container-low p-1 rounded-xl border border-border-warm-grey">
           <button 
@@ -382,6 +410,18 @@ export default function ChecklistClient({
                             AI · from chat
                           </span>
                         )}
+                        {hasFlights && (() => {
+                          const r = getAviationRestriction(item.label);
+                          if (!r) return null;
+                          return (
+                            <span
+                              className={`inline-flex items-center gap-0.5 text-[9px] border px-1.5 py-0.5 rounded-full font-label-caps mt-1 w-fit shrink-0 cursor-help ${SEVERITY_COLOR[r.severity]}`}
+                              title={r.message}
+                            >
+                              {SEVERITY_LABEL[r.severity]}
+                            </span>
+                          );
+                        })()}
                       </div>
                     </div>
 
@@ -481,6 +521,18 @@ export default function ChecklistClient({
                             AI · from chat
                           </span>
                         )}
+                        {hasFlights && (() => {
+                          const r = getAviationRestriction(item.label);
+                          if (!r) return null;
+                          return (
+                            <span
+                              className={`inline-flex items-center gap-0.5 text-[9px] border px-1.5 py-0.5 rounded-full font-label-caps mt-1 w-fit shrink-0 cursor-help ${SEVERITY_COLOR[r.severity]}`}
+                              title={r.message}
+                            >
+                              {SEVERITY_LABEL[r.severity]}
+                            </span>
+                          );
+                        })()}
                       </div>
                       {isUrgent && (
                         <span className="text-[#ba1a1a] flex items-center shrink-0 ml-1" title="High Priority Required">
@@ -572,26 +624,36 @@ export default function ChecklistClient({
         )}
 
         {/* AI Suggestion Chip */}
-        <div className="mt-6 p-4 bg-ai-sage-tint border border-primary/20 rounded-xl flex flex-col gap-3 text-left">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4.5 h-4.5 text-primary" />
-            <span className="font-label-caps text-[10px] tracking-wider uppercase text-primary">AI Recommendation</span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <p className="font-body-sm text-ink-text leading-tight text-xs">
-              Add insect repellent and sunscreen for the beach trip?
-            </p>
-            <button 
-              onClick={async () => {
-                await handleAddSuggestion('Insect repellent', 'shared');
-                await handleAddSuggestion('Sunscreen', 'personal');
-              }}
-              className="bg-primary hover:bg-primary-container text-surface px-3 py-1.5 rounded-full font-label-caps text-[9px] hover:scale-105 transition-transform"
+        {showAiSuggestion && (
+          <div className="mt-6 p-4 bg-ai-sage-tint border border-primary/20 rounded-xl flex flex-col gap-3 text-left relative">
+            <button
+              onClick={() => setShowAiSuggestion(false)}
+              className="absolute top-3.5 right-3.5 text-muted-text hover:text-ink-text transition p-0.5 rounded-full hover:bg-black/5"
+              title="Dismiss Suggestion"
             >
-              + Add
+              <X className="w-3.5 h-3.5" />
             </button>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4.5 h-4.5 text-primary" />
+              <span className="font-label-caps text-[10px] tracking-wider uppercase text-primary">AI Recommendation</span>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="font-body-sm text-ink-text leading-tight text-xs pr-6">
+                Add insect repellent and sunscreen for the beach trip?
+              </p>
+              <button 
+                onClick={async () => {
+                  await handleAddSuggestion('Insect repellent', 'shared');
+                  await handleAddSuggestion('Sunscreen', 'personal');
+                  setShowAiSuggestion(false);
+                }}
+                className="bg-primary hover:bg-primary-container text-surface px-3 py-1.5 rounded-full font-label-caps text-[9px] hover:scale-105 transition-transform"
+              >
+                + Add
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
       </div>
 
