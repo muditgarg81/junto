@@ -15,12 +15,13 @@ import {
   Plus,
   X,
   Trash2,
+  Pencil,
   Clock,
   MapPin
 } from 'lucide-react';
 import { Trip, Member, ItineraryItem } from '@/lib/types';
 import { checkItineraryConflicts, ItineraryConflict } from '@/lib/itinerary-checker';
-import { addItineraryItemAction, deleteItineraryItemAction } from './actions';
+import { addItineraryItemAction, deleteItineraryItemAction, clearItineraryAction, updateItineraryItemAction } from './actions';
 import { EmergencyShieldButton } from '@/components/EmergencyShieldButton';
 import BottomNav from '@/components/BottomNav';
 
@@ -53,6 +54,15 @@ export default function ItineraryClient({
   const [type, setType] = useState<'flight' | 'stay' | 'activity' | 'other'>('activity');
   const [location, setLocation] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Edit modal state
+  const [editItem, setEditItem] = useState<ItineraryItem | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editDate, setEditDate] = useState('');
+  const [editTime, setEditTime] = useState('');
+  const [editType, setEditType] = useState<'flight' | 'stay' | 'activity' | 'other'>('activity');
+  const [editLocation, setEditLocation] = useState('');
+  const [editErrorMsg, setEditErrorMsg] = useState<string | null>(null);
 
   // Realtime Polling Sync (every 3 seconds)
   useEffect(() => {
@@ -178,11 +188,14 @@ export default function ItineraryClient({
     });
   };
 
-  const handleDeleteEvent = async (e: React.MouseEvent, itemId: string, eventName: string) => {
+  const handleDeleteEvent = async (e: React.MouseEvent, itemId: string, eventName: string, isVaultLinked = false) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!confirm(`Remove "${eventName}" from your timeline?`)) {
+    const msg = isVaultLinked
+      ? `Remove "${eventName}" from your timeline? The vault voucher will be kept.`
+      : `Remove "${eventName}" from your timeline?`;
+    if (!confirm(msg)) {
       return;
     }
 
@@ -191,6 +204,58 @@ export default function ItineraryClient({
       if (res.error) {
         alert(res.error);
       } else {
+        router.refresh();
+      }
+    });
+  };
+
+  const handleEditOpen = (e: React.MouseEvent, item: ItineraryItem) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const dateStr = typeof item.date === 'string'
+      ? item.date.split('T')[0]
+      : new Date(item.date).toISOString().split('T')[0];
+    setEditItem(item);
+    setEditTitle(item.title);
+    setEditDate(dateStr);
+    setEditTime(item.time || '');
+    setEditType(item.type as 'flight' | 'stay' | 'activity' | 'other');
+    setEditLocation(item.location || '');
+    setEditErrorMsg(null);
+  };
+
+  const handleEditSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editItem) return;
+    setEditErrorMsg(null);
+    startTransition(async () => {
+      const res = await updateItineraryItemAction(trip.id, editItem.id, {
+        date: editDate,
+        time: editTime || null,
+        type: editType,
+        title: editTitle,
+        location: editLocation || null,
+      });
+      if (res.error) {
+        setEditErrorMsg(res.error);
+      } else {
+        setEditItem(null);
+        router.refresh();
+      }
+    });
+  };
+
+  const handleClearItinerary = async () => {
+    if (itineraryItems.length === 0) return;
+    if (!confirm(`Clear the entire timeline? This removes all ${itineraryItems.length} item${itineraryItems.length !== 1 ? 's' : ''}. Your vault vouchers are kept — only the schedule is cleared.`)) {
+      return;
+    }
+    startTransition(async () => {
+      const res = await clearItineraryAction(trip.id);
+      if (res.error) {
+        alert(res.error);
+      } else {
+        setItineraryItems([]);
         router.refresh();
       }
     });
@@ -235,6 +300,16 @@ export default function ItineraryClient({
                   (currentMember.memberName || 'F').charAt(0).toUpperCase()
                 )}
               </Link>
+            )}
+            {itineraryItems.length > 0 && (
+              <button
+                onClick={handleClearItinerary}
+                disabled={isPending}
+                className="text-muted-text hover:text-[#C2592F] p-2.5 rounded-full hover:bg-secondary/10 transition disabled:opacity-50"
+                title="Clear entire timeline"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
             )}
             <button
               onClick={openModal}
@@ -311,25 +386,31 @@ export default function ItineraryClient({
                       const cardContent = (
                         <div className={`bg-card-cream border p-4 rounded-xl shadow-xs space-y-1 transition duration-200 text-left ${
                           isConflicted ? 'border-[#C2592F] hover:shadow-sm' : 'border-border-warm-grey hover:border-outline'
-                        } ${item.source_vault_item_id ? 'cursor-pointer hover:scale-[1.01]' : ''}`}>
+                        }`}>
                           <div className="flex justify-between items-start gap-2">
                             <h3 className="font-body-md font-semibold text-ink-text leading-tight">
                               {item.title}
                             </h3>
-                            <div className="flex items-center gap-2 shrink-0">
+                            <div className="flex items-center gap-1 shrink-0">
                               <span className="font-mono text-[10px] text-muted-text bg-[#fff9ed] border border-border-warm-grey/50 px-2 py-0.5 rounded">
                                 {displayTime}
                               </span>
-                              {!item.source_vault_item_id && (
-                                <button
-                                  onClick={(e) => handleDeleteEvent(e, item.id, item.title)}
-                                  className="text-muted-text hover:text-[#ba1a1a] hover:bg-[#ffdad6] p-1 rounded-lg transition"
-                                  title="Delete Event"
-                                  disabled={isPending}
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              )}
+                              <button
+                                onClick={(e) => handleEditOpen(e, item)}
+                                className="text-muted-text hover:text-[#1f4d3f] hover:bg-[#d6ece4] p-1 rounded-lg transition"
+                                title="Edit Event"
+                                disabled={isPending}
+                              >
+                                <Pencil className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={(e) => handleDeleteEvent(e, item.id, item.title, !!item.source_vault_item_id)}
+                                className="text-muted-text hover:text-[#ba1a1a] hover:bg-[#ffdad6] p-1 rounded-lg transition"
+                                title="Delete Event"
+                                disabled={isPending}
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
                             </div>
                           </div>
 
@@ -350,12 +431,16 @@ export default function ItineraryClient({
                             </div>
                           )}
 
-                          {/* Source Voucher indicator */}
+                          {/* Source Voucher indicator — clicking this navigates to vault */}
                           {item.source_vault_item_id && (
-                            <div className="flex items-center gap-1 text-[9px] text-muted-text pt-1.5 opacity-70">
+                            <Link
+                              href={`/trip/${trip.id}/vault?open=${item.source_vault_item_id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="flex items-center gap-1 text-[9px] text-muted-text pt-1.5 opacity-70 hover:opacity-100 hover:text-[#1f4d3f] transition w-fit"
+                            >
                               <Info className="w-3 h-3 text-[#1f4d3f]" />
-                              <span>Details linked to Vault Voucher (Click to view)</span>
-                            </div>
+                              <span>Linked to Vault Voucher · tap to view</span>
+                            </Link>
                           )}
                         </div>
                       );
@@ -371,13 +456,7 @@ export default function ItineraryClient({
                             {getEventIcon(item.type)}
                           </div>
 
-                          {item.source_vault_item_id ? (
-                            <Link href={`/trip/${trip.id}/vault?open=${item.source_vault_item_id}`}>
-                              {cardContent}
-                            </Link>
-                          ) : (
-                            cardContent
-                          )}
+                          {cardContent}
                         </div>
                       );
                     })}
@@ -503,6 +582,108 @@ export default function ItineraryClient({
                 </button>
               </div>
 
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Event Modal */}
+      {editItem && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-ink-text/30 backdrop-blur-xs">
+          <div className="absolute inset-0" onClick={() => setEditItem(null)} />
+          <div className="bg-surface max-w-sm w-full rounded-2xl border border-border-warm-grey shadow-lg p-6 space-y-4 text-left z-10 animate-fade-in">
+            <div className="flex justify-between items-center">
+              <h3 className="font-headline-sm text-ink-text font-bold">Edit Event</h3>
+              <button onClick={() => setEditItem(null)} className="text-muted-text hover:text-ink-text p-1">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {editItem.source_vault_item_id && (
+              <p className="text-[10px] text-muted-text bg-[#fff9ed] border border-border-warm-grey/50 px-3 py-2 rounded-lg">
+                Editing the timeline entry only — the original vault voucher is unchanged.
+              </p>
+            )}
+
+            {editErrorMsg && (
+              <p className="bg-[#ffdad6] text-[#ba1a1a] text-xs font-semibold px-3 py-2 rounded-lg border border-[#ffb4ab]">
+                {editErrorMsg}
+              </p>
+            )}
+
+            <form onSubmit={handleEditSave} className="space-y-4">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-label-caps text-muted-text font-bold">Event Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={editTitle}
+                  onChange={e => setEditTitle(e.target.value)}
+                  className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-sm px-3.5 py-2.5 rounded-xl outline-none"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[10px] font-label-caps text-muted-text font-bold">Date *</label>
+                <input
+                  type="date"
+                  required
+                  value={editDate}
+                  onChange={e => setEditDate(e.target.value)}
+                  className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-sm px-3.5 py-2.5 rounded-xl outline-none cursor-pointer"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[10px] font-label-caps text-muted-text font-bold">Time (Optional)</label>
+                <input
+                  type="time"
+                  value={editTime}
+                  onChange={e => setEditTime(e.target.value)}
+                  className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-sm px-3.5 py-2.5 rounded-xl outline-none cursor-pointer"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[10px] font-label-caps text-muted-text font-bold">Event Category</label>
+                <select
+                  value={editType}
+                  onChange={e => setEditType(e.target.value as any)}
+                  className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-sm px-3.5 py-2.5 rounded-xl outline-none cursor-pointer"
+                >
+                  <option value="activity">Compass (Activity/Sightseeing)</option>
+                  <option value="flight">Plane (Travel Connection/Flight)</option>
+                  <option value="stay">Home (Accommodation/Hotel)</option>
+                  <option value="other">Calendar (Other Event)</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[10px] font-label-caps text-muted-text font-bold">Location (Optional)</label>
+                <input
+                  type="text"
+                  value={editLocation}
+                  onChange={e => setEditLocation(e.target.value)}
+                  className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-sm px-3.5 py-2.5 rounded-xl outline-none"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditItem(null)}
+                  className="flex-1 border border-border-warm-grey hover:bg-surface-container text-muted-text font-body-sm py-3 rounded-xl transition cursor-pointer text-center"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="flex-1 bg-primary-container hover:bg-primary text-surface font-body-sm font-semibold py-3 rounded-xl shadow-sm transition cursor-pointer text-center"
+                >
+                  {isPending ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
             </form>
           </div>
         </div>

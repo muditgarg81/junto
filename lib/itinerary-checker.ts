@@ -331,6 +331,10 @@ export function checkAllItineraryIssues(
         // -- Tight connection: only flight→flight, where times are precise and
         // a "connection" is meaningful (connecting flights need ≥ 90 min). --
         if (a.type === 'flight' && b.type === 'flight') {
+          // Same normalised title = duplicate import of the same flight, not a real transfer.
+          const normA = a.title.toLowerCase().replace(/\s+/g, '');
+          const normB = b.title.toLowerCase().replace(/\s+/g, '');
+          if (normA === normB) continue;
           const gap = gapMinutes(a, b);
           if (gap !== null && gap >= 0 && gap < 90) {
             issues.push({
@@ -396,6 +400,10 @@ export function checkItineraryConflicts(items: ItineraryItem[]): ItineraryConfli
         // nominal times (15:00 check-in, etc.) and mixing them with a flight's
         // true tz-aware instant produces meaningless gaps. --
         if (a.type === 'flight' && b.type === 'flight') {
+          // Same normalised title = duplicate import of the same flight, not a real transfer.
+          const normA = a.title.toLowerCase().replace(/\s+/g, '');
+          const normB = b.title.toLowerCase().replace(/\s+/g, '');
+          if (normA === normB) continue;
           const gap = gapMinutes(a, b);
           if (gap !== null && gap >= 0 && gap < 90) {
             conflicts.push({ item1: a, item2: b, type: 'tight_connection', gapMinutes: Math.round(gap) });
