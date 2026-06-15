@@ -4,6 +4,43 @@ import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { authorizeTripAccess, HttpError } from '@/lib/authz';
 import { verifyCsrf } from '@/lib/csrf';
+import { airportTz, localToInstantISO } from '@/lib/airport-tz';
+
+/**
+ * Insert an itinerary item, or upgrade an existing equivalent one (dedup).
+ * Dedup key: same trip + type + date + title. This prevents duplicates when a
+ * flight appears in both a single-voucher upload and a full-itinerary import,
+ * or when the same document is uploaded twice. On a match we refresh the
+ * structured fields so older rows (created before tz support) gain starts_at/tz.
+ */
+async function upsertItineraryItem(p: {
+  tripId: string; type: string; date: string; title: string;
+  time?: string | null; location?: string | null; sourceVaultItemId?: string | null;
+  startsAt?: string | null; endsAt?: string | null; tz?: string | null;
+}): Promise<void> {
+  const existing = await query(
+    'SELECT id FROM itinerary_items WHERE trip_id = $1 AND type = $2 AND date = $3 AND title = $4 LIMIT 1',
+    [p.tripId, p.type, p.date, p.title]
+  );
+  if (existing.rows.length > 0) {
+    await query(
+      `UPDATE itinerary_items
+         SET time = COALESCE($2, time),
+             location = COALESCE($3, location),
+             starts_at = COALESCE($4, starts_at),
+             ends_at = COALESCE($5, ends_at),
+             tz = COALESCE($6, tz)
+       WHERE id = $1`,
+      [existing.rows[0].id, p.time ?? null, p.location ?? null, p.startsAt ?? null, p.endsAt ?? null, p.tz ?? null]
+    );
+    return;
+  }
+  await query(
+    `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id, starts_at, ends_at, tz)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+    [crypto.randomUUID(), p.tripId, p.date, p.time ?? null, p.type, p.title, p.location ?? null, p.sourceVaultItemId ?? null, p.startsAt ?? null, p.endsAt ?? null, p.tz ?? null]
+  );
+}
 
 export async function POST(
   req: NextRequest,
@@ -40,61 +77,46 @@ export async function POST(
     );
 
     // Generate linked itinerary items
-    if (kind === 'stay') {
-      const { hotelName, checkInDate, checkOutDate, address } = fields;
+    // Local insert helpers — all route through upsertItineraryItem so repeated
+    // uploads / full-itinerary imports dedup instead of duplicating.
+    const addFlightSeg = async (seg: any) => {
+      const { airline, flightNo, departureDate, departureTime, arrivalDate, arrivalTime, departureAirport, arrivalAirport } = seg || {};
+      if (!departureDate) return;
+      const timeStr = formatDbTime(departureTime) || null;
+      const depTz = airportTz(departureAirport);
+      const arrTz = airportTz(arrivalAirport);
+      await upsertItineraryItem({
+        tripId, type: 'flight', date: formatDbDate(departureDate), time: timeStr,
+        title: `${airline || 'Flight'} ${flightNo || ''} departure`.trim(),
+        location: departureAirport && arrivalAirport ? `${departureAirport} to ${arrivalAirport}` : null,
+        sourceVaultItemId: vaultItemId,
+        startsAt: localToInstantISO(formatDbDate(departureDate), timeStr || undefined, depTz),
+        endsAt: arrivalTime ? localToInstantISO(formatDbDate(arrivalDate || departureDate), formatDbTime(arrivalTime) || undefined, arrTz) : null,
+        tz: depTz,
+      });
+    };
+    const addStay = async (s: any) => {
+      const { hotelName, checkInDate, checkOutDate, address } = s || {};
       if (checkInDate) {
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(checkInDate),
-            '15:00:00', // standard check-in time
-            'stay',
-            `Check-in: ${hotelName || 'Hotel Stay'}`,
-            address || null,
-            vaultItemId
-          ]
-        );
+        await upsertItineraryItem({ tripId, type: 'stay', date: formatDbDate(checkInDate), time: '15:00:00', title: `Check-in: ${hotelName || 'Hotel Stay'}`, location: address || null, sourceVaultItemId: vaultItemId });
       }
       if (checkOutDate) {
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(checkOutDate),
-            '11:00:00', // standard check-out time
-            'stay',
-            `Check-out: ${hotelName || 'Hotel Stay'}`,
-            address || null,
-            vaultItemId
-          ]
-        );
+        await upsertItineraryItem({ tripId, type: 'stay', date: formatDbDate(checkOutDate), time: '11:00:00', title: `Check-out: ${hotelName || 'Hotel Stay'}`, location: address || null, sourceVaultItemId: vaultItemId });
       }
-    } else if (kind === 'flight') {
-      const { airline, flightNo, departureDate, departureTime, departureAirport, arrivalAirport } = fields;
-      if (departureDate) {
-        const timeStr = formatDbTime(departureTime) || null;
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(departureDate),
-            timeStr,
-            'flight',
-            `${airline || 'Flight'} ${flightNo || ''} departure`.trim(),
-            departureAirport && arrivalAirport ? `${departureAirport} to ${arrivalAirport}` : null,
-            vaultItemId
-          ]
-        );
-      }
+    };
+    const addActivity = async (a: any) => {
+      const { activityName, date, time, location } = a || {};
+      if (!date) return;
+      await upsertItineraryItem({ tripId, type: 'activity', date: formatDbDate(date), time: formatDbTime(time) || null, title: activityName || 'Activity', location: location || null, sourceVaultItemId: vaultItemId });
+    };
 
-      // Trigger eSIM & Forex offers
+    if (kind === 'stay') {
+      await addStay(fields);
+    } else if (kind === 'flight') {
+      // Support multi-segment tickets: one itinerary item per leg.
+      const segments = Array.isArray(fields.segments) && fields.segments.length > 0 ? fields.segments : [fields];
+      for (const seg of segments) await addFlightSeg(seg);
+
       try {
         const { triggerOffers } = require('@/lib/offers');
         triggerOffers(tripId, 'flight_voucher_ingested').catch(console.error);
@@ -102,23 +124,32 @@ export async function POST(
         console.error('Failed to trigger flight offers:', err);
       }
     } else if (kind === 'activity') {
-      const { activityName, date, time, location } = fields;
-      if (date) {
-        const timeStr = formatDbTime(time) || null;
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(date),
-            timeStr,
-            'activity',
-            activityName || 'Activity',
-            location || null,
-            vaultItemId
-          ]
-        );
+      await addActivity(fields);
+    } else if (kind === 'itinerary') {
+      // Full trip plan → explode into many itinerary items (flights, stays, activities).
+      const flights = Array.isArray(fields.flights) ? fields.flights : [];
+      console.log('[vault POST] itinerary kind — flights:', flights.length, 'stays:', (fields.stays||[]).length, 'activities:', (fields.activities||[]).length);
+      console.log('[vault POST] first activity sample:', JSON.stringify(fields.activities?.[0]));
+      for (const seg of flights) await addFlightSeg(seg);
+      for (const s of (Array.isArray(fields.stays) ? fields.stays : [])) await addStay(s);
+      let activityCount = 0;
+      for (const a of (Array.isArray(fields.activities) ? fields.activities : [])) {
+        try {
+          await addActivity(a);
+          activityCount++;
+        } catch (aErr: any) {
+          console.error('[vault POST] addActivity failed for', JSON.stringify(a), aErr?.message);
+        }
+      }
+      console.log('[vault POST] activities inserted/upserted:', activityCount);
+
+      if (flights.length > 0) {
+        try {
+          const { triggerOffers } = require('@/lib/offers');
+          triggerOffers(tripId, 'flight_voucher_ingested').catch(console.error);
+        } catch (err) {
+          console.error('Failed to trigger flight offers:', err);
+        }
       }
     } else if (kind === 'contact') {
       // Contacts do not generally map to Itinerary timelines
@@ -126,21 +157,7 @@ export async function POST(
       // kind === 'other'
       const { title, date, time, location, description } = fields;
       if (date) {
-        const timeStr = formatDbTime(time) || null;
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(date),
-            timeStr,
-            'other',
-            title || 'Voucher Item',
-            location || description || null,
-            vaultItemId
-          ]
-        );
+        await upsertItineraryItem({ tripId, type: 'other', date: formatDbDate(date), time: formatDbTime(time) || null, title: title || 'Voucher Item', location: location || description || null, sourceVaultItemId: vaultItemId });
       }
     }
 
@@ -185,97 +202,51 @@ export async function PUT(
     // Delete existing linked itinerary items
     await query('DELETE FROM itinerary_items WHERE source_vault_item_id = $1 AND trip_id = $2', [vaultItemId, tripId]);
 
-    // Re-insert itinerary items based on updated fields
+    // Re-insert itinerary items based on updated fields (dedup-aware).
+    const addFlightSeg = async (seg: any) => {
+      const { airline, flightNo, departureDate, departureTime, arrivalDate, arrivalTime, departureAirport, arrivalAirport } = seg || {};
+      if (!departureDate) return;
+      const timeStr = formatDbTime(departureTime) || null;
+      const depTz = airportTz(departureAirport);
+      const arrTz = airportTz(arrivalAirport);
+      await upsertItineraryItem({
+        tripId, type: 'flight', date: formatDbDate(departureDate), time: timeStr,
+        title: `${airline || 'Flight'} ${flightNo || ''} departure`.trim(),
+        location: departureAirport && arrivalAirport ? `${departureAirport} to ${arrivalAirport}` : null,
+        sourceVaultItemId: vaultItemId,
+        startsAt: localToInstantISO(formatDbDate(departureDate), timeStr || undefined, depTz),
+        endsAt: arrivalTime ? localToInstantISO(formatDbDate(arrivalDate || departureDate), formatDbTime(arrivalTime) || undefined, arrTz) : null,
+        tz: depTz,
+      });
+    };
+    const addStay = async (s: any) => {
+      const { hotelName, checkInDate, checkOutDate, address } = s || {};
+      if (checkInDate) await upsertItineraryItem({ tripId, type: 'stay', date: formatDbDate(checkInDate), time: '15:00:00', title: `Check-in: ${hotelName || 'Hotel Stay'}`, location: address || null, sourceVaultItemId: vaultItemId });
+      if (checkOutDate) await upsertItineraryItem({ tripId, type: 'stay', date: formatDbDate(checkOutDate), time: '11:00:00', title: `Check-out: ${hotelName || 'Hotel Stay'}`, location: address || null, sourceVaultItemId: vaultItemId });
+    };
+    const addActivity = async (a: any) => {
+      const { activityName, date, time, location } = a || {};
+      if (!date) return;
+      await upsertItineraryItem({ tripId, type: 'activity', date: formatDbDate(date), time: formatDbTime(time) || null, title: activityName || 'Activity', location: location || null, sourceVaultItemId: vaultItemId });
+    };
+
     if (kind === 'stay') {
-      const { hotelName, checkInDate, checkOutDate, address } = fields;
-      if (checkInDate) {
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(checkInDate),
-            '15:00:00',
-            'stay',
-            `Check-in: ${hotelName || 'Hotel Stay'}`,
-            address || null,
-            vaultItemId
-          ]
-        );
-      }
-      if (checkOutDate) {
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(checkOutDate),
-            '11:00:00',
-            'stay',
-            `Check-out: ${hotelName || 'Hotel Stay'}`,
-            address || null,
-            vaultItemId
-          ]
-        );
-      }
+      await addStay(fields);
     } else if (kind === 'flight') {
-      const { airline, flightNo, departureDate, departureTime, departureAirport, arrivalAirport } = fields;
-      if (departureDate) {
-        const timeStr = formatDbTime(departureTime) || null;
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(departureDate),
-            timeStr,
-            'flight',
-            `${airline || 'Flight'} ${flightNo || ''} departure`.trim(),
-            departureAirport && arrivalAirport ? `${departureAirport} to ${arrivalAirport}` : null,
-            vaultItemId
-          ]
-        );
-      }
+      const segments = Array.isArray(fields.segments) && fields.segments.length > 0 ? fields.segments : [fields];
+      for (const seg of segments) await addFlightSeg(seg);
     } else if (kind === 'activity') {
-      const { activityName, date, time, location } = fields;
-      if (date) {
-        const timeStr = formatDbTime(time) || null;
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(date),
-            timeStr,
-            'activity',
-            activityName || 'Activity',
-            location || null,
-            vaultItemId
-          ]
-        );
-      }
+      await addActivity(fields);
+    } else if (kind === 'itinerary') {
+      for (const seg of (Array.isArray(fields.flights) ? fields.flights : [])) await addFlightSeg(seg);
+      for (const s of (Array.isArray(fields.stays) ? fields.stays : [])) await addStay(s);
+      for (const a of (Array.isArray(fields.activities) ? fields.activities : [])) await addActivity(a);
+    } else if (kind === 'contact') {
+      // Contacts do not map to the itinerary timeline
     } else {
       const { title, date, time, location, description } = fields;
       if (date) {
-        const timeStr = formatDbTime(time) || null;
-        await query(
-          `INSERT INTO itinerary_items (id, trip_id, date, time, type, title, location, source_vault_item_id)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-          [
-            crypto.randomUUID(),
-            tripId,
-            formatDbDate(date),
-            timeStr,
-            'other',
-            title || 'Voucher Item',
-            location || description || null,
-            vaultItemId
-          ]
-        );
+        await upsertItineraryItem({ tripId, type: 'other', date: formatDbDate(date), time: formatDbTime(time) || null, title: title || 'Voucher Item', location: location || description || null, sourceVaultItemId: vaultItemId });
       }
     }
 
