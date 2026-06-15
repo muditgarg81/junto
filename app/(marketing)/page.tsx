@@ -5,7 +5,12 @@ import WelcomeClient from './WelcomeClient';
 import YourTripsClient from './YourTripsClient';
 
 export default async function HomePage() {
-  const user = await getCurrentUser();
+  let user = null;
+  try {
+    user = await getCurrentUser();
+  } catch {
+    // DB unavailable or session error — show landing page to logged-out visitors
+  }
 
   if (!user) {
     return <WelcomeClient user={null} />;
@@ -20,6 +25,7 @@ export default async function HomePage() {
         FROM decisions d
         JOIN options o ON d.resolved_option_id = o.id
         WHERE d.trip_id = t.id AND d.type = 'dates' AND d.status = 'locked'
+        ORDER BY d.created_at DESC
         LIMIT 1
       ) AS dates_payload,
       (
@@ -36,10 +42,26 @@ export default async function HomePage() {
 
   const dbTrips = tripsRes.rows;
 
+  // Fetch user's unpacked checklist items across all active/planning trips
+  const unpackedItemsRes = await query(`
+    SELECT ci.id, ci.label, ci.category, t.id as trip_id, t.name as trip_name
+    FROM checklist_items ci
+    JOIN trips t ON ci.trip_id = t.id
+    WHERE ci.done = false
+      AND t.status IN ('planning', 'active')
+      AND ci.assigned_to IN (
+        SELECT id FROM members 
+        WHERE user_id = $1 OR auth_id = $2
+      )
+    ORDER BY ci.created_at ASC
+  `, [user.id, user.auth_id]);
+  const unpackedItems = unpackedItemsRes.rows;
+
   return (
     <YourTripsClient 
       user={user}
       dbTrips={dbTrips}
+      unpackedItems={unpackedItems}
     />
   );
 }
