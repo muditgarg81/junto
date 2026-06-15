@@ -194,9 +194,13 @@ function deduplicateItems(items: ItineraryItem[]): ItineraryItem[] {
   const seenByTitleKey = new Set<string>();
   const seenByStartsAt = new Set<string>();
   return items.filter(item => {
-    const titleKey = `${item.type}|${localDateString(item)}|${item.title}`;
+    // Normalize title: lowercase + strip all whitespace so "AI-416" and "AI - 416"
+    // hash to the same key regardless of how the OCR formatted the flight number.
+    const normTitle = item.title.toLowerCase().replace(/\s+/g, '');
+    const titleKey = `${item.type}|${localDateString(item)}|${normTitle}`;
     if (seenByTitleKey.has(titleKey)) return false;
     seenByTitleKey.add(titleKey);
+    // Second pass: same departure instant = same event even with different titles.
     if (item.starts_at) {
       const tsKey = `${item.type}|${item.starts_at}`;
       if (seenByStartsAt.has(tsKey)) return false;
