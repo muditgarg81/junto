@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS splits (
 CREATE TABLE IF NOT EXISTS vault_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   trip_id UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
-  kind VARCHAR(50) NOT NULL CHECK (kind IN ('flight', 'stay', 'activity', 'contact', 'other')),
+  kind VARCHAR(50) NOT NULL CHECK (kind IN ('flight', 'stay', 'activity', 'contact', 'other', 'itinerary')),
   doc_type VARCHAR(50) NULL, -- 'pdf', 'image'
   source_file_url TEXT NULL,
   fields JSONB NOT NULL DEFAULT '{}'::jsonb,
@@ -122,6 +122,99 @@ CREATE TABLE IF NOT EXISTS checklist_items (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Proactive concierge tracking columns
+ALTER TABLE trips ADD COLUMN IF NOT EXISTS last_concierge_run_at TIMESTAMP WITH TIME ZONE NULL;
+ALTER TABLE trips ADD COLUMN IF NOT EXISTS concierge_cooldown_until TIMESTAMP WITH TIME ZONE NULL;
+ALTER TABLE trips ADD COLUMN IF NOT EXISTS last_audit_hash VARCHAR(64) NULL;
+
+-- Invite token expiry (30-day default; NULL = no expiry for legacy rows)
+ALTER TABLE trips ADD COLUMN IF NOT EXISTS invite_token_expires_at TIMESTAMP WITH TIME ZONE NULL;
+
+-- Itinerary items: structured time columns (preferred over legacy date/time)
+ALTER TABLE itinerary_items ADD COLUMN IF NOT EXISTS starts_at TIMESTAMP WITH TIME ZONE NULL;
+ALTER TABLE itinerary_items ADD COLUMN IF NOT EXISTS ends_at   TIMESTAMP WITH TIME ZONE NULL;
+ALTER TABLE itinerary_items ADD COLUMN IF NOT EXISTS tz        VARCHAR(64) NULL; -- IANA tz, e.g. 'Asia/Kolkata'
+
+-- Voucher file bytes stored in-DB (Vercel serverless FS is read-only; no external blob store).
+-- Served through the auth-gated, signed proxy route /api/trip/[tripId]/uploads/[filename].
+CREATE TABLE IF NOT EXISTS vault_files (
+  filename   VARCHAR(255) PRIMARY KEY,
+  trip_id    UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+  mime_type  VARCHAR(100) NOT NULL,
+  data       BYTEA NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ---------------------------------------------------------------------------
+-- Affiliate / monetization tables
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS partners (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  key                 VARCHAR(100) UNIQUE NOT NULL,         -- slug, e.g. 'travelpayouts'
+  name                VARCHAR(255) NOT NULL,
+  category            VARCHAR(50)  NOT NULL,                -- hotel|activity|insurance|esim|forex|transport|gear|photobook
+  network             VARCHAR(100) NOT NULL,
+  status              VARCHAR(20)  NOT NULL DEFAULT 'inactive' CHECK (status IN ('active','inactive')),
+  affiliate_id        VARCHAR(255) NOT NULL DEFAULT '',
+  secret_ref          VARCHAR(255) NULL,                    -- env-var name or vault key for postback secret
+  link_template       TEXT         NOT NULL,                -- URL with {id} and {sub} placeholders
+  sub_param           VARCHAR(100) NOT NULL,                -- query param the partner uses for sub-id
+  commission_estimate NUMERIC(5,2) NOT NULL DEFAULT 0,
+  priority            INTEGER      NOT NULL DEFAULT 0,
+  surface_triggers    TEXT[]       NOT NULL DEFAULT '{}',   -- which trigger events surface this partner
+  allowed_domains     TEXT[]       NOT NULL DEFAULT '{}',   -- redirect allowlist for open-redirect guard
+  updated_by          UUID NULL REFERENCES users(id) ON DELETE SET NULL,
+  updated_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS offers (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  trip_id             UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+  category            VARCHAR(50)  NOT NULL,
+  partner             VARCHAR(255) NOT NULL,
+  title               TEXT         NOT NULL,
+  price               NUMERIC(12,2) NOT NULL DEFAULT 0,
+  currency            VARCHAR(10)  NOT NULL DEFAULT 'INR',
+  deep_link           TEXT         NOT NULL,                -- unresolved template with {sub}
+  commission_estimate NUMERIC(10,2) NOT NULL DEFAULT 0,
+  surfaced_by         VARCHAR(100) NULL,                    -- trigger event that created this offer
+  status              VARCHAR(20)  NOT NULL DEFAULT 'shown' CHECK (status IN ('shown','clicked','converted','dismissed')),
+  created_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS offer_clicks (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  offer_id   UUID NOT NULL REFERENCES offers(id) ON DELETE CASCADE,
+  member_id  UUID NULL REFERENCES members(id) ON DELETE SET NULL,
+  sub_id     VARCHAR(500) NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS conversions (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  offer_id    UUID NULL REFERENCES offers(id) ON DELETE SET NULL,
+  sub_id      VARCHAR(500) NOT NULL,
+  gross_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  commission  NUMERIC(12,2) NOT NULL DEFAULT 0,
+  status      VARCHAR(20)  NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected')),
+  created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (sub_id)                                          -- idempotency: one conversion per sub_id
+);
+
+CREATE TABLE IF NOT EXISTS audit_logs (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id     UUID NULL REFERENCES users(id) ON DELETE SET NULL,
+  action      VARCHAR(100) NOT NULL,
+  target_type VARCHAR(50)  NULL,
+  target_id   UUID         NULL,
+  changes     JSONB        NULL,
+  created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add allowed_domains to partners if upgrading an existing DB
+ALTER TABLE partners ADD COLUMN IF NOT EXISTS allowed_domains TEXT[] NOT NULL DEFAULT '{}';
+
 -- Add indexes for performance on foreign keys
 CREATE INDEX IF NOT EXISTS idx_members_trip_id ON members(trip_id);
 CREATE INDEX IF NOT EXISTS idx_messages_trip_id ON messages(trip_id);
@@ -133,3 +226,4 @@ CREATE INDEX IF NOT EXISTS idx_splits_expense_id ON splits(expense_id);
 CREATE INDEX IF NOT EXISTS idx_vault_items_trip_id ON vault_items(trip_id);
 CREATE INDEX IF NOT EXISTS idx_itinerary_items_trip_id ON itinerary_items(trip_id);
 CREATE INDEX IF NOT EXISTS idx_checklist_items_trip_id ON checklist_items(trip_id);
+CREATE INDEX IF NOT EXISTS idx_vault_files_trip_id ON vault_files(trip_id);

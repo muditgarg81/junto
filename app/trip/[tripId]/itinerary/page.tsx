@@ -56,12 +56,27 @@ export default async function ItineraryPage({ params }: PageProps) {
   );
   const datesPayload = datesRes.rows[0]?.payload || null;
 
+  // 5. Fetch activity offers for P0 inline placement (one per activity category, shown, not dismissed)
+  let activityOffers: any[] = [];
+  try {
+    const offersRes = await query(
+      `SELECT * FROM offers
+       WHERE trip_id = $1 AND category = 'activity' AND status = 'shown'
+       ORDER BY created_at ASC`,
+      [tripId]
+    );
+    activityOffers = offersRes.rows;
+  } catch {
+    // offers table may not exist yet — degrade gracefully
+  }
+
   return (
     <ItineraryClient
       trip={trip}
       members={members}
       initialItineraryItems={itineraryItems}
       datesPayload={datesPayload}
+      activityOffers={activityOffers}
       currentMember={{
         memberId: authMember.id,
         memberName: authMember.name || authUser.name,

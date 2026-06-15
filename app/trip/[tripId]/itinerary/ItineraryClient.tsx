@@ -24,12 +24,14 @@ import { checkItineraryConflicts, ItineraryConflict } from '@/lib/itinerary-chec
 import { addItineraryItemAction, deleteItineraryItemAction, clearItineraryAction, updateItineraryItemAction } from './actions';
 import { EmergencyShieldButton } from '@/components/EmergencyShieldButton';
 import BottomNav from '@/components/BottomNav';
+import OfferCard from '@/components/OfferCard';
 
 interface ItineraryClientProps {
   trip: Trip;
   members: Member[];
   initialItineraryItems: ItineraryItem[];
   datesPayload: any;
+  activityOffers?: any[];
   currentMember: { memberId: string; memberName: string; role: string; photoUrl: string | null } | null;
 }
 
@@ -38,6 +40,7 @@ export default function ItineraryClient({
   members,
   initialItineraryItems,
   datesPayload,
+  activityOffers = [],
   currentMember
 }: ItineraryClientProps) {
   const router = useRouter();
@@ -358,7 +361,13 @@ export default function ItineraryClient({
           ) : (
             sortedDates.map((dateStr, dateIdx) => {
               const dayItems = groupedItems[dateStr];
-              
+              // Show one activity offer card per day that has at least one activity item.
+              // Rotate through available offers so different days can show different partners.
+              const dayHasActivity = dayItems.some(i => i.type === 'activity');
+              const dayOffer = dayHasActivity && activityOffers.length > 0
+                ? activityOffers[dateIdx % activityOffers.length]
+                : null;
+
               return (
                 <div key={dateStr} className="space-y-4">
                   {/* Day Header */}
@@ -461,6 +470,13 @@ export default function ItineraryClient({
                       );
                     })}
                   </div>
+
+                  {/* P0 affiliate offer — shown once per day that has activities */}
+                  {dayOffer && (
+                    <div className="pl-6 ml-3">
+                      <OfferCard offer={dayOffer} currentMemberId={currentMember?.memberId} />
+                    </div>
+                  )}
                 </div>
               );
             })
