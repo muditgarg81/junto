@@ -175,6 +175,38 @@ function localDateString(item: ItineraryItem): string {
 }
 
 // ---------------------------------------------------------------------------
+// Deduplication
+// ---------------------------------------------------------------------------
+
+/**
+ * Remove duplicate itinerary items before running conflict checks.
+ *
+ * Two rows are considered the same item when any of these match:
+ *   1. (type, date, title) — catches exact title matches across vault imports
+ *   2. (type, starts_at) — catches title-format drift (e.g. "AI-416" vs "AI - 416")
+ *      for items that have a precise starts_at timestamp
+ *
+ * Without this, re-uploading a PDF or importing a full itinerary that overlaps
+ * with a single-voucher upload produces DB rows that compare against each other
+ * and flag false tight-connection / overlap warnings.
+ */
+function deduplicateItems(items: ItineraryItem[]): ItineraryItem[] {
+  const seenByTitleKey = new Set<string>();
+  const seenByStartsAt = new Set<string>();
+  return items.filter(item => {
+    const titleKey = `${item.type}|${localDateString(item)}|${item.title}`;
+    if (seenByTitleKey.has(titleKey)) return false;
+    seenByTitleKey.add(titleKey);
+    if (item.starts_at) {
+      const tsKey = `${item.type}|${item.starts_at}`;
+      if (seenByStartsAt.has(tsKey)) return false;
+      seenByStartsAt.add(tsKey);
+    }
+    return true;
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Deterministic checker
 // ---------------------------------------------------------------------------
 
@@ -193,19 +225,7 @@ export function checkAllItineraryIssues(
 
   if (items.length === 0) return issues;
 
-  // Deduplicate: keep only the first occurrence of each (type, date, title) triple.
-  // DB duplicates can exist when the same flight appears in both a single voucher and
-  // a full itinerary import — comparing them against each other produces false overlaps.
-  const seen = new Set<string>();
-  const deduped = items.filter(item => {
-    // Use localDateString which resolves starts_at+tz first, then falls back to
-    // item.date — so items created with the new tz-aware path (no date field) and
-    // older rows (date field, no starts_at) for the same flight hash to the same key.
-    const key = `${item.type}|${localDateString(item)}|${item.title}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  const deduped = deduplicateItems(items);
 
   // Sort all items by start time ascending
   const sorted = [...deduped].sort((a, b) => {
@@ -334,14 +354,7 @@ export interface ItineraryConflict {
 export function checkItineraryConflicts(items: ItineraryItem[]): ItineraryConflict[] {
   const conflicts: ItineraryConflict[] = [];
 
-  // Deduplicate before comparing (same logic as checkAllItineraryIssues).
-  const seen = new Set<string>();
-  const deduped = items.filter(it => {
-    const key = `${it.type}|${localDateString(it)}|${it.title}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  const deduped = deduplicateItems(items);
 
   // Group by local calendar date (tz-aware), then compare items within each day.
   const byDate: Record<string, ItineraryItem[]> = {};
