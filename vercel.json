@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/concierge",
+      "schedule": "30 2 * * *"
+    }
+  ]
+}
