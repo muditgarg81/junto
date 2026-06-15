@@ -4,13 +4,17 @@ import type { NextRequest } from 'next/server';
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  // Exclude static assets, api routes, and common asset paths
+  // Exclude static assets, api routes, public pages, and common asset paths
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/static') ||
     pathname.includes('.') ||
-    pathname === '/favicon.ico'
+    pathname === '/favicon.ico' ||
+    pathname === '/' ||        // Landing page is always public
+    pathname === '/privacy' ||
+    pathname === '/terms' ||
+    pathname === '/disclaimer'
   ) {
     return NextResponse.next();
   }
