@@ -9,7 +9,7 @@ import { signinAction } from './actions';
 function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectPath = searchParams.get('redirect') || '/';
+  const redirectPath = searchParams.get('redirect') || '/home';
 
   const [emailInput, setEmailInput] = useState('');
   const [loading, setLoading] = useState(false);
