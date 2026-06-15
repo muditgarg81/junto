@@ -216,7 +216,6 @@ export async function completeVision(
       },
     ],
     generationConfig: {
-      responseMimeType: 'application/json',
       temperature: 0.1,
     },
   };
