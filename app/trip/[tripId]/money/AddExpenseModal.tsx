@@ -80,7 +80,7 @@ export default function AddExpenseModal({
   }, [draftData, currentMemberId, members]);
 
   // Categories list
-  const categories = ['Transport', 'Food', 'Stay', 'Activity', 'Other'];
+  const categories = ['Transport', 'Food', 'Stay', 'Activities', 'Other'];
 
   // Calculations
   const numericAmount = parseFloat(amount) || 0;
