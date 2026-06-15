@@ -198,7 +198,10 @@ export function checkAllItineraryIssues(
   // a full itinerary import — comparing them against each other produces false overlaps.
   const seen = new Set<string>();
   const deduped = items.filter(item => {
-    const key = `${item.type}|${dateToYMD(item.date)}|${item.title}`;
+    // Use localDateString which resolves starts_at+tz first, then falls back to
+    // item.date — so items created with the new tz-aware path (no date field) and
+    // older rows (date field, no starts_at) for the same flight hash to the same key.
+    const key = `${item.type}|${localDateString(item)}|${item.title}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
