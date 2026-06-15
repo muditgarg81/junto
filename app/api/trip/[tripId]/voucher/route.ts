@@ -38,6 +38,8 @@ export async function POST(
       ? String(parsedDates.startDate).split('T')[0]
       : null;
 
+    console.log('[voucher] tripStartDate resolved:', tripStartDate);
+
     const formData = await req.formData();
     const file = formData.get('file') as File;
 
