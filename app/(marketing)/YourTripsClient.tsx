@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Plus, Link as LinkIcon, Calendar, Users, ArrowRight, Trash2 } from 'lucide-react';
+import { Plus, Link as LinkIcon, Calendar, Users, ArrowRight, Trash2, Sparkles, X } from 'lucide-react';
 import { User, Member } from '@/lib/types';
 import { deleteTripAction } from '@/app/create-trip/actions';
 
@@ -21,13 +21,30 @@ interface DbTrip {
 interface YourTripsClientProps {
   user: User;
   dbTrips: DbTrip[];
+  unpackedItems?: { id: string; label: string; category: string; trip_id: string; trip_name: string }[];
 }
 
-export default function YourTripsClient({ user, dbTrips }: YourTripsClientProps) {
+export default function YourTripsClient({ user, dbTrips, unpackedItems = [] }: YourTripsClientProps) {
   const router = useRouter();
   const [showJoinInput, setShowJoinInput] = useState(false);
   const [inviteToken, setInviteToken] = useState('');
   const [joinError, setJoinError] = useState('');
+  const [showReminder, setShowReminder] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const cookies = document.cookie.split(';');
+      const hasReminderCookie = cookies.some((c) => c.trim().startsWith('junto_show_packing_reminder='));
+      if (hasReminderCookie && unpackedItems && unpackedItems.length > 0) {
+        setShowReminder(true);
+      }
+    }
+  }, [unpackedItems]);
+
+  const handleDismissReminder = () => {
+    document.cookie = 'junto_show_packing_reminder=; Max-Age=0; path=/;';
+    setShowReminder(false);
+  };
 
   const handleDeleteTrip = async (e: React.MouseEvent, tripId: string, name: string) => {
     e.preventDefault();
@@ -166,6 +183,58 @@ export default function YourTripsClient({ user, dbTrips }: YourTripsClientProps)
       {/* Main Content Area */}
       <main className="flex-grow px-6 py-4 space-y-8 z-10 overflow-y-auto">
         
+        {/* AI Packing Reminder Banner */}
+        {showReminder && unpackedItems && unpackedItems.length > 0 && (
+          <div className="bg-ai-sage-tint border border-primary/20 rounded-2xl p-5 shadow-xs relative text-left animate-in fade-in slide-in-from-top-2 duration-300">
+            <button
+              onClick={handleDismissReminder}
+              className="absolute top-4 right-4 text-[#1f4d3f]/60 hover:text-[#1f4d3f] transition p-1 hover:bg-[#1f4d3f]/10 rounded-full"
+              title="Dismiss reminder"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <span className="font-label-caps text-[10px] text-primary font-bold tracking-wider">
+                AI Packing Reminder
+              </span>
+            </div>
+            <p className="font-body-sm text-ink-text text-xs leading-relaxed mb-3 pr-6">
+              Welcome back! Don&apos;t forget to pack your essentials for your upcoming travels:
+            </p>
+            <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+              {unpackedItems.map((item) => (
+                <div 
+                  key={item.id}
+                  className="flex items-center justify-between bg-card-cream/60 border border-border-warm-grey/50 rounded-xl px-3 py-2 text-xs"
+                >
+                  <span className="font-semibold text-ink-text truncate pr-2">{item.label}</span>
+                  <span className="text-[9px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-md font-semibold font-body-sm whitespace-nowrap">
+                    {item.trip_name}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 flex gap-2 justify-end">
+              <button
+                onClick={handleDismissReminder}
+                className="text-[10px] font-label-caps text-muted-text hover:text-ink-text px-3 py-1.5 transition font-semibold"
+              >
+                Dismiss
+              </button>
+              {unpackedItems.length > 0 && (
+                <Link
+                  href={`/trip/${unpackedItems[0].trip_id}/checklist`}
+                  onClick={handleDismissReminder}
+                  className="bg-primary hover:bg-primary-container text-surface px-4 py-1.5 rounded-xl font-label-caps text-[9px] shadow-xs font-semibold hover:scale-[1.02] transition"
+                >
+                  Go to Checklist
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Upcoming Trips */}
         <section className="space-y-3.5">
           <div className="flex justify-between items-center px-1">
