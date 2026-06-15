@@ -5,11 +5,12 @@ import WelcomeClient from './WelcomeClient';
 import YourTripsClient from './YourTripsClient';
 
 export default async function HomePage() {
+  // Always show landing page first; authenticated users redirected client-side
   let user = null;
   try {
     user = await getCurrentUser();
   } catch {
-    // DB unavailable or session error — show landing page to logged-out visitors
+    return <WelcomeClient user={null} />;
   }
 
   if (!user) {
