@@ -20,6 +20,13 @@ export async function POST(
   try {
     // Gating check
     await authorizeTripAccess(tripId);
+
+    // Fetch trip start date so the OCR prompt can resolve "Day 1" → calendar date
+    const tripRow = await query('SELECT start_date FROM trips WHERE id = $1', [tripId]);
+    const tripStartDate: string | null = tripRow.rows[0]?.start_date
+      ? String(tripRow.rows[0].start_date).split('T')[0]
+      : null;
+
     const formData = await req.formData();
     const file = formData.get('file') as File;
 
@@ -53,19 +60,25 @@ export async function POST(
 
     // 2. Call Gemini Vision
     const systemPrompt = `You are a highly precise document OCR extraction tool specialized in travel documents (flights, hotels, bookings).`;
+    const tripStartNote = tripStartDate
+      ? `\nThe trip starts on ${tripStartDate}. Use this to resolve relative day references: "Day 1" = ${tripStartDate}, "Day 2" = the next day, etc.`
+      : '';
+
     const prompt = `Analyze this travel voucher/booking confirmation document.
 Extract the relevant details into a structured JSON format.
 
 First, determine the category ('flight', 'stay', 'activity', 'itinerary', or 'other').
-Use 'itinerary' when the document is a MULTI-ITEM trip plan covering more than one booking type (e.g. flights AND a hotel AND day-by-day activities). Use the single categories only for a single booking voucher.
+Use 'itinerary' when the document is a MULTI-ITEM trip plan covering more than one booking type (e.g. flights AND a hotel AND day-by-day activities), OR when it is a day-wise/day-by-day schedule listing activities across multiple days. Use the single categories only for a single booking voucher.
 Then extract the following fields depending on the category:
 - flight: a "segments" ARRAY. The document may contain multiple legs (e.g. a round trip or a connecting itinerary) — extract EVERY leg as a separate segment. Each segment has: flightNo, departureTime (format: HH:MM or HH:MM AM/PM), departureDate (YYYY-MM-DD), arrivalTime (HH:MM or HH:MM AM/PM, if shown), arrivalDate (YYYY-MM-DD, if shown — may differ from departureDate for overnight/long-haul), airline, pnr, departureAirport (IATA code), arrivalAirport (IATA code). Always return "segments" as an array, even if there is only one flight.
 - stay: hotelName, checkInDate, checkOutDate, confirmationNo, address
 - activity: activityName, date, time, location, confirmationNo
 - itinerary: { tripName, flights: [ ...same shape as flight segments... ], stays: [ { hotelName, checkInDate, checkOutDate, address } ], activities: [ { activityName, date (YYYY-MM-DD), time (HH:MM or HH:MM AM/PM), location } ] }. Extract EVERY flight leg, stay, and activity you find. For airports, ALWAYS use the IATA code (e.g. 'DEL', 'NAG', 'JDH').
+  IMPORTANT for day-wise itineraries: if the document lists activities under "Day 1", "Day 2" headings (with or without calendar dates), assign each activity the correct YYYY-MM-DD date. If the document shows a calendar date alongside the day heading (e.g. "Day 1 - 24 Jun"), use that date. If only a day number is shown, calculate the date from the trip start.${tripStartNote}
+  Every activity MUST have a date field set to a valid YYYY-MM-DD string — do not omit it.
 - other: title, date, description
 
-For any date field, extract it exactly as it appears.
+For any date field, extract it exactly as it appears and convert to YYYY-MM-DD format.
 Also, analyze if the dates are written in an ambiguous numerical format (e.g. DD/MM/YYYY or MM/DD/YYYY where both Day and Month numbers are 12 or less, such as '05/06/2026', meaning it could be either May 6 or June 5).
 Set ambiguousDateDetected to true if such ambiguity exists, otherwise set it to false.
 
