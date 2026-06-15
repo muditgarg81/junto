@@ -40,8 +40,13 @@ export async function GET(req: NextRequest) {
   const toDelete = dupsResult.rows.filter((r: any) => r.rn > 1);
   const toKeep   = dupsResult.rows.filter((r: any) => r.rn === 1);
 
+  const byType: Record<string, number> = {};
+  for (const r of dupsResult.rows) {
+    byType[r.type] = (byType[r.type] || 0) + 1;
+  }
+
   if (toDelete.length === 0) {
-    return NextResponse.json({ message: 'No duplicates found.', total: dupsResult.rows.length });
+    return NextResponse.json({ message: 'No duplicates found.', total: dupsResult.rows.length, byType });
   }
 
   if (!confirm) {

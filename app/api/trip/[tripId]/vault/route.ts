@@ -1,6 +1,7 @@
 'use strict';
 
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { query } from '@/lib/db';
 import { authorizeTripAccess, HttpError } from '@/lib/authz';
 import { verifyCsrf } from '@/lib/csrf';
@@ -161,6 +162,7 @@ export async function POST(
       }
     }
 
+    revalidatePath(`/trip/${tripId}/itinerary`);
     return NextResponse.json({ success: true, vaultItemId });
 
   } catch (err: any) {
