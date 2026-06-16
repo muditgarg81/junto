@@ -13,8 +13,13 @@ function verifySignature(
   signature: string | null
 ): boolean {
   if (!signature) return false;
-  
-  const secret = process.env.PARTNER_POSTBACK_SECRET || 'junto-partner-postback-fallback-secret-2026';
+
+  // Per-partner secret takes precedence; fall back to shared secret.
+  // Set PARTNER_POSTBACK_SECRET_BOOKING, _VIATOR, _AIRALO, etc. in env.
+  const perPartnerKey = `PARTNER_POSTBACK_SECRET_${partner.toUpperCase().replace(/[^A-Z0-9]/g, '_')}`;
+  const secret = process.env[perPartnerKey] || process.env.PARTNER_POSTBACK_SECRET;
+  if (!secret) return false; // Reject if no secret is configured at all
+
   const payload = `${partner}:${subId}:${amount}:${commission}`;
   const expectedSignature = crypto
     .createHmac('sha256', secret)

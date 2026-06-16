@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { APP_NAME, APP_TAGLINE } from '@/lib/constants';
 import { Sparkles, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
@@ -9,12 +9,11 @@ import { Sparkles, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 interface OnboardingClientProps {
   initialEmail: string;
   initialName: string;
+  redirect: string;
 }
 
-function OnboardingForm({ initialEmail, initialName }: OnboardingClientProps) {
+function OnboardingForm({ initialEmail, initialName, redirect }: OnboardingClientProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/';
 
   const [name, setName] = useState(initialName || '');
   const [email, setEmail] = useState(initialEmail || '');
@@ -261,17 +260,8 @@ function OnboardingForm({ initialEmail, initialName }: OnboardingClientProps) {
   );
 }
 
-export default function OnboardingClient({ initialEmail, initialName }: OnboardingClientProps) {
+export default function OnboardingClient({ initialEmail, initialName, redirect }: OnboardingClientProps) {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-surface font-body-md text-muted-text">
-        <div className="text-center space-y-2">
-          <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
-          <p>Loading profile setup...</p>
-        </div>
-      </div>
-    }>
-      <OnboardingForm initialEmail={initialEmail} initialName={initialName} />
-    </Suspense>
+    <OnboardingForm initialEmail={initialEmail} initialName={initialName} redirect={redirect} />
   );
 }

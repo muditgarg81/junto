@@ -85,6 +85,13 @@ export async function POST(req: NextRequest) {
       secure: true,
       sameSite: 'lax',
     });
+    cookieStore.set('junto_show_packing_reminder', 'true', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: false,
+      secure: true,
+      sameSite: 'lax',
+    });
 
     return NextResponse.json({ success: true, user });
   } catch (err: any) {

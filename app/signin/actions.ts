@@ -39,6 +39,13 @@ export async function signinAction(authId: string, email: string, name: string) 
       secure: true,
       sameSite: 'lax',
     });
+    cookieStore.set('junto_show_packing_reminder', 'true', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: false,
+      secure: true,
+      sameSite: 'lax',
+    });
     return { success: true, hasProfile: true };
   } else {
     cookieStore.delete('junto_user_id');

@@ -4,9 +4,16 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import OnboardingClient from './OnboardingClient';
 
-export default async function OnboardingPage() {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function OnboardingPage({ searchParams }: PageProps) {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get('junto_auth_session')?.value;
+  const resolvedSearchParams = await searchParams;
+  const redirectPath = (resolvedSearchParams.redirect as string) || '/';
+  
   let initialEmail = '';
   let initialName = '';
 
@@ -26,6 +33,7 @@ export default async function OnboardingPage() {
     <OnboardingClient 
       initialEmail={initialEmail}
       initialName={initialName}
+      redirect={redirectPath}
     />
   );
 }

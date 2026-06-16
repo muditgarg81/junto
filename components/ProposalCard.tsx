@@ -139,7 +139,7 @@ export default function ProposalCard({
               </div>
 
               {/* Vote Buttons (Confirm / Object) */}
-              <div className="flex items-center justify-between gap-3 pt-1">
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
                 <div className="flex gap-2">
                   {/* Confirm Button */}
                   <button

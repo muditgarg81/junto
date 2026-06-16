@@ -117,9 +117,9 @@ export default async function PlanPage({ params }: PageProps) {
   const checklistItemsRes = await query(
     `SELECT * FROM checklist_items 
      WHERE trip_id = $1 
-       AND (category = 'shared' OR assigned_to = $2)
+       AND (category = 'shared' OR assigned_to IN (SELECT id FROM members WHERE user_id = $2 OR auth_id = $3))
      ORDER BY created_at ASC`,
-    [tripId, authMember.id]
+    [tripId, authUser.id, authUser.auth_id]
   );
   const checklistItems: ChecklistItem[] = checklistItemsRes.rows;
 
@@ -166,10 +166,23 @@ export default async function PlanPage({ params }: PageProps) {
     photoUrl: authUser.photo_url || null,
   };
 
+  // Find member IDs belonging to the logged-in user for this trip to resolve personal packing items
+  const userMembersRes = await query(
+    'SELECT id FROM members WHERE trip_id = $1 AND (user_id = $2 OR auth_id = $3)',
+    [tripId, authUser.id, authUser.auth_id]
+  );
+  const userMemberIds = userMembersRes.rows.map(r => r.id);
+
+  const myUnpackedItems = checklistItems.filter(item => 
+    !item.done && 
+    (item.category === 'personal' || (item.assigned_to && userMemberIds.includes(item.assigned_to)))
+  );
+
   return (
     <PlanClient
       initialState={initialState}
       currentMember={currentMember}
+      myUnpackedItems={myUnpackedItems}
     />
   );
 }

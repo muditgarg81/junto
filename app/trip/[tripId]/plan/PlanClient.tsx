@@ -15,9 +15,10 @@ import { EmergencyShieldButton } from '@/components/EmergencyShieldButton';
 interface PlanClientProps {
   initialState: TripState;
   currentMember: { memberId: string; memberName: string; role: string; photoUrl: string | null } | null;
+  myUnpackedItems?: any[];
 }
 
-export default function PlanClient({ initialState, currentMember }: PlanClientProps) {
+export default function PlanClient({ initialState, currentMember, myUnpackedItems = [] }: PlanClientProps) {
   const router = useRouter();
   const [data, setData] = useState<TripState>(initialState);
   const [showModal, setShowModal] = useState(false);
@@ -26,6 +27,22 @@ export default function PlanClient({ initialState, currentMember }: PlanClientPr
   const [options, setOptions] = useState<string[]>(['', '']);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedDecidedDecision, setSelectedDecidedDecision] = useState<(Decision & { options: Option[]; votes: any[] }) | null>(null);
+  const [showReminder, setShowReminder] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const cookies = document.cookie.split(';');
+      const hasReminderCookie = cookies.some((c) => c.trim().startsWith('junto_show_packing_reminder='));
+      if (hasReminderCookie && myUnpackedItems && myUnpackedItems.length > 0) {
+        setShowReminder(true);
+      }
+    }
+  }, [myUnpackedItems]);
+
+  const handleDismissReminder = () => {
+    document.cookie = 'junto_show_packing_reminder=; Max-Age=0; path=/;';
+    setShowReminder(false);
+  };
 
   const { trip, members, decisions } = data;
   const tripId = trip.id;
@@ -119,7 +136,10 @@ export default function PlanClient({ initialState, currentMember }: PlanClientPr
         }),
       });
 
-      if (!res.ok) throw new Error('Locking decision failed');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'Locking decision failed');
+      }
 
       // Refresh data
       const syncRes = await fetch(`/api/trip/${tripId}/sync`);
@@ -320,6 +340,56 @@ export default function PlanClient({ initialState, currentMember }: PlanClientPr
             )}
           </div>
         </div>
+
+        {/* AI Packing Reminder Banner */}
+        {showReminder && myUnpackedItems && myUnpackedItems.length > 0 && (
+          <div className="bg-ai-sage-tint border border-primary/20 rounded-2xl p-5 shadow-xs relative text-left animate-in fade-in slide-in-from-top-2 duration-300">
+            <button
+              onClick={handleDismissReminder}
+              className="absolute top-4 right-4 text-[#1f4d3f]/60 hover:text-[#1f4d3f] transition p-1 hover:bg-[#1f4d3f]/10 rounded-full"
+              title="Dismiss reminder"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <span className="font-label-caps text-[10px] text-primary font-bold tracking-wider">
+                AI Packing Reminder
+              </span>
+            </div>
+            <p className="font-body-sm text-ink-text text-xs leading-relaxed mb-3 pr-6">
+              Welcome back! Don&apos;t forget to pack your essentials for this trip:
+            </p>
+            <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+              {myUnpackedItems.map((item) => (
+                <div 
+                  key={item.id}
+                  className="flex items-center justify-between bg-card-cream/60 border border-border-warm-grey/50 rounded-xl px-3 py-2 text-xs"
+                >
+                  <span className="font-semibold text-ink-text truncate pr-2">{item.label}</span>
+                  <span className="text-[9px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-md font-semibold font-body-sm whitespace-nowrap">
+                    {item.category === 'shared' ? 'Shared' : 'Personal'}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 flex gap-2 justify-end">
+              <button
+                onClick={handleDismissReminder}
+                className="text-[10px] font-label-caps text-muted-text hover:text-ink-text px-3 py-1.5 transition font-semibold"
+              >
+                Dismiss
+              </button>
+              <Link
+                href={`/trip/${tripId}/checklist`}
+                onClick={handleDismissReminder}
+                className="bg-primary hover:bg-primary-container text-surface px-4 py-1.5 rounded-xl font-label-caps text-[9px] shadow-xs font-semibold hover:scale-[1.02] transition"
+              >
+                Go to Checklist
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* DECIDED SECTION */}
         <div className="space-y-3">

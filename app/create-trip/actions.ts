@@ -25,13 +25,14 @@ export async function createTripAction(prevState: any, formData: FormData) {
     }
 
     const tripId = crypto.randomUUID();
-    const inviteToken = crypto.randomBytes(16).toString('hex');
+    const inviteToken = crypto.randomBytes(32).toString('hex'); // 256-bit
+    const inviteTokenExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
 
     // 1. Insert Trip
     await query(
-      `INSERT INTO trips (id, name, status, base_currency, invite_token)
-       VALUES ($1, $2, 'planning', $3, $4)`,
-      [tripId, tripName, baseCurrency, inviteToken]
+      `INSERT INTO trips (id, name, status, base_currency, invite_token, invite_token_expires_at)
+       VALUES ($1, $2, 'planning', $3, $4, $5)`,
+      [tripId, tripName, baseCurrency, inviteToken, inviteTokenExpiresAt]
     );
 
     // 2. Insert Creator as Confirmed Member with organizer role, linked to user_id

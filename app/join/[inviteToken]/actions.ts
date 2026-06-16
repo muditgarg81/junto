@@ -17,6 +17,11 @@ export async function joinTripAction(inviteToken: string, status: 'confirmed' | 
       return { error: 'Invalid invite link or token.' };
     }
     const trip = tripRes.rows[0];
+
+    // Reject expired invite tokens (legacy rows with NULL expiry are allowed through)
+    if (trip.invite_token_expires_at && new Date(trip.invite_token_expires_at) < new Date()) {
+      return { error: 'This invite link has expired. Ask the trip organiser for a new one.' };
+    }
     const tripId = trip.id;
 
     // 2. Check if this user is already a member of the trip

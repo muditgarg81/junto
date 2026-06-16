@@ -57,8 +57,8 @@ export async function importChecklistAction(targetTripId: string, sourceTripId: 
     const sourceItemsRes = await query(
       `SELECT label, category FROM checklist_items 
        WHERE trip_id = $1 
-         AND (category = 'shared' OR assigned_to = $2)`,
-      [sourceTripId, memberSource.rows[0].id]
+         AND (category = 'shared' OR assigned_to IN (SELECT id FROM members WHERE user_id = $2 OR auth_id = $3))`,
+      [sourceTripId, user.id, user.auth_id]
     );
     const sourceItems = sourceItemsRes.rows;
 
@@ -66,8 +66,8 @@ export async function importChecklistAction(targetTripId: string, sourceTripId: 
     const existingItemsRes = await query(
       `SELECT label, category FROM checklist_items 
        WHERE trip_id = $1 
-         AND (category = 'shared' OR assigned_to = $2)`,
-      [targetTripId, memberTarget.rows[0].id]
+         AND (category = 'shared' OR assigned_to IN (SELECT id FROM members WHERE user_id = $2 OR auth_id = $3))`,
+      [targetTripId, user.id, user.auth_id]
     );
     const existingSet = new Set(
       existingItemsRes.rows.map(item => `${item.label.toLowerCase()}:${item.category}`)

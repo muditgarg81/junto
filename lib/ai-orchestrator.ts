@@ -5,6 +5,66 @@ import { completeWithUsage } from '@/lib/llm';
 import { logAiCallMetrics, getTripMetrics } from './metrics';
 import { Trip, Member, Decision, Option, Vote, Message, Expense } from '@/lib/types';
 
+// Destinations wholly within India (lowercase). Used to determine domestic vs international.
+const INDIA_DESTINATIONS = [
+  'goa', 'india', 'mumbai', 'delhi', 'new delhi', 'jaipur', 'manali', 'kerala',
+  'bangalore', 'bengaluru', 'hyderabad', 'chennai', 'kolkata', 'pune', 'udaipur',
+  'rishikesh', 'shimla', 'ooty', 'darjeeling', 'coorg', 'ladakh', 'andaman',
+  'lakshadweep', 'agra', 'varanasi', 'amritsar', 'mysore', 'hampi', 'kochi',
+  'thiruvananthapuram', 'ahmedabad', 'surat', 'nagpur', 'bhopal', 'indore',
+  'chandigarh', 'dehradun', 'nainital', 'mussoorie', 'mcleod ganj', 'spiti',
+];
+
+function isInternationalDestination(destination: string): boolean {
+  const dest = destination.toLowerCase();
+  return !INDIA_DESTINATIONS.some(d => dest.includes(d));
+}
+
+// Plug/voltage info by destination country keyword
+function getPowerInfo(destination: string): string {
+  const dest = destination.toLowerCase();
+  if (dest.includes('uk') || dest.includes('england') || dest.includes('london') || dest.includes('scotland')) {
+    return 'The UK uses Type G plugs (3-pin rectangular) at 230V/50Hz. You\'ll need a Type G adapter for Indian devices.';
+  }
+  if (dest.includes('usa') || dest.includes('united states') || dest.includes('america') || dest.includes('canada')) {
+    return 'The US/Canada uses Type A/B plugs (flat pins) at 120V/60Hz. Indian devices (230V) need both an adapter and a voltage converter unless they are dual-voltage (check the label).';
+  }
+  if (dest.includes('japan')) {
+    return 'Japan uses Type A plugs (flat pins) at 100V/60Hz. Most modern chargers and electronics handle 100–240V automatically, but check your device labels. You\'ll need a Type A adapter.';
+  }
+  if (dest.includes('australia') || dest.includes('new zealand')) {
+    return 'Australia/NZ uses Type I plugs (angled flat pins) at 230V/50Hz. You\'ll need a Type I adapter for Indian devices.';
+  }
+  if (
+    dest.includes('france') || dest.includes('germany') || dest.includes('italy') ||
+    dest.includes('spain') || dest.includes('europe') || dest.includes('paris') ||
+    dest.includes('rome') || dest.includes('berlin') || dest.includes('barcelona') ||
+    dest.includes('amsterdam') || dest.includes('venice') || dest.includes('prague') ||
+    dest.includes('vienna') || dest.includes('zurich') || dest.includes('switzerland')
+  ) {
+    return 'Europe uses Type C/E/F plugs (round pins) at 230V/50Hz. Indian Type D/M plugs don\'t fit — pack a Type C adapter (widely available and inexpensive).';
+  }
+  if (dest.includes('thailand') || dest.includes('singapore') || dest.includes('malaysia') || dest.includes('indonesia') || dest.includes('vietnam') || dest.includes('bali')) {
+    return 'Most of Southeast Asia uses Type A, B, or C plugs at 220–240V/50Hz. A universal travel adapter is recommended.';
+  }
+  if (dest.includes('dubai') || dest.includes('uae') || dest.includes('abu dhabi')) {
+    return 'The UAE uses Type G plugs (same as the UK) at 220–240V/50Hz. You\'ll need a Type G adapter.';
+  }
+  // Generic international
+  return `Check the plug type for ${destination} — voltage is likely 220–240V (compatible with Indian devices) but the socket shape may differ. A universal travel adapter is a safe bet.`;
+}
+
+// Extract a destination mentioned in a message (for power/connectivity overrides)
+function extractDestinationFromMessage(body: string): string | null {
+  // Match "for <Destination>", "in <Destination>", "to <Destination>" — capitalised word(s)
+  const m = body.match(/\b(?:for|in|to|visiting|going to|travelling to|traveling to)\s+([A-Z][a-zA-Z\s]{2,25}?)(?:\?|,|\.|$)/);
+  if (!m) return null;
+  const candidate = m[1].trim();
+  // Reject common false positives
+  if (['the', 'a', 'an', 'our', 'my', 'this', 'that'].includes(candidate.toLowerCase())) return null;
+  return candidate;
+}
+
 // Pre-filter to skip trivial human messages and reactions
 function isTrivialMessage(body: string): boolean {
   const clean = body.trim().toLowerCase();
@@ -164,6 +224,52 @@ export async function runAiOrchestrator(tripId: string, newMessageId: string) {
 
     const balances = await getSummaryBalances(tripId);
 
+    // Fetch itinerary items
+    const itineraryItemsRes = await query(
+      'SELECT * FROM itinerary_items WHERE trip_id = $1 ORDER BY date ASC, time ASC',
+      [tripId]
+    );
+    const itineraryItems = itineraryItemsRes.rows;
+
+    // Fetch dates payload
+    const datesRes = await query(`
+      SELECT o.payload
+      FROM decisions d
+      JOIN options o ON d.resolved_option_id = o.id
+      WHERE d.trip_id = $1 AND d.type = 'dates' AND d.status = 'locked'
+      LIMIT 1
+    `, [tripId]);
+    
+    let startDate: string | undefined;
+    let endDate: string | undefined;
+    if (datesRes.rows.length > 0) {
+      let payload = datesRes.rows[0].payload;
+      if (typeof payload === 'string') {
+        try { payload = JSON.parse(payload); } catch (e) {}
+      }
+      startDate = payload?.startDate;
+      endDate = payload?.endDate;
+    }
+
+    // Fetch destination label
+    let destination = 'your destination';
+    const destRes = await query(`
+      SELECT o.label 
+      FROM decisions d
+      JOIN options o ON d.resolved_option_id = o.id
+      WHERE d.trip_id = $1 AND d.type = 'destination' AND d.status = 'locked'
+      LIMIT 1
+    `, [tripId]);
+    if (destRes.rows.length > 0) {
+      destination = destRes.rows[0].label;
+    }
+
+    const { checkAllItineraryIssues } = require('./itinerary-checker');
+    const itineraryIssues = checkAllItineraryIssues(itineraryItems, startDate, endDate);
+
+    // Compute domestic/international flag once for concierge intents
+    const isInternational = isInternationalDestination(destination);
+
     // 3. Serialize State for LLM context
     const serializedRoster = members
       .map((m) => `- Member: ${m.name} (ID: ${m.id}, Status: ${m.status}, Roles: ${m.roles.join(', ') || 'none'})`)
@@ -198,9 +304,18 @@ export async function runAiOrchestrator(tripId: string, newMessageId: string) {
       .map((b) => `- ${b.name}: ${b.balance >= 0 ? '+' : ''}${b.balance} INR`)
       .join('\n');
 
+    const serializedItinerary = itineraryItems
+      .map((item) => `- ${item.date} ${item.time || ''}: [${item.type}] ${item.title} (Location: ${item.location || 'none'})`)
+      .join('\n') || 'None';
+
+    const serializedItineraryIssues = itineraryIssues
+      .map((iss: any) => `- [${iss.severity.toUpperCase()}] ${iss.message}`)
+      .join('\n') || 'None (no gaps, overlaps, or connection issues detected)';
+
     const userPrompt = `
 CURRENT TRIP STATE:
 Trip Name: ${trip.name}
+Destination: ${destination}
 Base Currency: ${trip.base_currency}
 
 MEMBER ROSTER:
@@ -215,10 +330,16 @@ ${serializedOpen}
 CURRENT BALANCES:
 ${serializedBalances}
 
+CURRENT ITINERARY:
+${serializedItinerary}
+
+CURRENT ITINERARY PLANNING CONFLICTS / FAILURES:
+${serializedItineraryIssues}
+
 RECENT CHAT LOG:
 ${serializedMessages}
 
-Observe the conversation, update roster status if someone responds to invitations (e.g. "I am in" -> confirm, "I can't make it" -> out), check for locked decisions contradictions (Conflicts), flag converging plans (Emerging Decisions), or log draft expenses (Expenses). Call Gemini API now and return strict JSON output.
+Observe the conversation, update roster status if someone responds to invitations (e.g. "I am in" -> confirm, "I can't make it" -> out), check for locked decisions contradictions (Conflicts), flag converging plans (Emerging Decisions), log draft expenses (Expenses), or act as a helpful concierge (Concierge / Flight Track / Itinerary Warning). Call Gemini API now and return strict JSON output.
 `;
 
     // 4. Custom strict JSON schema
@@ -228,7 +349,7 @@ Observe the conversation, update roster status if someone responds to invitation
         intervene: { type: 'BOOLEAN' },
         trigger: {
           type: 'STRING',
-          enum: ['none', 'mention', 'conflict', 'emerging_decision', 'expense', 'checklist_assignment'],
+          enum: ['none', 'mention', 'conflict', 'emerging_decision', 'expense', 'checklist_assignment', 'concierge', 'flight_track', 'itinerary_warning', 'connectivity', 'power', 'itinerary_check', 'trip_qa', 'concierge_other'],
         },
         message: { type: 'STRING' },
         proposalDraft: {
@@ -296,7 +417,7 @@ Observe the conversation, update roster status if someone responds to invitation
           },
         },
       },
-      required: ['intervene', 'trigger'],
+      required: ['intervene', 'trigger', 'message'],
     };
 
     // System prompt verbatim matching brief §8.3
@@ -305,11 +426,10 @@ planning a trip together in a shared chat. You are a quiet, helpful member of th
 NOT a chatbot they are talking to.
 
 YOUR JOB: keep the trip's structured state accurate and help the group reach and record
-decisions. You PROPOSE, CHECK, TALLY, and RECORD. You NEVER decide for the group and you
-never cast a vote.
+decisions, while acting as a personal concierge for the users at all times.
 
 DEFAULT TO SILENCE. Most messages need no response from you. Only speak when one of these
-FOUR triggers fires:
+triggers fires:
   1. MENTION  — someone directly addresses you (e.g. "@ai", "hey assistant").
   2. CONFLICT — a message contradicts something the group has already LOCKED (not merely
                 discussed). Flag it briefly and non-blockingly. Never flag a disagreement
@@ -321,6 +441,41 @@ FOUR triggers fires:
                 it into a proposal to amend the plan. Do not pre-decide which option wins.
   4. CHECKLIST_ASSIGNMENT — someone clearly assigns packing or gear responsibility to a person 
                 (e.g. "Vriti please bring the bluetooth speaker", "Karan can you get sunscreen").
+  5. CONCIERGE — a user mentions any medical problem/feeling sick/hurt/needs doctor/hospital (trigger this and suggest nearby clinics/hospitals for the destination) OR a user discusses dining/dinner/lunch/eating/restaurant plans (trigger this and suggest famous eateries/restaurants nearby the destination).
+  6. FLIGHT_TRACK — a user mentions flight schedule, flight status, flight updates, or connecting flights. Alert them on the schedule or mention flight details.
+  7. ITINERARY_WARNING — a user discusses timeline, itinerary, schedule, dates, or travel plans AND there is a warning/error listed in the "CURRENT ITINERARY PLANNING CONFLICTS / FAILURES" context. Politely alert them to the planning gaps/overlaps/tight connections.
+  8. CONNECTIVITY — a user asks about SIM cards, mobile data, roaming, eSIM, internet access, or network coverage at the destination. Note: trip is ${isInternational ? 'INTERNATIONAL' : 'DOMESTIC (within India)'}.
+  9. POWER — a user asks about plug adapters, power adapters, voltage, chargers, electrical outlets, or whether they need a converter. Note: trip is ${isInternational ? 'INTERNATIONAL' : 'DOMESTIC (within India)'}.
+  10. ITINERARY_CHECK — a user explicitly asks to check, review, audit, or verify the itinerary or travel schedule (e.g. "check our itinerary", "does the plan look ok?", "review the schedule").
+  11. TRIP_QA — a user directly asks you (@ai) a general travel question about the destination that doesn't match another trigger (e.g. visa requirements, currency, local customs, safety, best time to visit, packing tips specific to the destination).
+  12. CONCIERGE_OTHER — a user asks about local transport options (not flights), ATMs, pharmacies, currency exchange, local emergency numbers, or other practical local-services questions.
+
+Destination-Specific Concierge Context:
+Use the destination ("${destination}") to tailor your suggestions:
+- Goa:
+  * Medical: Manipal Hospital (Dona Paula), Asilo Hospital (Mapusa), Vintage Hospital (Panaji). Emergency: 108.
+  * Dining: Gunpowder (Assagao - Coastal/South Indian), Britto's (Baga - Seafood), Mum's Kitchen (Panaji - Goan cuisine), Curlies (Anjuna).
+  * Transport/ATM: Taxis and bike rentals widely available. ATMs in Calangute, Panaji, and Margao. Use GoaMiles app for taxis.
+  * Pharmacy: MedPlus and Apollo Pharmacy branches across North Goa.
+- Paris:
+  * Medical: American Hospital of Paris, Hôpital Lariboisière, Hôpital Necker. Emergency: 15 (SAMU) or 112.
+  * Dining: Le Relais de l'Entrecôte (Steak frites), Bouillon Chartier (Traditional French), Angelina (Hot chocolate & pastry).
+  * Transport/ATM: Metro is the easiest way around. ATMs (DAB) at every arrondissement. Buy a Navigo Easy card.
+  * Pharmacy: Green cross sign = pharmacy; common across all neighbourhoods.
+- Venice:
+  * Medical: Ospedale Civile SS. Giovanni e Paolo. Emergency: 118 or 112.
+  * Dining: Trattoria Al Gatto Nero (Burano - Seafood), Osteria Alle Testiere (Seafood), Caffè Florian (St. Mark's Sq).
+  * Transport/ATM: Vaporetto (water bus) is the main transport. ATMs near Piazzale Roma and Rialto. No cars in the city.
+  * Pharmacy: Farmacia (green cross). 24h: Farmacia Internazionale Italo-Inglese near Piazza San Marco.
+- Rome:
+  * Medical: Salvator Mundi International Hospital, Policlinico Umberto I. Emergency: 118 or 112.
+  * Dining: Da Enzo al 29 (Trastevere - Cacio e Pepe), Bonci Pizzarium (Pizza slice), Felice a Testaccio (Traditional Roman).
+  * Transport/ATM: Metro lines A & B plus buses. ATMs (Bancomat) across the city centre. Buy a 48h/72h transit pass.
+  * Pharmacy: Farmacia (green cross). 24h: Farmacia della Stazione near Termini.
+- Other/Default:
+  * Medical: Recommend checking local emergency SOS numbers or seeking nearby primary health centers. Always carry travel insurance details.
+  * Dining: Offer to search local city maps for nearby highly-rated bistros/eateries.
+  * Transport/ATM/Pharmacy: Recommend checking Google Maps for the nearest services at ${destination}.
 
 Also detect EXPENSE mentions ("I paid 4000 for the cab, split me/Vriti/Aditi") and prepare
 a DRAFT expense for the payer to confirm — never log money automatically.
@@ -412,6 +567,15 @@ OUTPUT: respond with ONLY a JSON object matching the provided schema. No prose o
         resolvedMember = members.find(
           (m) => (m.name || '').toLowerCase() === assigneeId.toLowerCase()
         );
+        if (!resolvedMember) {
+          resolvedMember = members.find(
+            (m) => {
+              const mName = (m.name || '').toLowerCase();
+              const qName = assigneeId.toLowerCase();
+              return mName.startsWith(qName) || qName.startsWith(mName) || mName.includes(qName);
+            }
+          );
+        }
       }
       
       if (resolvedMember) {
@@ -450,17 +614,35 @@ OUTPUT: respond with ONLY a JSON object matching the provided schema. No prose o
 
       // Resolve PaidBy (can be ID or Name)
       let payerId = draft.paidBy;
-      const payerMember = members.find(
+      let payerMember = members.find(
         (m) => (m.name || '').toLowerCase() === draft.paidBy.toLowerCase() || m.id === draft.paidBy
       );
+      if (!payerMember && draft.paidBy) {
+        payerMember = members.find(
+          (m) => {
+            const mName = (m.name || '').toLowerCase();
+            const qName = draft.paidBy.toLowerCase();
+            return mName.startsWith(qName) || qName.startsWith(mName) || mName.includes(qName);
+          }
+        );
+      }
       if (payerMember) payerId = payerMember.id;
 
       // Resolve split members
       const splitMemberIds: string[] = [];
       draft.splitWith.forEach((nameOrId: string) => {
-        const match = members.find(
+        let match = members.find(
           (m) => (m.name || '').toLowerCase() === nameOrId.toLowerCase() || m.id === nameOrId
         );
+        if (!match && nameOrId) {
+          match = members.find(
+            (m) => {
+              const mName = (m.name || '').toLowerCase();
+              const qName = nameOrId.toLowerCase();
+              return mName.startsWith(qName) || qName.startsWith(mName) || mName.includes(qName);
+            }
+          );
+        }
         if (match) splitMemberIds.push(match.id);
       });
 
@@ -510,6 +692,47 @@ OUTPUT: respond with ONLY a JSON object matching the provided schema. No prose o
           splitWith: splitMemberIds,
         };
       }
+    }
+
+    // Deterministic handlers for new reactive concierge intents
+    // For power/connectivity, prefer a destination mentioned in the message over the trip destination
+    const msgDestination = extractDestinationFromMessage(newMessage.body) ?? destination;
+    const msgIsInternational = isInternationalDestination(msgDestination);
+
+    if (result.trigger === 'connectivity') {
+      if (!msgIsInternational) {
+        result.message = `Your Indian SIM (Jio/Airtel/Vi) will work fine in ${msgDestination} — no roaming needed. Make sure mobile data is enabled and you have an active data pack. For remote areas, Jio tends to have the broadest coverage.`;
+      } else {
+        result.message = `For ${msgDestination}, your Indian SIM will likely charge international roaming rates. The easiest option is to grab a local SIM on arrival, or get an eSIM before you leave — **Airalo** (airalo.com) offers affordable destination-specific eSIMs you can activate from your phone. Check that your device is unlocked before the trip.`;
+      }
+    }
+
+    if (result.trigger === 'power') {
+      if (!msgIsInternational) {
+        result.message = `No adapter needed — ${msgDestination} uses the same Indian plugs and 230V supply. Just pack your chargers as usual.`;
+      } else {
+        result.message = getPowerInfo(msgDestination);
+      }
+    }
+
+    if (result.trigger === 'itinerary_check') {
+      const issues = checkAllItineraryIssues(itineraryItems, startDate, endDate);
+      if (issues.length === 0) {
+        result.message = `✅ Itinerary looks good! No gaps, overlaps, or tight connections detected across ${itineraryItems.length} item${itineraryItems.length !== 1 ? 's' : ''}.`;
+      } else {
+        const lines = issues.map((iss: any) => `${iss.severity === 'error' ? '❌' : '⚠️'} ${iss.message}`);
+        result.message = `Here's what I found in your itinerary:\n${lines.join('\n')}`;
+      }
+    }
+
+    // Sanitize AI message before writing to DB: strip null bytes and HTML tags,
+    // cap length to prevent runaway LLM output inflating message rows.
+    if (result.message) {
+      result.message = result.message
+        .replace(/\0/g, '')           // null bytes
+        .replace(/<[^>]*>/g, '')      // HTML tags (prompt injection guard)
+        .trim()
+        .slice(0, 4000);              // hard cap
     }
 
     // 8. Insert AI Response message

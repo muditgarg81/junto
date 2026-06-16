@@ -94,6 +94,11 @@ export async function POST(
       // 1. Authorize member access
       const { member } = await authorizeTripAccess(tripId);
       
+      // Enforce that only trip creators (organizers) can lock decisions
+      if (!member.roles.includes('organizer')) {
+        return NextResponse.json({ error: 'The plan creator can only lock decision.' }, { status: 403 });
+      }
+
       const { decisionId, optionId } = body;
 
       if (!decisionId || !optionId) {
