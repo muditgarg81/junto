@@ -1,0 +1,41 @@
+name: Build Android Release Bundle
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create placeholder webDir (unused fallback — app loads live from Vercel)
+        run: mkdir -p out && echo '<html></html>' > out/index.html
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+
+      - name: Build release App Bundle
+        working-directory: android
+        run: ./gradlew bundleRelease --no-daemon
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: junto-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
