@@ -33,6 +33,37 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
   const [loading, setLoading] = useState(false);
   const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [magicLinkSent, setMagicLinkSent] = useState(false);
+  const [googleEmail, setGoogleEmail] = useState('');
+  const [googleName, setGoogleName] = useState('');
+
+  // Handle Mock Google Sign In Submit
+  const handleGoogleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!googleEmail.trim()) return;
+
+    const email = googleEmail.trim().toLowerCase();
+    let name = googleName.trim();
+    if (!name) {
+      const mockName = email.split('@')[0];
+      name = mockName.charAt(0).toUpperCase() + mockName.slice(1);
+    }
+
+    let authId = `google-${email.replace(/[^a-z0-9]/g, '-')}`;
+    
+    // Deterministic mapping to seeded DB test profiles
+    if (email === 'muditgarg81@gmail.com') {
+      authId = 'default-mudit-garg';
+    } else if (email === 'vriti@gmail.com') {
+      authId = 'default-vriti';
+    } else if (email === 'vritigarg8@gmail.com') {
+      authId = 'user-newtraveler';
+    } else if (email === 'newtraveler@gmail.com') {
+      authId = 'default-new-traveler';
+    }
+
+    await handleGoogleSignIn(authId, email, name);
+  };
+
 
   // Handle Mock Google Sign In
   const handleGoogleSignIn = async (authId: string, email: string, name: string) => {
@@ -196,65 +227,49 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
           <div className="bg-surface max-w-sm w-full rounded-2xl border border-border-warm-grey shadow-lg p-6 space-y-5 text-left animate-fade-in">
             <div>
               <h3 className="font-headline-sm text-ink-text font-bold">Sign in with Google</h3>
-              <p className="text-xs text-muted-text font-body-sm mt-0.5">Choose an account to continue to Junto</p>
+              <p className="text-xs text-muted-text font-body-sm mt-0.5">Use your Google Account</p>
             </div>
             
-            <div className="space-y-2.5">
-              {/* Account 1: Seeded user Mudit Garg */}
-              <button
-                onClick={() => handleGoogleSignIn('default-mudit-garg', 'muditgarg81@gmail.com', 'Mudit Garg')}
-                className="w-full flex items-center gap-3 p-3 bg-card-cream hover:bg-surface-container-low border border-border-warm-grey rounded-xl text-left transition"
-              >
-                <div className="w-8 h-8 rounded-full bg-[#1f4d3f] text-surface flex items-center justify-center font-bold text-sm shrink-0">
-                  M
-                </div>
-                <div className="min-w-0">
-                  <span className="block text-sm font-semibold text-ink-text truncate">Mudit Garg</span>
-                  <span className="block text-[11px] text-muted-text truncate">muditgarg81@gmail.com</span>
-                </div>
-                <span className="ml-auto text-[9px] bg-primary-container/10 text-[#1f4d3f] border border-[#1f4d3f]/20 rounded-full px-1.5 py-0.2 shrink-0 font-bold">
-                  has profile
-                </span>
-              </button>
+            <form onSubmit={handleGoogleFormSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="block font-label-caps text-[10px] text-muted-text font-bold uppercase tracking-wider px-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="e.g. yourname@gmail.com"
+                  value={googleEmail}
+                  onChange={(e) => setGoogleEmail(e.target.value)}
+                  className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-md px-4 py-3.5 rounded-xl outline-none transition duration-150"
+                />
+              </div>
 
-              {/* Account 2: Seeded user Organizer Vriti */}
-              <button
-                onClick={() => handleGoogleSignIn('default-vriti', 'vriti@gmail.com', 'Vriti')}
-                className="w-full flex items-center gap-3 p-3 bg-card-cream hover:bg-surface-container-low border border-border-warm-grey rounded-xl text-left transition"
-              >
-                <div className="w-8 h-8 rounded-full bg-[#1f4d3f] text-surface flex items-center justify-center font-bold text-sm shrink-0">
-                  V
-                </div>
-                <div className="min-w-0">
-                  <span className="block text-sm font-semibold text-ink-text truncate">Vriti</span>
-                  <span className="block text-[11px] text-muted-text truncate">vriti@gmail.com</span>
-                </div>
-                <span className="ml-auto text-[9px] bg-primary-container/10 text-[#1f4d3f] border border-[#1f4d3f]/20 rounded-full px-1.5 py-0.2 shrink-0 font-bold">
-                  has profile
-                </span>
-              </button>
+              <div className="space-y-1.5">
+                <label className="block font-label-caps text-[10px] text-muted-text font-bold uppercase tracking-wider px-1 flex justify-between">
+                  <span>Full Name</span>
+                  <span className="text-[9px] lowercase font-normal italic text-muted-text/70">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. John Doe"
+                  value={googleName}
+                  onChange={(e) => setGoogleName(e.target.value)}
+                  className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-md px-4 py-3.5 rounded-xl outline-none transition duration-150"
+                />
+              </div>
 
-              {/* Account 3: Mock New User */}
               <button
-                onClick={() => handleGoogleSignIn('default-new-traveler', 'newtraveler@gmail.com', 'New Traveler')}
-                className="w-full flex items-center gap-3 p-3 bg-card-cream hover:bg-surface-container-low border border-border-warm-grey rounded-xl text-left transition"
+                type="submit"
+                className="w-full flex items-center justify-center gap-2 bg-[#1f4d3f] hover:bg-[#15342a] text-surface font-body-md font-semibold py-4 px-6 rounded-xl shadow-sm hover:shadow active:scale-[0.99] transition duration-200 cursor-pointer mt-2"
               >
-                <div className="w-8 h-8 rounded-full bg-border-warm-grey text-muted-text flex items-center justify-center font-bold text-sm shrink-0">
-                  N
-                </div>
-                <div className="min-w-0">
-                  <span className="block text-sm font-semibold text-ink-text truncate">New Traveler</span>
-                  <span className="block text-[11px] text-muted-text truncate">newtraveler@gmail.com</span>
-                </div>
-                <span className="ml-auto text-[9px] bg-border-warm-grey/40 text-muted-text border border-border-warm-grey rounded-full px-1.5 py-0.2 shrink-0 font-medium">
-                  no profile
-                </span>
+                Continue
               </button>
-            </div>
+            </form>
 
             <button
               onClick={() => setShowGoogleModal(false)}
-              className="w-full text-center text-xs font-semibold text-muted-text hover:text-ink-text py-2"
+              className="w-full text-center text-xs font-semibold text-muted-text hover:text-ink-text py-1"
             >
               Cancel
             </button>
