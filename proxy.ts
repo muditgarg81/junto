@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+function withNoCache(response: NextResponse) {
+  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
+  return response;
+}
+
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
@@ -30,7 +37,7 @@ export function proxy(request: NextRequest) {
       redirectUrl.searchParams.set('redirect', pathname + search);
       return NextResponse.redirect(redirectUrl);
     }
-    return NextResponse.next();
+    return withNoCache(NextResponse.next());
   }
 
   // 2. If authenticated but has NO profile, redirect to /onboarding (except when already on /onboarding or /signin)
@@ -44,7 +51,7 @@ export function proxy(request: NextRequest) {
       }
       return NextResponse.redirect(redirectUrl);
     }
-    return NextResponse.next();
+    return withNoCache(NextResponse.next());
   }
 
   // 3. If authenticated AND has profile, do not allow /signin or /onboarding
@@ -53,7 +60,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(redirectParam, request.url));
   }
 
-  return NextResponse.next();
+  return withNoCache(NextResponse.next());
 }
 
 export const config = {
