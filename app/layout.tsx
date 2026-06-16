@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Hanken_Grotesk } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -31,6 +32,16 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-surface text-on-surface font-sans">
         {children}
+        <Script id="travelpayouts-drive" strategy="afterInteractive">
+          {`
+            (function () {
+              var script = document.createElement("script");
+              script.async = 1;
+              script.src = 'https://emrldtp.cc/NTQwMzI5.js?t=540329';
+              document.head.appendChild(script);
+            })();
+          `}
+        </Script>
       </body>
     </html>
   );
