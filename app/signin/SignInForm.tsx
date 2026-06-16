@@ -3,7 +3,24 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { APP_NAME, APP_TAGLINE } from '@/lib/constants';
-import { Sparkles, Loader2, Mail } from 'lucide-react';
+// Inline SVG Icons to prevent lucide-react bundling/hydration issues on WebView
+function Mail({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.99 5.74a2 2 0 0 1-2.01 0L2 7" />
+    </svg>
+  );
+}
+
+function Loader2({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+    </svg>
+  );
+}
+
 import { signinAction } from './actions';
 
 interface SignInFormProps {
