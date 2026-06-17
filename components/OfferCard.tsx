@@ -38,7 +38,7 @@ export default function OfferCard({ offer, currentMemberId }: OfferCardProps) {
         <div>
           <span className="text-[9px] font-label-caps text-muted-text block">BEST RATE</span>
           <span className="font-mono text-sm font-bold text-[#1f4d3f]">
-            {offer.currency} {Number(offer.price).toLocaleString()}
+            {offer.partner.toLowerCase() === 'airhelp' ? 'No Win, No Fee' : `${offer.currency} ${Number(offer.price).toLocaleString()}`}
           </span>
         </div>
 

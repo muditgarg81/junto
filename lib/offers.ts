@@ -91,7 +91,10 @@ export async function triggerOffers(
       const cat = partner.category;
       
       // Select mock deal settings for UI surfacing
-      const deal = CATEGORY_MOCK_DEALS[cat] || { title: 'Special Booking Deal', price: 1000, currency: 'INR' };
+      let deal = CATEGORY_MOCK_DEALS[cat] || { title: 'Special Booking Deal', price: 1000, currency: 'INR' };
+      if (partner.name.toLowerCase() === 'airhelp') {
+        deal = { title: 'Delayed Flight Compensation Claim (Up to ₹55,000)', price: 0, currency: 'INR' };
+      }
       const displayTitle = `${partner.name} - ${deal.title} in ${destination}`;
       
       // Resolve deep link target search queries, ensuring placeholder `{sub}` is present
