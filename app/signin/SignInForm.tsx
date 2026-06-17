@@ -48,9 +48,7 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
       if (Capacitor.isNativePlatform()) {
         const { Browser } = await import('@capacitor/browser');
 
-        // Listen for the tab to land back on our domain after OAuth completes
         const listener = await Browser.addListener('browserPageLoaded', async () => {
-          // Close the Custom Tab and reload the WebView — session cookie is now shared
           await listener.remove();
           await Browser.close();
           router.refresh();
@@ -58,10 +56,11 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
         });
 
         await Browser.open({ url: oauthUrl, presentationStyle: 'popover' });
-        return;
+        return; // stay in loading state — listener will clear it
       }
     } catch {
-      // Not in Capacitor or plugin unavailable — fall through to web redirect
+      // Plugin unavailable or not synced — fall through to web redirect
+      setLoading(false);
     }
 
     window.location.href = `/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
