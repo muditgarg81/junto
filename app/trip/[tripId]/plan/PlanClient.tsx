@@ -11,6 +11,7 @@ import { TripState, Decision, Option } from '@/lib/types';
 import Link from 'next/link';
 import OfferCard from '@/components/OfferCard';
 import { EmergencyShieldButton } from '@/components/EmergencyShieldButton';
+import GYGCityWidget from '@/components/GYGCityWidget';
 
 interface PlanClientProps {
   initialState: TripState;
@@ -573,6 +574,15 @@ export default function PlanClient({ initialState, currentMember, myUnpackedItem
             })}
           </div>
         </div>
+
+        {/* GYG LIVE ACTIVITIES WIDGET — shown when destination is locked */}
+        {(() => {
+          const destDecision = decisions.find(d => d.type === 'destination' && d.status === 'locked');
+          const destOption = destDecision?.options.find(o => o.id === destDecision.resolved_option_id);
+          const destination = destOption?.label;
+          if (!destination) return null;
+          return <GYGCityWidget destination={destination} numberOfItems={3} />;
+        })()}
 
         {/* BOOKING OPTIONS — grouped by category */}
         {data.offers && data.offers.length > 0 && (() => {
