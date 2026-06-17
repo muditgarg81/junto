@@ -21,7 +21,7 @@ function Loader2({ className }: { className?: string }) {
   );
 }
 
-import { signinAction } from './actions';
+import { passwordSigninAction } from './actions';
 
 interface SignInFormProps {
   redirectPath: string;
@@ -30,6 +30,8 @@ interface SignInFormProps {
 export default function SignInForm({ redirectPath }: SignInFormProps) {
   const router = useRouter();
   const [emailInput, setEmailInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
   const [magicLinkSent, setMagicLinkSent] = useState(false);
 
@@ -65,41 +67,29 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
     window.location.href = `/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
   };
 
-  // Handle Mock Magic Link Sign In
-  const handleMagicLinkSubmit = async (e: React.FormEvent) => {
+  const handleEmailPasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!emailInput.trim()) return;
-
+    if (!emailInput.trim() || !passwordInput) return;
+    setAuthError('');
     setLoading(true);
     try {
-      // Create a mock authId from the email
-      const cleanEmail = emailInput.trim().toLowerCase();
-      const mockAuthId = `email-${cleanEmail.replace(/[^a-z0-9]/g, '-')}`;
-      
-      // Determine a friendly mock name
-      const mockName = cleanEmail.split('@')[0];
-      const displayName = mockName.charAt(0).toUpperCase() + mockName.slice(1);
-
-      const res = await signinAction(mockAuthId, cleanEmail, displayName);
-      
+      const res = await passwordSigninAction(emailInput, passwordInput);
+      if (!res.success) {
+        setAuthError(res.error ?? 'Sign-in failed.');
+        return;
+      }
       setMagicLinkSent(true);
-      
-      // Auto-simulate clicking the magic link after 1.2 seconds
       setTimeout(() => {
-        if (res.success) {
-          if (res.hasProfile) {
-            router.push(redirectPath);
-          } else {
-            const onboardingUrl = `/onboarding?redirect=${encodeURIComponent(redirectPath)}`;
-            router.push(onboardingUrl);
-          }
-          router.refresh();
+        if (res.hasProfile) {
+          router.push(redirectPath);
+        } else {
+          router.push(`/onboarding?redirect=${encodeURIComponent(redirectPath)}`);
         }
-      }, 1200);
-
+        router.refresh();
+      }, 600);
     } catch (err) {
       console.error(err);
-      alert('Failed to send mock sign-in link.');
+      setAuthError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -166,25 +156,45 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
                 <div className="flex-grow border-t border-border-warm-grey" />
               </div>
 
-              {/* Email Form */}
-              <form onSubmit={handleMagicLinkSubmit} className="space-y-3 text-left">
+              {/* Email + Password Form */}
+              <form onSubmit={handleEmailPasswordSubmit} className="space-y-3 text-left">
                 <div className="relative">
                   <input
                     type="email"
                     required
-                    placeholder="Enter your email address..."
+                    placeholder="Email address"
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-md pl-11 pr-4 py-3.5 rounded-xl outline-none transition duration-150"
                   />
                   <Mail className="w-5 h-5 text-muted-text/60 absolute left-4 top-1/2 -translate-y-1/2" />
                 </div>
+                <div className="relative">
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    placeholder="Password"
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    className="w-full bg-card-cream border border-border-warm-grey focus:border-outline text-ink-text font-body-md pl-11 pr-4 py-3.5 rounded-xl outline-none transition duration-150"
+                  />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-muted-text/60 absolute left-4 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                {authError && (
+                  <p className="text-[11px] text-red-500 px-1">{authError}</p>
+                )}
                 <button
                   type="submit"
                   className="w-full flex items-center justify-center gap-2 border border-outline-variant hover:border-outline text-ink-text font-body-md font-semibold py-4 px-6 rounded-xl hover:bg-surface-container-low transition duration-200 cursor-pointer"
                 >
-                  Email me a sign-in link
+                  Sign in / Create account
                 </button>
+                <p className="text-[10px] text-muted-text/70 text-center px-2">
+                  New here? Enter your email + a new password to create an account.
+                </p>
               </form>
 
               {/* Invite Helper Link */}
