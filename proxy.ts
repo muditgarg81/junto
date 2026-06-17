@@ -26,7 +26,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const authSession = request.cookies.get('junto_auth_session')?.value;
+  // Support both old Google OAuth session cookie and new signed user_id cookie
+  const authSession = request.cookies.get('junto_auth_session')?.value || request.cookies.get('junto_user_id')?.value;
   const hasProfile = request.cookies.get('junto_has_profile')?.value === 'true';
 
   // 1. If NOT authenticated, redirect to /signin (except when already on /signin)

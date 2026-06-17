@@ -39,7 +39,6 @@ export function verifySessionToken(token: string): string | null {
 export async function getCurrentUser(allowFallback = false): Promise<User | null> {
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get('junto_user_id')?.value;
-
   if (tokenCookie) {
     const userId = verifySessionToken(tokenCookie);
     if (userId) {

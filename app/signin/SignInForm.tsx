@@ -33,7 +33,6 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [magicLinkSent, setMagicLinkSent] = useState(false);
 
   // Handle Real Google Sign In Redirect
   // On Capacitor (Android): use @capacitor/browser (Custom Chrome Tab) so the
@@ -72,17 +71,16 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
     setAuthError('');
     setLoading(true);
     try {
-      const res = await passwordSigninAction(emailInput, passwordInput);
-      if (!res.success) {
-        setAuthError(res.error ?? 'Sign-in failed.');
+      const res = await passwordSigninAction(emailInput, passwordInput, redirectPath);
+      if (res.success && res.redirectTo) {
+        // Hard navigation so the browser re-reads the freshly-set session cookie
+        window.location.href = res.redirectTo;
         return;
       }
-      setMagicLinkSent(true);
-      setTimeout(() => {
-        router.push(redirectPath);
-        router.refresh();
-      }, 600);
-    } catch (err) {
+      if (!res.success) {
+        setAuthError(res.error ?? 'Sign-in failed.');
+      }
+    } catch (err: any) {
       console.error(err);
       setAuthError('Something went wrong. Please try again.');
     } finally {
@@ -117,21 +115,14 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
         {/* Auth Forms Container */}
         <div className="w-full space-y-4 px-2">
           
-          {loading && !magicLinkSent && (
+          {loading && (
             <div className="bg-card-cream border border-border-warm-grey rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 shadow-xs">
               <Loader2 className="w-8 h-8 animate-spin text-[#1f4d3f]" />
               <p className="font-body-sm text-muted-text">Connecting secure session...</p>
             </div>
           )}
 
-          {magicLinkSent && (
-            <div className="bg-ai-sage-tint/40 border border-[#1f4d3f]/20 rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 shadow-xs">
-              <Loader2 className="w-8 h-8 animate-spin text-[#1f4d3f]" />
-              <p className="font-body-sm text-ink-text font-semibold">Signing you in...</p>
-            </div>
-          )}
-
-          {!loading && !magicLinkSent && (
+          {!loading && (
             <>
               {/* Google Button */}
               <button
