@@ -79,11 +79,7 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
       }
       setMagicLinkSent(true);
       setTimeout(() => {
-        if (res.hasProfile) {
-          router.push(redirectPath);
-        } else {
-          router.push(`/onboarding?redirect=${encodeURIComponent(redirectPath)}`);
-        }
+        router.push(redirectPath);
         router.refresh();
       }, 600);
     } catch (err) {
@@ -131,8 +127,7 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
           {magicLinkSent && (
             <div className="bg-ai-sage-tint/40 border border-[#1f4d3f]/20 rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 shadow-xs">
               <Loader2 className="w-8 h-8 animate-spin text-[#1f4d3f]" />
-              <p className="font-body-sm text-ink-text font-semibold">Sign-in link sent!</p>
-              <p className="font-body-sm text-muted-text text-[11px]">Simulating magic link verification click...</p>
+              <p className="font-body-sm text-ink-text font-semibold">Signing you in...</p>
             </div>
           )}
 
