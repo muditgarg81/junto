@@ -89,12 +89,32 @@ export async function triggerOffers(
 
     for (const partner of matchingPartners) {
       const cat = partner.category;
-      
+
+      // Per-partner overrides — realistic price bands per platform
+      const PARTNER_OVERRIDES: Record<string, Partial<{ title: string; price: number; currency: string }>> = {
+        'GetYourGuide':     { price: 1899 },
+        'Klook':            { price: 1499 },
+        'Viator':           { price: 2499 },
+        'Tiqets':           { price: 1699 },
+        'TicketNetwork':    { price: 2199 },
+        'Kiwitaxi':         { price: 1650 },
+        'Welcome Pickups':  { price: 2100 },
+        'GetRentaCar':      { price: 2800 },
+        'BikesBooking':     { price: 750  },
+        'Airalo':           { price: 699  },
+        'Yesim':            { price: 599  },
+        'BookMyForex':      { price: 0    },
+        'VisitorsCoverage': { price: 1199 },
+        'AirHelp':          { price: 0    },
+      };
+
       // Select mock deal settings for UI surfacing
-      let deal = CATEGORY_MOCK_DEALS[cat] || { title: 'Special Booking Deal', price: 1000, currency: 'INR' };
+      let deal = { ...CATEGORY_MOCK_DEALS[cat] || { title: 'Special Booking Deal', price: 1000, currency: 'INR' } };
       if (partner.name.toLowerCase() === 'airhelp') {
         deal = { title: 'Delayed Flight Compensation Claim (Up to ₹55,000)', price: 0, currency: 'INR' };
       }
+      const override = PARTNER_OVERRIDES[partner.name];
+      if (override) Object.assign(deal, override);
       const displayTitle = `${partner.name} - ${deal.title} in ${destination}`;
       
       // Resolve deep link target search queries, ensuring placeholder `{sub}` is present
