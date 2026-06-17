@@ -3,6 +3,8 @@
 import { query } from './db';
 import { Offer } from './types';
 import crypto from 'crypto';
+import { getTripPricingContext } from './pricing/context';
+import { buildDeepLink } from './pricing/deeplinks';
 
 interface CachedPartners {
   data: any[];
@@ -64,20 +66,10 @@ export async function triggerOffers(
     // 1. Fetch trip details
     const tripRes = await query('SELECT * FROM trips WHERE id = $1', [tripId]);
     if (tripRes.rows.length === 0) return;
-    const trip = tripRes.rows[0];
 
-    // 2. Resolve destination context
-    const destRes = await query(
-      "SELECT o.label FROM decisions d JOIN options o ON d.resolved_option_id = o.id WHERE d.trip_id = $1 AND d.type = 'destination' AND d.status = 'locked' LIMIT 1",
-      [tripId]
-    );
-    const destination = destRes.rows[0]?.label || 'Goa';
-
-    // 3. Check if international
-    const lowerDest = destination.toLowerCase();
-    const isInternational = !lowerDest.includes('goa') && !lowerDest.includes('manali') && 
-                            !lowerDest.includes('mumbai') && !lowerDest.includes('delhi') && 
-                            !lowerDest.includes('india');
+    // 2. Resolve full pricing context (destination, dates, travelers, country code)
+    const pricingCtx = await getTripPricingContext(tripId);
+    const { destination, isInternational } = pricingCtx;
 
     // 4. Fetch active partners from database cache
     const activePartners = await getActivePartners();
@@ -117,8 +109,10 @@ export async function triggerOffers(
       if (override) Object.assign(deal, override);
       const displayTitle = `${partner.name} - ${deal.title} in ${destination}`;
       
-      // Resolve deep link target search queries, ensuring placeholder `{sub}` is present
-      let unresolvedDeepLink = partner.link_template.replace('{id}', encodeURIComponent(destination));
+      // Build pre-filled deep link with trip dates + destination + traveler count
+      const baseLink = partner.link_template.replace('{id}', encodeURIComponent(destination));
+      let unresolvedDeepLink = buildDeepLink(partner.name, baseLink, pricingCtx);
+      // Ensure {sub} attribution placeholder is present
       if (!unresolvedDeepLink.includes('{sub}')) {
         const separator = unresolvedDeepLink.includes('?') ? '&' : '?';
         unresolvedDeepLink = `${unresolvedDeepLink}${separator}${partner.sub_param}={sub}`;
