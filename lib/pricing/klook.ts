@@ -4,9 +4,8 @@
  * Env:  KLOOK_API_KEY, KLOOK_API_SECRET
  */
 
-import { registerFetcher } from './fetcher';
+import { registerFetcher, usdToInr } from './registry';
 import { TripPricingContext } from './context';
-import { usdToInr } from './fetcher';
 
 registerFetcher('Klook', async (ctx: TripPricingContext) => {
   const apiKey    = process.env.KLOOK_API_KEY;

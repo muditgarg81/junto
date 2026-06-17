@@ -6,7 +6,7 @@
  * Auth: OAuth2 client_credentials → Bearer token (cached in memory)
  */
 
-import { registerFetcher } from './fetcher';
+import { registerFetcher } from './registry';
 import { TripPricingContext } from './context';
 
 let cachedToken: { token: string; expiresAt: number } | null = null;

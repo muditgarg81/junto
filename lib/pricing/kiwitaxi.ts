@@ -4,9 +4,8 @@
  * Env:  KIWITAXI_API_KEY
  */
 
-import { registerFetcher } from './fetcher';
+import { registerFetcher, usdToInr } from './registry';
 import { TripPricingContext } from './context';
-import { usdToInr } from './fetcher';
 
 registerFetcher('Kiwitaxi', async (ctx: TripPricingContext) => {
   const apiKey = process.env.KIWITAXI_API_KEY;

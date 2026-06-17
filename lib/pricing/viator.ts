@@ -4,9 +4,8 @@
  * Env:  VIATOR_API_KEY  (request at partnerresources.viator.com)
  */
 
-import { registerFetcher } from './fetcher';
+import { registerFetcher, usdToInr } from './registry';
 import { TripPricingContext } from './context';
-import { usdToInr } from './fetcher';
 
 registerFetcher('Viator', async (ctx: TripPricingContext) => {
   const apiKey = process.env.VIATOR_API_KEY;

@@ -5,9 +5,8 @@
  *       GYG_PARTNER_ID  (your affiliate partner ID — already known: VTHTCXI)
  */
 
-import { registerFetcher } from './fetcher';
+import { registerFetcher, usdToInr } from './registry';
 import { TripPricingContext } from './context';
-import { usdToInr } from './fetcher';
 
 registerFetcher('GetYourGuide', async (ctx: TripPricingContext) => {
   const apiKey = process.env.GYG_API_KEY;

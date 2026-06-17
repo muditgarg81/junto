@@ -4,9 +4,8 @@
  * Env:  VISITORSCOVERAGE_API_KEY
  */
 
-import { registerFetcher } from './fetcher';
+import { registerFetcher, usdToInr } from './registry';
 import { TripPricingContext } from './context';
-import { usdToInr } from './fetcher';
 
 registerFetcher('VisitorsCoverage', async (ctx: TripPricingContext) => {
   const apiKey = process.env.VISITORSCOVERAGE_API_KEY;
