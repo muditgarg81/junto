@@ -574,17 +574,45 @@ export default function PlanClient({ initialState, currentMember, myUnpackedItem
           </div>
         </div>
 
-        {/* BOOKING OPTIONS (SPONSORED) */}
-        {data.offers && data.offers.length > 0 && (
-          <div className="space-y-3">
-            <h2 className="font-label-caps text-xs text-muted-text tracking-wider">BOOKING OPTIONS</h2>
-            <div className="space-y-3">
-              {data.offers.map((offer) => (
-                <OfferCard key={offer.id} offer={offer} currentMemberId={currentMemberId} />
+        {/* BOOKING OPTIONS — grouped by category */}
+        {data.offers && data.offers.length > 0 && (() => {
+          const CATEGORY_META: Record<string, { label: string; emoji: string }> = {
+            insurance:  { label: 'Travel Insurance',   emoji: '🛡️' },
+            transport:  { label: 'Transport & Transfers', emoji: '🚗' },
+            esim:       { label: 'Connectivity & eSIM', emoji: '📶' },
+            forex:      { label: 'Forex & Money',      emoji: '💱' },
+            activity:   { label: 'Activities & Tours', emoji: '🎟️' },
+            hotel:      { label: 'Stays',              emoji: '🏨' },
+          };
+          const ORDER = ['insurance', 'transport', 'esim', 'forex', 'activity', 'hotel'];
+          const grouped = data.offers.reduce<Record<string, typeof data.offers>>((acc, o) => {
+            const cat = o.category || 'activity';
+            if (!acc[cat]) acc[cat] = [];
+            acc[cat].push(o);
+            return acc;
+          }, {});
+          const cats = ORDER.filter(c => grouped[c]);
+          return (
+            <div className="space-y-5">
+              <h2 className="font-label-caps text-xs text-muted-text tracking-wider">BOOKING OPTIONS</h2>
+              {cats.map(cat => (
+                <div key={cat} className="space-y-2.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm">{CATEGORY_META[cat]?.emoji}</span>
+                    <span className="font-label-caps text-[10px] text-ink-text font-bold tracking-wide">
+                      {CATEGORY_META[cat]?.label ?? cat}
+                    </span>
+                  </div>
+                  <div className="space-y-3">
+                    {grouped[cat].map(offer => (
+                      <OfferCard key={offer.id} offer={offer} currentMemberId={currentMemberId} />
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
 
       {/* CREATE PROPOSAL MODAL */}
