@@ -34,8 +34,34 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
   const [magicLinkSent, setMagicLinkSent] = useState(false);
 
   // Handle Real Google Sign In Redirect
-  const handleGoogleSignIn = () => {
+  // On Capacitor (Android): use @capacitor/browser (Custom Chrome Tab) so the
+  // OAuth cookie is written into the shared Android cookie store that the WebView
+  // also reads.  On web: normal navigation.
+  const handleGoogleSignIn = async () => {
     setLoading(true);
+    const oauthUrl = `https://junto-three.vercel.app/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
+
+    try {
+      const { Capacitor } = await import('@capacitor/core');
+      if (Capacitor.isNativePlatform()) {
+        const { Browser } = await import('@capacitor/browser');
+
+        // Listen for the tab to land back on our domain after OAuth completes
+        const listener = await Browser.addListener('browserPageLoaded', async () => {
+          // Close the Custom Tab and reload the WebView — session cookie is now shared
+          await listener.remove();
+          await Browser.close();
+          router.refresh();
+          setLoading(false);
+        });
+
+        await Browser.open({ url: oauthUrl, presentationStyle: 'popover' });
+        return;
+      }
+    } catch {
+      // Not in Capacitor or plugin unavailable — fall through to web redirect
+    }
+
     window.location.href = `/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
   };
 
