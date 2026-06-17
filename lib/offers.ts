@@ -5,6 +5,7 @@ import { Offer } from './types';
 import crypto from 'crypto';
 import { getTripPricingContext } from './pricing/context';
 import { buildDeepLink } from './pricing/deeplinks';
+import { fetchLivePrice } from './pricing/fetcher';
 
 interface CachedPartners {
   data: any[];
@@ -93,6 +94,7 @@ export async function triggerOffers(
         'Welcome Pickups':  { price: 2100 },
         'GetRentaCar':      { price: 2800 },
         'BikesBooking':     { price: 750  },
+        'Booking.com':      { price: 0    }, // declined — kept as guard in case row exists
         'Airalo':           { price: 699  },
         'Yesim':            { price: 599  },
         'BookMyForex':      { price: 0    },
@@ -100,14 +102,26 @@ export async function triggerOffers(
         'AirHelp':          { price: 0    },
       };
 
-      // Select mock deal settings for UI surfacing
-      let deal = { ...CATEGORY_MOCK_DEALS[cat] || { title: 'Special Booking Deal', price: 1000, currency: 'INR' } };
-      if (partner.name.toLowerCase() === 'airhelp') {
-        deal = { title: 'Delayed Flight Compensation Claim (Up to ₹55,000)', price: 0, currency: 'INR' };
+      // Try live price first; fall back to mock on failure/missing API key
+      const livePrice = await fetchLivePrice(partner.name, pricingCtx);
+
+      let deal = livePrice
+        ? { title: livePrice.title, price: livePrice.price, currency: livePrice.currency }
+        : { ...CATEGORY_MOCK_DEALS[cat] || { title: 'Special Booking Deal', price: 1000, currency: 'INR' } };
+
+      // Static overrides for partners with no live API (AirHelp, BookMyForex etc.)
+      if (!livePrice) {
+        if (partner.name.toLowerCase() === 'airhelp') {
+          deal = { title: 'Delayed Flight Compensation Claim (Up to ₹55,000)', price: 0, currency: 'INR' };
+        }
+        const override = PARTNER_OVERRIDES[partner.name];
+        if (override) Object.assign(deal, override);
       }
-      const override = PARTNER_OVERRIDES[partner.name];
-      if (override) Object.assign(deal, override);
-      const displayTitle = `${partner.name} - ${deal.title} in ${destination}`;
+
+      const isLive = !!livePrice;
+      const displayTitle = isLive
+        ? `${partner.name} - ${deal.title}`
+        : `${partner.name} - ${deal.title} in ${destination}`;
       
       // Build pre-filled deep link with trip dates + destination + traveler count
       const baseLink = partner.link_template.replace('{id}', encodeURIComponent(destination));
@@ -145,7 +159,7 @@ export async function triggerOffers(
         ]
       );
 
-      console.log(`OffersEngine: Surfaced dynamic DB offer "${displayTitle}" for category: ${cat}`);
+      console.log(`OffersEngine: Surfaced ${isLive ? 'LIVE' : 'mock'} offer "${displayTitle}" [${cat}]`);
     }
   } catch (err) {
     console.error('OffersEngine execution failed:', err);
