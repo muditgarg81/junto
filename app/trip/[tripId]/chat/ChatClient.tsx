@@ -9,6 +9,7 @@ import { Send, Sparkles, Navigation, ArrowLeft, ArrowRight, UserPlus, FileText, 
 import BottomNav from '@/components/BottomNav';
 import { Trip, Member, Message } from '@/lib/types';
 import { EmergencyShieldButton } from '@/components/EmergencyShieldButton';
+import { hapticTap, hapticSuccess } from '@/lib/native';
 
 interface ChatClientProps {
   trip: Trip;
@@ -68,6 +69,7 @@ export default function ChatClient({
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim() || !currentMemberId || isSending) return;
+    hapticTap();
 
     const bodyText = inputText.trim();
     setInputText('');
@@ -190,7 +192,7 @@ export default function ChatClient({
   return (
     <div className="relative h-[100dvh] max-h-[100dvh] bg-surface flex flex-col justify-between max-w-md mx-auto w-full border-x border-border-warm-grey shadow-sm overflow-hidden">
       {/* App Bar */}
-      <div className="bg-card-cream border-b border-border-warm-grey px-6 pb-4 pt-2 flex items-center justify-between z-20 shadow-xs">
+      <div className="bg-card-cream border-b border-border-warm-grey px-6 pb-4 pt-safe flex items-center justify-between z-20 shadow-xs" style={{paddingTop: 'max(env(safe-area-inset-top, 0px), 0.5rem)'}}>
         <div className="flex items-center gap-3 min-w-0">
           <Link href={`/trip/${tripId}/plan`} className="text-ink-text hover:text-secondary transition shrink-0">
             <ArrowLeft className="w-5.5 h-5.5" />
@@ -257,7 +259,7 @@ export default function ChatClient({
       )}
 
       {/* Chat History Container */}
-      <div className="flex-grow overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin">
+      <div data-scroll className="flex-grow overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin">
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-2 opacity-50">
             <Sparkles className="w-8 h-8 text-primary-container" />
@@ -464,7 +466,7 @@ export default function ChatClient({
           <button
             type="submit"
             disabled={!inputText.trim() || isSending}
-            className="bg-primary-container hover:bg-primary text-surface p-2.5 rounded-full shadow-sm disabled:bg-outline-variant transition duration-200"
+            className="bg-primary-container hover:bg-primary text-surface p-2.5 rounded-full shadow-sm disabled:bg-outline-variant transition duration-200 active:scale-90"
           >
             <Send className="w-4.5 h-4.5" />
           </button>
