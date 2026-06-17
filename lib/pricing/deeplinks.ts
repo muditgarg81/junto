@@ -78,10 +78,15 @@ export function buildDeepLink(
       });
 
     case 'Airalo':
-      // Airalo uses country code for package filtering
       return buildQS(baseLink, {
         ...(countryCode && { country: countryCode }),
         ...(start       && { startDate: start     }),
+      });
+
+    case 'Saily eSIM':
+      // Saily uses country code to land on the right package page
+      return buildQS(baseLink, {
+        ...(countryCode && { country: countryCode }),
       });
 
     case 'Yesim':

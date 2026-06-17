@@ -11,6 +11,7 @@ import './airalo';
 import './klook';
 import './kiwitaxi';
 import './visitorscoverage';
+import './saily';
 
 async function withTimeout(
   fetcher: (ctx: TripPricingContext) => Promise<LivePrice | null>,
