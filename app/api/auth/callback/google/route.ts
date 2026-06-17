@@ -33,10 +33,11 @@ export async function GET(request: Request) {
     );
   }
 
-  // Determine host and protocol dynamically to match the redirectUri used during auth url generation
   const host = request.headers.get('host') || 'localhost:3000';
   const protocol = host.includes('localhost') || host.includes('127.0.0.1') || host.includes('192.168.') ? 'http' : 'https';
-  const redirectUri = `${protocol}://${host}/api/auth/callback/google`;
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1') || host.includes('192.168.');
+  const canonicalOrigin = process.env.NEXT_PUBLIC_APP_URL || (isLocal ? `${protocol}://${host}` : 'https://junto-three.vercel.app');
+  const redirectUri = `${canonicalOrigin}/api/auth/callback/google`;
 
   try {
     // 1. Exchange authorization code for tokens
