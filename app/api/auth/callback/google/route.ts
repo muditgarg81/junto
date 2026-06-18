@@ -14,10 +14,102 @@ export async function GET(request: Request) {
 
   const handleRedirect = (destination: string) => {
     if (isNative) {
-      // Server-side 302 to the custom scheme closes the Chrome Custom Tab automatically.
-      // JS-based window.location.href to custom schemes is blocked by Chrome.
       const juntofunUrl = `juntofun://callback?redirect=${encodeURIComponent(destination)}`;
-      return NextResponse.redirect(juntofunUrl);
+      const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting to Junto...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #fff9ed;
+      color: #1f4d3f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .container {
+      max-width: 400px;
+      width: 100%;
+      padding: 40px 24px;
+      background: #faf6f1;
+      border: 1px solid #e2ded8;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 24px;
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #1f4d3f;
+    }
+    p {
+      font-size: 16px;
+      color: #6d6c68;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #1f4d3f;
+      color: #fff9ed;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(31, 77, 63, 0.25);
+      transition: background-color 0.2s;
+    }
+    .btn:active {
+      background-color: #15342a;
+    }
+    .loader {
+      border: 3px solid #e2ded8;
+      border-top: 3px solid #1f4d3f;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 24px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="loader"></div>
+    <h1>Connecting to Junto...</h1>
+    <p>You have signed in successfully. We are redirecting you back to the app.</p>
+    <a href="${juntofunUrl}" class="btn">Return to Junto</a>
+  </div>
+  <script>
+    const redirectUrl = "${juntofunUrl}";
+    // Attempt automatic redirect immediately
+    window.location.href = redirectUrl;
+    // Fallback automatic redirect after 500ms
+    setTimeout(function() {
+      window.location.href = redirectUrl;
+    }, 500);
+  </script>
+</body>
+</html>`;
+      return new Response(htmlContent, {
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+        },
+      });
     }
     return NextResponse.redirect(new URL(destination, request.url));
   };
