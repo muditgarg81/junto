@@ -14,10 +14,10 @@ export async function GET(request: Request) {
 
   const handleRedirect = (destination: string) => {
     if (isNative) {
-      // For native (Capacitor Custom Chrome Tab): redirect to /auth-done.
-      // The browserFinished listener in the app detects tab close and navigates the WebView.
-      const authDoneUrl = `/auth-done?redirect=${encodeURIComponent(destination)}`;
-      return NextResponse.redirect(new URL(authDoneUrl, request.url));
+      // Server-side 302 to the custom scheme closes the Chrome Custom Tab automatically.
+      // JS-based window.location.href to custom schemes is blocked by Chrome.
+      const juntofunUrl = `juntofun://callback?redirect=${encodeURIComponent(destination)}`;
+      return NextResponse.redirect(juntofunUrl);
     }
     return NextResponse.redirect(new URL(destination, request.url));
   };
