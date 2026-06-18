@@ -202,50 +202,73 @@ export async function GET(request: Request) {
     });
 
     // 4. Check if profile already exists in DB for this authId
-    const userRes = await query('SELECT * FROM users WHERE auth_id = $1', [authId]);
+    let userRes = await query('SELECT * FROM users WHERE auth_id = $1', [authId]);
+    let user = userRes.rows.length > 0 ? userRes.rows[0] : null;
 
-    if (userRes.rows.length > 0) {
-      const user = userRes.rows[0];
-      const signedToken = signSessionToken(user.id);
-
-      cookieStore.set('junto_user_id', signedToken, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-      });
-      cookieStore.set('junto_has_profile', 'true', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-      });
-      cookieStore.set('junto_show_packing_reminder', 'true', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: false,
-        secure: true,
-        sameSite: 'lax',
-      });
-
-      // Redirect back to original target
-      return handleRedirect(cleanState);
-    } else {
-      // New user, redirect to onboarding with target state preserved
-      cookieStore.delete('junto_user_id');
-      cookieStore.set('junto_has_profile', 'false', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-      });
-
-      const onboardingUrl = `/onboarding?redirect=${encodeURIComponent(cleanState)}`;
-      return handleRedirect(onboardingUrl);
+    if (!user) {
+      // 5. Check if user already exists by email (case-insensitive linking)
+      const emailUserRes = await query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email.trim()]);
+      if (emailUserRes.rows.length > 0) {
+        user = emailUserRes.rows[0];
+        // Link Google authId to this existing email account and update name/photo if missing
+        const updateRes = await query(
+          `UPDATE users
+           SET auth_id = $1,
+               name = COALESCE(name, $2),
+               photo_url = COALESCE(photo_url, $3)
+           WHERE id = $4
+           RETURNING *`,
+          [authId, name || email.split('@')[0], userInfo.picture || null, user.id]
+        );
+        user = updateRes.rows[0];
+        console.log(`Successfully linked Google account to existing user: ${email}`);
+      } else {
+        // 6. Automatically register/create a new user profile using Google details
+        const id = crypto.randomUUID();
+        const insertRes = await query(
+          `INSERT INTO users (id, auth_id, name, email, photo_url, home_currency)
+           VALUES ($1, $2, $3, $4, $5, $6)
+           RETURNING *`,
+          [
+            id,
+            authId,
+            name || email.split('@')[0],
+            email.trim().toLowerCase(),
+            userInfo.picture || null,
+            'INR'
+          ]
+        );
+        user = insertRes.rows[0];
+        console.log(`Successfully auto-registered new Google user: ${email}`);
+      }
     }
+
+    const signedToken = signSessionToken(user.id);
+
+    cookieStore.set('junto_user_id', signedToken, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+    });
+    cookieStore.set('junto_has_profile', 'true', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+    });
+    cookieStore.set('junto_show_packing_reminder', 'true', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: false,
+      secure: true,
+      sameSite: 'lax',
+    });
+
+    // Redirect back to original target (no onboarding screen!)
+    return handleRedirect(cleanState);
   } catch (err) {
     console.error('Exception during Google OAuth callback processing:', err);
     return handleRedirect('/signin?error=internal_auth_error');
