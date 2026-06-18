@@ -9,18 +9,27 @@ export async function GET(request: Request) {
   const state = searchParams.get('state') || '/home'; // state contains the original redirectPath
   const error = searchParams.get('error');
 
+  const isNative = state.startsWith('native:');
+  const cleanState = isNative ? state.replace('native:', '') : state;
+
+  const handleRedirect = (destination: string) => {
+    if (isNative) {
+      // For native (Capacitor Custom Chrome Tab): redirect to /auth-done.
+      // The browserFinished listener in the app detects tab close and navigates the WebView.
+      const authDoneUrl = `/auth-done?redirect=${encodeURIComponent(destination)}`;
+      return NextResponse.redirect(new URL(authDoneUrl, request.url));
+    }
+    return NextResponse.redirect(new URL(destination, request.url));
+  };
+
   if (error) {
     console.error('Google OAuth error returned from Google:', error);
-    return NextResponse.redirect(
-      new URL(`/signin?error=${encodeURIComponent(error)}`, request.url)
-    );
+    return handleRedirect(`/signin?error=${encodeURIComponent(error)}`);
   }
 
   if (!code) {
     console.error('No authorization code returned from Google.');
-    return NextResponse.redirect(
-      new URL('/signin?error=no_auth_code', request.url)
-    );
+    return handleRedirect('/signin?error=no_auth_code');
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -28,9 +37,7 @@ export async function GET(request: Request) {
 
   if (!clientId || !clientSecret) {
     console.error('Google Client credentials are not configured.');
-    return NextResponse.redirect(
-      new URL('/signin?error=credentials_missing', request.url)
-    );
+    return handleRedirect('/signin?error=credentials_missing');
   }
 
   const host = request.headers.get('host') || 'localhost:3000';
@@ -58,9 +65,7 @@ export async function GET(request: Request) {
     if (!tokenResponse.ok) {
       const errorText = await tokenResponse.text();
       console.error('Failed to exchange code for tokens:', errorText);
-      return NextResponse.redirect(
-        new URL('/signin?error=token_exchange_failed', request.url)
-      );
+      return handleRedirect('/signin?error=token_exchange_failed');
     }
 
     const tokenData = await tokenResponse.json();
@@ -68,9 +73,7 @@ export async function GET(request: Request) {
 
     if (!accessToken) {
       console.error('No access token returned from Google.');
-      return NextResponse.redirect(
-        new URL('/signin?error=no_access_token', request.url)
-      );
+      return handleRedirect('/signin?error=no_access_token');
     }
 
     // 2. Fetch user profile information using the access token
@@ -82,9 +85,7 @@ export async function GET(request: Request) {
 
     if (!userInfoResponse.ok) {
       console.error('Failed to retrieve user info from Google.');
-      return NextResponse.redirect(
-        new URL('/signin?error=user_info_failed', request.url)
-      );
+      return handleRedirect('/signin?error=user_info_failed');
     }
 
     const userInfo = await userInfoResponse.json();
@@ -92,9 +93,7 @@ export async function GET(request: Request) {
 
     if (!sub || !email) {
       console.error('UserInfo is missing required fields (sub or email).');
-      return NextResponse.redirect(
-        new URL('/signin?error=profile_incomplete', request.url)
-      );
+      return handleRedirect('/signin?error=profile_incomplete');
     }
 
     const authId = `google-${sub}`;
@@ -140,7 +139,7 @@ export async function GET(request: Request) {
       });
 
       // Redirect back to original target
-      return NextResponse.redirect(new URL(state, request.url));
+      return handleRedirect(cleanState);
     } else {
       // New user, redirect to onboarding with target state preserved
       cookieStore.delete('junto_user_id');
@@ -152,13 +151,11 @@ export async function GET(request: Request) {
         sameSite: 'lax',
       });
 
-      const onboardingUrl = `/onboarding?redirect=${encodeURIComponent(state)}`;
-      return NextResponse.redirect(new URL(onboardingUrl, request.url));
+      const onboardingUrl = `/onboarding?redirect=${encodeURIComponent(cleanState)}`;
+      return handleRedirect(onboardingUrl);
     }
   } catch (err) {
     console.error('Exception during Google OAuth callback processing:', err);
-    return NextResponse.redirect(
-      new URL('/signin?error=internal_auth_error', request.url)
-    );
+    return handleRedirect('/signin?error=internal_auth_error');
   }
 }
