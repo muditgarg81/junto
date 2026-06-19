@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "cap:sync": "npx cap sync android",
-    "android:dev": "CAPACITOR_SERVER_URL=http://192.168.1.17:3000 npx cap sync android && npx cap open android",
+    "android:dev": "CAPACITOR_SERVER_URL=http://192.168.1.6:3000 npx cap sync android && npx cap open android",
     "android:prod": "npx cap sync android && npx cap open android"
   },
   "dependencies": {
