@@ -36,6 +36,25 @@ export default function NativeInit() {
                 if (url.host === 'callback') {
                   const redirectPath = url.searchParams.get('redirect');
                   if (redirectPath) {
+                    let pathNonce = '';
+                    try {
+                      // redirectPath might be relative (e.g. "/home?nonce=abc")
+                      const parsedPath = new URL(redirectPath, 'https://dummy.com');
+                      pathNonce = parsedPath.searchParams.get('nonce') || '';
+                    } catch (e) {
+                      console.error('Failed to parse nonce from redirectPath:', e);
+                    }
+
+                    const storedNonce = sessionStorage.getItem('oauth_nonce');
+                    if (storedNonce || pathNonce) {
+                      if (pathNonce !== storedNonce) {
+                        console.log('Nonce mismatch. Ignoring old/spurious deep link intent.', { pathNonce, storedNonce });
+                        return;
+                      }
+                      // Clear the nonce so it cannot be reused
+                      sessionStorage.removeItem('oauth_nonce');
+                    }
+
                     // Close Chrome Custom Tab securely
                     try {
                       await Browser.close();

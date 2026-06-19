@@ -48,9 +48,17 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
       if (Capacitor.isNativePlatform()) {
         const { Browser } = await import('@capacitor/browser');
 
+        // Generate a unique session nonce to distinguish the fresh callback from old launch intents
+        const nonce = Math.random().toString(36).substring(2, 15);
+        sessionStorage.setItem('oauth_nonce', nonce);
+
+        const redirectWithNonce = redirectPath.includes('?')
+          ? `${redirectPath}&nonce=${nonce}`
+          : `${redirectPath}?nonce=${nonce}`;
+
         // On native, we prefix the redirect target path with 'native:'
         // so the backend knows to trigger custom URL scheme redirection (juntofun://callback)
-        const nativeRedirectPath = `native:${redirectPath}`;
+        const nativeRedirectPath = `native:${redirectWithNonce}`;
         const oauthUrl = `https://junto-three.vercel.app/api/auth/google?redirect=${encodeURIComponent(nativeRedirectPath)}`;
 
         const listener = await Browser.addListener('browserFinished', async () => {
