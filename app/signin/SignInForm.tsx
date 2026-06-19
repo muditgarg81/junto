@@ -50,7 +50,7 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
 
         // Generate a unique session nonce to distinguish the fresh callback from old launch intents
         const nonce = Math.random().toString(36).substring(2, 15);
-        sessionStorage.setItem('oauth_nonce', nonce);
+        localStorage.setItem('oauth_nonce', nonce);
 
         const redirectWithNonce = redirectPath.includes('?')
           ? `${redirectPath}&nonce=${nonce}`

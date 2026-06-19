@@ -35,6 +35,7 @@ export default function NativeInit() {
               if (url.protocol === 'juntofun:') {
                 if (url.host === 'callback') {
                   const redirectPath = url.searchParams.get('redirect');
+                  const token = url.searchParams.get('token');
                   if (redirectPath) {
                     let pathNonce = '';
                     try {
@@ -45,14 +46,28 @@ export default function NativeInit() {
                       console.error('Failed to parse nonce from redirectPath:', e);
                     }
 
-                    const storedNonce = sessionStorage.getItem('oauth_nonce');
+                    const storedNonce = localStorage.getItem('oauth_nonce');
                     if (storedNonce || pathNonce) {
                       if (pathNonce !== storedNonce) {
                         console.log('Nonce mismatch. Ignoring old/spurious deep link intent.', { pathNonce, storedNonce });
                         return;
                       }
                       // Clear the nonce so it cannot be reused
-                      sessionStorage.removeItem('oauth_nonce');
+                      localStorage.removeItem('oauth_nonce');
+                    }
+
+                    // If a session token was passed, sync it to WebView cookies first
+                    if (token) {
+                      try {
+                        const syncRes = await fetch(`/api/auth/session-sync?token=${encodeURIComponent(token)}`);
+                        if (!syncRes.ok) {
+                          console.error('Session sync API returned error:', await syncRes.text());
+                        } else {
+                          console.log('Session sync successful');
+                        }
+                      } catch (syncErr) {
+                        console.error('Failed to call session-sync endpoint:', syncErr);
+                      }
                     }
 
                     // Close Chrome Custom Tab securely

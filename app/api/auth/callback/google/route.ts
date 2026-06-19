@@ -12,9 +12,12 @@ export async function GET(request: Request) {
   const isNative = state.startsWith('native:');
   const cleanState = isNative ? state.replace('native:', '') : state;
 
-  const handleRedirect = (destination: string) => {
+  const handleRedirect = (destination: string, token?: string) => {
     if (isNative) {
-      const juntofunUrl = `juntofun://callback?redirect=${encodeURIComponent(destination)}`;
+      let juntofunUrl = `juntofun://callback?redirect=${encodeURIComponent(destination)}`;
+      if (token) {
+        juntofunUrl += `&token=${encodeURIComponent(token)}`;
+      }
       const htmlContent = `<!DOCTYPE html>
 <html>
 <head>
@@ -197,7 +200,7 @@ export async function GET(request: Request) {
       path: '/',
       maxAge: 60 * 60 * 24 * 30, // 30 days
       httpOnly: true,
-      secure: true,
+      secure: !isLocal,
       sameSite: 'lax',
     });
 
@@ -249,26 +252,26 @@ export async function GET(request: Request) {
       path: '/',
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: true,
-      secure: true,
+      secure: !isLocal,
       sameSite: 'lax',
     });
     cookieStore.set('junto_has_profile', 'true', {
       path: '/',
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: true,
-      secure: true,
+      secure: !isLocal,
       sameSite: 'lax',
     });
     cookieStore.set('junto_show_packing_reminder', 'true', {
       path: '/',
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: false,
-      secure: true,
+      secure: !isLocal,
       sameSite: 'lax',
     });
 
     // Redirect back to original target (no onboarding screen!)
-    return handleRedirect(cleanState);
+    return handleRedirect(cleanState, signedToken);
   } catch (err) {
     console.error('Exception during Google OAuth callback processing:', err);
     return handleRedirect('/signin?error=internal_auth_error');
