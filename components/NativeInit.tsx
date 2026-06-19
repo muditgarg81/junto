@@ -28,6 +28,7 @@ export default function NativeInit() {
 
           // Add listener to capture incoming URL custom schemes (juntofun://callback)
           await App.addListener('appUrlOpen', async (data: any) => {
+            alert('debug: appUrlOpen triggered! URL:\n' + data.url);
             console.log('App opened with URL:', data.url);
             
             try {
@@ -48,12 +49,15 @@ export default function NativeInit() {
                     const storedNonce = sessionStorage.getItem('oauth_nonce');
                     if (storedNonce || pathNonce) {
                       if (pathNonce !== storedNonce) {
+                        alert('debug: Nonce mismatch! Ignoring deep link.\npathNonce: ' + pathNonce + '\nstoredNonce: ' + storedNonce);
                         console.log('Nonce mismatch. Ignoring old/spurious deep link intent.', { pathNonce, storedNonce });
                         return;
                       }
                       // Clear the nonce so it cannot be reused
                       sessionStorage.removeItem('oauth_nonce');
                     }
+
+                    alert('debug: Nonce matched! Closing Custom Tab and redirecting to:\n' + redirectPath);
 
                     // Close Chrome Custom Tab securely
                     try {

@@ -62,6 +62,7 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
         const oauthUrl = `https://junto-three.vercel.app/api/auth/google?redirect=${encodeURIComponent(nativeRedirectPath)}`;
 
         const listener = await Browser.addListener('browserFinished', async () => {
+          alert("debug: browserFinished triggered!");
           await listener.remove();
           setLoading(false);
           
@@ -80,6 +81,7 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
           }
         });
 
+        alert("debug: Opening Custom Tab with url:\n" + oauthUrl);
         await Browser.open({ url: oauthUrl, presentationStyle: 'popover' });
         return; // stay in loading state — listener or deep link will handle redirect
       }
