@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { APP_NAME, APP_TAGLINE } from '@/lib/constants';
 // Inline SVG Icons to prevent lucide-react bundling/hydration issues on WebView
 function Mail({ className }: { className?: string }) {
@@ -29,9 +29,11 @@ interface SignInFormProps {
 
 export default function SignInForm({ redirectPath }: SignInFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const urlError = searchParams ? searchParams.get('error') : null;
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
-  const [authError, setAuthError] = useState('');
+  const [authError, setAuthError] = useState(urlError ? `Sign-in error: ${urlError}` : '');
   const [loading, setLoading] = useState(false);
 
   // Handle Real Google Sign In Redirect
@@ -40,28 +42,55 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
   // also reads.  On web: normal navigation.
   const handleGoogleSignIn = async () => {
     setLoading(true);
-    const oauthUrl = `https://junto-three.vercel.app/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
 
     try {
       const { Capacitor } = await import('@capacitor/core');
       if (Capacitor.isNativePlatform()) {
         const { Browser } = await import('@capacitor/browser');
 
-        const listener = await Browser.addListener('browserPageLoaded', async () => {
+        // Generate a unique session nonce to distinguish the fresh callback from old launch intents
+        const nonce = Math.random().toString(36).substring(2, 15);
+        sessionStorage.setItem('oauth_nonce', nonce);
+
+        const redirectWithNonce = redirectPath.includes('?')
+          ? `${redirectPath}&nonce=${nonce}`
+          : `${redirectPath}?nonce=${nonce}`;
+
+        // On native, we prefix the redirect target path with 'native:'
+        // so the backend knows to trigger custom URL scheme redirection (juntofun://callback)
+        const nativeRedirectPath = `native:${redirectWithNonce}`;
+        const oauthUrl = `https://junto-three.vercel.app/api/auth/google?redirect=${encodeURIComponent(nativeRedirectPath)}`;
+
+        const listener = await Browser.addListener('browserFinished', async () => {
+          alert("debug: browserFinished triggered!");
           await listener.remove();
-          await Browser.close();
-          router.refresh();
           setLoading(false);
+          
+          // Fallback: in case the deep link was blocked or they completed it and manually closed
+          try {
+            const checkAuth = await fetch('/api/user/me');
+            if (checkAuth.ok) {
+              const data = await checkAuth.json();
+              if (data && data.id) {
+                window.location.href = redirectPath || '/home';
+                return;
+              }
+            }
+          } catch (e) {
+            console.error('Error checking auth on finish:', e);
+          }
         });
 
+        alert("debug: Opening Custom Tab with url:\n" + oauthUrl);
         await Browser.open({ url: oauthUrl, presentationStyle: 'popover' });
-        return; // stay in loading state — listener will clear it
+        return; // stay in loading state — listener or deep link will handle redirect
       }
-    } catch {
-      // Plugin unavailable or not synced — fall through to web redirect
+    } catch (err) {
+      console.error('Capacitor native signin exception:', err);
       setLoading(false);
     }
 
+    // Web fallback
     window.location.href = `/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
   };
 

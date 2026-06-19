@@ -9,18 +9,119 @@ export async function GET(request: Request) {
   const state = searchParams.get('state') || '/home'; // state contains the original redirectPath
   const error = searchParams.get('error');
 
+  const isNative = state.startsWith('native:');
+  const cleanState = isNative ? state.replace('native:', '') : state;
+
+  const handleRedirect = (destination: string) => {
+    if (isNative) {
+      const juntofunUrl = `juntofun://callback?redirect=${encodeURIComponent(destination)}`;
+      const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting to Junto...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #fff9ed;
+      color: #1f4d3f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .container {
+      max-width: 400px;
+      width: 100%;
+      padding: 40px 24px;
+      background: #faf6f1;
+      border: 1px solid #e2ded8;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 24px;
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #1f4d3f;
+    }
+    p {
+      font-size: 16px;
+      color: #6d6c68;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #1f4d3f;
+      color: #fff9ed;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(31, 77, 63, 0.25);
+      transition: background-color 0.2s;
+    }
+    .btn:active {
+      background-color: #15342a;
+    }
+    .loader {
+      border: 3px solid #e2ded8;
+      border-top: 3px solid #1f4d3f;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 24px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="loader"></div>
+    <h1>Connecting to Junto...</h1>
+    <p>You have signed in successfully. We are redirecting you back to the app.</p>
+    <a href="${juntofunUrl}" class="btn">Return to Junto</a>
+  </div>
+  <script>
+    const redirectUrl = "${juntofunUrl}";
+    // Attempt automatic redirect immediately
+    window.location.href = redirectUrl;
+    // Fallback automatic redirect after 500ms
+    setTimeout(function() {
+      window.location.href = redirectUrl;
+    }, 500);
+  </script>
+</body>
+</html>`;
+      return new Response(htmlContent, {
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+        },
+      });
+    }
+    return NextResponse.redirect(new URL(destination, request.url));
+  };
+
   if (error) {
     console.error('Google OAuth error returned from Google:', error);
-    return NextResponse.redirect(
-      new URL(`/signin?error=${encodeURIComponent(error)}`, request.url)
-    );
+    return handleRedirect(`/signin?error=${encodeURIComponent(error)}`);
   }
 
   if (!code) {
     console.error('No authorization code returned from Google.');
-    return NextResponse.redirect(
-      new URL('/signin?error=no_auth_code', request.url)
-    );
+    return handleRedirect('/signin?error=no_auth_code');
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -28,9 +129,7 @@ export async function GET(request: Request) {
 
   if (!clientId || !clientSecret) {
     console.error('Google Client credentials are not configured.');
-    return NextResponse.redirect(
-      new URL('/signin?error=credentials_missing', request.url)
-    );
+    return handleRedirect('/signin?error=credentials_missing');
   }
 
   const host = request.headers.get('host') || 'localhost:3000';
@@ -58,9 +157,7 @@ export async function GET(request: Request) {
     if (!tokenResponse.ok) {
       const errorText = await tokenResponse.text();
       console.error('Failed to exchange code for tokens:', errorText);
-      return NextResponse.redirect(
-        new URL('/signin?error=token_exchange_failed', request.url)
-      );
+      return handleRedirect('/signin?error=token_exchange_failed');
     }
 
     const tokenData = await tokenResponse.json();
@@ -68,9 +165,7 @@ export async function GET(request: Request) {
 
     if (!accessToken) {
       console.error('No access token returned from Google.');
-      return NextResponse.redirect(
-        new URL('/signin?error=no_access_token', request.url)
-      );
+      return handleRedirect('/signin?error=no_access_token');
     }
 
     // 2. Fetch user profile information using the access token
@@ -82,9 +177,7 @@ export async function GET(request: Request) {
 
     if (!userInfoResponse.ok) {
       console.error('Failed to retrieve user info from Google.');
-      return NextResponse.redirect(
-        new URL('/signin?error=user_info_failed', request.url)
-      );
+      return handleRedirect('/signin?error=user_info_failed');
     }
 
     const userInfo = await userInfoResponse.json();
@@ -92,9 +185,7 @@ export async function GET(request: Request) {
 
     if (!sub || !email) {
       console.error('UserInfo is missing required fields (sub or email).');
-      return NextResponse.redirect(
-        new URL('/signin?error=profile_incomplete', request.url)
-      );
+      return handleRedirect('/signin?error=profile_incomplete');
     }
 
     const authId = `google-${sub}`;
@@ -111,54 +202,75 @@ export async function GET(request: Request) {
     });
 
     // 4. Check if profile already exists in DB for this authId
-    const userRes = await query('SELECT * FROM users WHERE auth_id = $1', [authId]);
+    let userRes = await query('SELECT * FROM users WHERE auth_id = $1', [authId]);
+    let user = userRes.rows.length > 0 ? userRes.rows[0] : null;
 
-    if (userRes.rows.length > 0) {
-      const user = userRes.rows[0];
-      const signedToken = signSessionToken(user.id);
-
-      cookieStore.set('junto_user_id', signedToken, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-      });
-      cookieStore.set('junto_has_profile', 'true', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-      });
-      cookieStore.set('junto_show_packing_reminder', 'true', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: false,
-        secure: true,
-        sameSite: 'lax',
-      });
-
-      // Redirect back to original target
-      return NextResponse.redirect(new URL(state, request.url));
-    } else {
-      // New user, redirect to onboarding with target state preserved
-      cookieStore.delete('junto_user_id');
-      cookieStore.set('junto_has_profile', 'false', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-      });
-
-      const onboardingUrl = `/onboarding?redirect=${encodeURIComponent(state)}`;
-      return NextResponse.redirect(new URL(onboardingUrl, request.url));
+    if (!user) {
+      // 5. Check if user already exists by email (case-insensitive linking)
+      const emailUserRes = await query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email.trim()]);
+      if (emailUserRes.rows.length > 0) {
+        user = emailUserRes.rows[0];
+        // Link Google authId to this existing email account and update name/photo if missing
+        const updateRes = await query(
+          `UPDATE users
+           SET auth_id = $1,
+               name = COALESCE(name, $2),
+               photo_url = COALESCE(photo_url, $3)
+           WHERE id = $4
+           RETURNING *`,
+          [authId, name || email.split('@')[0], userInfo.picture || null, user.id]
+        );
+        user = updateRes.rows[0];
+        console.log(`Successfully linked Google account to existing user: ${email}`);
+      } else {
+        // 6. Automatically register/create a new user profile using Google details
+        const id = crypto.randomUUID();
+        const insertRes = await query(
+          `INSERT INTO users (id, auth_id, name, email, photo_url, home_currency)
+           VALUES ($1, $2, $3, $4, $5, $6)
+           RETURNING *`,
+          [
+            id,
+            authId,
+            name || email.split('@')[0],
+            email.trim().toLowerCase(),
+            userInfo.picture || null,
+            'INR'
+          ]
+        );
+        user = insertRes.rows[0];
+        console.log(`Successfully auto-registered new Google user: ${email}`);
+      }
     }
+
+    const signedToken = signSessionToken(user.id);
+
+    cookieStore.set('junto_user_id', signedToken, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+    });
+    cookieStore.set('junto_has_profile', 'true', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+    });
+    cookieStore.set('junto_show_packing_reminder', 'true', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: false,
+      secure: true,
+      sameSite: 'lax',
+    });
+
+    // Redirect back to original target (no onboarding screen!)
+    return handleRedirect(cleanState);
   } catch (err) {
     console.error('Exception during Google OAuth callback processing:', err);
-    return NextResponse.redirect(
-      new URL('/signin?error=internal_auth_error', request.url)
-    );
+    return handleRedirect('/signin?error=internal_auth_error');
   }
 }
