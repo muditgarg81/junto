@@ -270,27 +270,27 @@ export default function ItineraryClient({
       <div className="flex-grow px-6 py-6 space-y-6 pb-24 z-10">
         
         {/* Header */}
-        <div className="sticky top-0 z-20 -mx-6 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href={`/trip/${trip.id}/vault`} className="text-ink-text hover:text-secondary transition p-1">
+        <div className="sticky top-0 z-20 -mx-6 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-3 min-w-0">
+            <Link href={`/trip/${trip.id}/vault`} className="text-ink-text hover:text-secondary transition p-1 shrink-0">
               <ArrowLeft className="w-6 h-6" />
             </Link>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="font-display text-4xl text-ink-text leading-tight font-bold">Timeline</h1>
-                <span className="font-body-sm text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-md font-semibold shrink-0">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap min-w-0">
+                <h1 className="font-serif text-3xl text-ink-text leading-tight font-bold shrink-0">Timeline</h1>
+                <span className="font-body-sm text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-md font-semibold shrink-0 truncate max-w-[80px]">
                   {trip.name}
                 </span>
               </div>
-              <p className="font-body-sm text-muted-text">Chronological trip schedule & travel connections</p>
+              <p className="font-body-sm text-muted-text truncate">Chronological trip schedule & travel connections</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <EmergencyShieldButton tripId={trip.id} />
             {currentMember && (
               <Link
                 href="/profile"
-                className="w-8 h-8 rounded-full border border-border-warm-grey shadow-xs bg-card-cream flex items-center justify-center font-display font-semibold text-primary overflow-hidden hover:scale-105 active:scale-95 transition shrink-0"
+                className="w-8 h-8 rounded-full border border-border-warm-grey shadow-xs bg-card-cream flex items-center justify-center font-serif font-semibold text-primary overflow-hidden hover:scale-105 active:scale-95 transition shrink-0"
                 title="Account & Settings"
               >
                 {currentMember.photoUrl ? (
@@ -314,13 +314,6 @@ export default function ItineraryClient({
                 <Trash2 className="w-5 h-5" />
               </button>
             )}
-            <button
-              onClick={openModal}
-              className="bg-primary-container hover:bg-primary text-surface p-2.5 rounded-full shadow-sm hover:scale-105 transition-transform"
-              title="Add Timeline Event"
-            >
-              <Plus className="w-5 h-5" />
-            </button>
           </div>
         </div>
 
@@ -371,7 +364,7 @@ export default function ItineraryClient({
               return (
                 <div key={dateStr} className="space-y-4">
                   {/* Day Header */}
-                  <h2 className="font-display font-bold text-base text-ink-text border-b border-border-warm-grey pb-1 mt-6 text-left">
+                  <h2 className="font-serif font-bold text-lg text-ink-text border-b border-border-warm-grey pb-1 mt-6 text-left">
                     {getDayHeader(dateStr, dateIdx)}
                   </h2>
 
@@ -704,6 +697,15 @@ export default function ItineraryClient({
           </div>
         </div>
       )}
+
+      {/* Floating Action Button */}
+      <button
+        onClick={openModal}
+        className="fixed bottom-24 right-4 md:right-[calc(50%-208px)] z-30 bg-primary-container hover:bg-primary text-surface p-4 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+        title="Add Timeline Event"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
 
       {/* Bottom Nav */}
       <BottomNav tripId={trip.id} activeTab="none" />
