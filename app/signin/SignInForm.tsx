@@ -21,7 +21,7 @@ function Loader2({ className }: { className?: string }) {
   );
 }
 
-import { passwordSigninAction } from './actions';
+import { passwordSigninAction, passwordSignupAction } from './actions';
 
 interface SignInFormProps {
   redirectPath: string;
@@ -65,8 +65,7 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
     window.location.href = `/api/auth/google?redirect=${encodeURIComponent(redirectPath)}`;
   };
 
-  const handleEmailPasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignIn = async () => {
     if (!emailInput.trim() || !passwordInput) return;
     setAuthError('');
     setLoading(true);
@@ -86,6 +85,33 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSignUp = async () => {
+    if (!emailInput.trim() || !passwordInput) return;
+    setAuthError('');
+    setLoading(true);
+    try {
+      const res = await passwordSignupAction(emailInput, passwordInput, redirectPath);
+      if (res.success && res.redirectTo) {
+        // Hard navigation so the browser re-reads the freshly-set session cookie
+        window.location.href = res.redirectTo;
+        return;
+      }
+      if (!res.success) {
+        setAuthError(res.error ?? 'Registration failed.');
+      }
+    } catch (err: any) {
+      console.error(err);
+      setAuthError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEmailPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleSignIn();
   };
 
   return (
@@ -124,23 +150,6 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
 
           {!loading && (
             <>
-              {/* Google Button */}
-              <button
-                onClick={handleGoogleSignIn}
-                className="w-full flex items-center justify-center gap-3 bg-[#1f4d3f] hover:bg-[#15342a] text-surface font-body-md font-semibold py-4 px-6 rounded-xl shadow-sm hover:shadow active:scale-[0.99] transition duration-200 cursor-pointer"
-              >
-                <svg className="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.56-1.56 2.95-3.24 3.75v3.02h5.18c3.07-2.83 4.84-7 4.84-11.91 0-.62-.06-1.22-.16-1.59zM12.18 21c3.24 0 5.97-1.07 7.96-2.91l-5.18-3.02c-.77.52-1.77.83-2.78.83-2.14 0-3.96-1.43-4.61-3.37H2.23v3.13C4.19 18.66 7.93 21 12.18 21zM7.57 12.53a5.4 5.4 0 010-3.06V6.34H2.23a9.99 9.99 0 000 9.32l5.34-3.13zM12.18 5.92c1.77 0 3.35.61 4.6 1.8l3.43-3.43C18.15 2.37 15.42 1.5 12.18 1.5 7.93 1.5 4.19 3.84 2.23 7.97l5.34 3.13c.65-1.94 2.47-3.37 4.61-3.37z"/>
-                </svg>
-                Continue with Google
-              </button>
-
-              <div className="flex items-center gap-3 py-2">
-                <div className="flex-grow border-t border-border-warm-grey" />
-                <span className="text-[10px] font-label-caps text-muted-text/70 tracking-widest">OR</span>
-                <div className="flex-grow border-t border-border-warm-grey" />
-              </div>
-
               {/* Email + Password Form */}
               <form onSubmit={handleEmailPasswordSubmit} className="space-y-3 text-left">
                 <div className="relative">
@@ -171,19 +180,29 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
                 {authError && (
                   <p className="text-[11px] text-red-500 px-1">{authError}</p>
                 )}
+                
                 <button
                   type="submit"
+                  className="w-full flex items-center justify-center gap-2 bg-[#1f4d3f] hover:bg-[#15342a] text-surface font-body-md font-semibold py-4 px-6 rounded-xl shadow-sm hover:shadow active:scale-[0.99] transition duration-200 cursor-pointer"
+                >
+                  Sign in
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSignUp}
                   className="w-full flex items-center justify-center gap-2 border border-outline-variant hover:border-outline text-ink-text font-body-md font-semibold py-4 px-6 rounded-xl hover:bg-surface-container-low transition duration-200 cursor-pointer"
                 >
-                  Sign in / Create account
+                  Create new account
                 </button>
-                <p className="text-[10px] text-muted-text/70 text-center px-2">
-                  New here? Enter your email + a new password to create an account.
+
+                <p className="text-[10px] text-muted-text/70 text-center px-2 pt-1">
+                  Need an account? Enter your email and a password, then tap &quot;Create new account&quot;.
                 </p>
               </form>
 
               {/* Invite Helper Link */}
-              <p className="text-[11px] font-body-sm text-muted-text pt-2">
+              <p className="text-[11px] font-body-sm text-muted-text pt-2 text-center w-full">
                 Joining a trip? <span className="font-semibold text-secondary">Just open your invite link.</span>
               </p>
             </>

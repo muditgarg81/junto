@@ -32,6 +32,19 @@ export async function passwordSigninAction(email: string, password: string, redi
     return { success: true, redirectTo: redirectPath };
   }
 
+  return { success: false, error: 'Account does not exist. Please sign up first.' };
+}
+
+export async function passwordSignupAction(email: string, password: string, redirectPath: string) {
+  const cookieStore = await cookies();
+  const trimEmail = email.trim().toLowerCase();
+
+  const userRes = await query('SELECT * FROM users WHERE email = $1', [trimEmail]);
+
+  if (userRes.rows.length > 0) {
+    return { success: false, error: 'An account with this email already exists. Please sign in.' };
+  }
+
   // New user — create account with hashed password
   const hash = await bcrypt.hash(password, 10);
   const displayName = trimEmail.split('@')[0];
