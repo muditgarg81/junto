@@ -267,10 +267,10 @@ export default function ItineraryClient({
   return (
     <div className="relative min-h-screen bg-surface flex flex-col justify-between max-w-md mx-auto w-full border-x border-border-warm-grey shadow-sm pb-16">
       
-      <div className="flex-grow px-6 py-6 space-y-6 pb-24 z-10">
+      <div className="flex-grow py-6 space-y-6 pb-24 z-10">
         
         {/* Header */}
-        <div className="sticky top-0 z-20 -mx-6 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between gap-2">
+        <div className="sticky top-0 z-20 px-6 -mt-6 pt-6 pb-4 bg-surface/95 backdrop-blur-xs border-b border-border-warm-grey/50 flex items-center justify-between gap-2">
           <div className="flex items-center gap-3 min-w-0">
             <Link href={`/trip/${trip.id}/vault`} className="text-ink-text hover:text-secondary transition p-1 shrink-0">
               <ArrowLeft className="w-6 h-6" />
@@ -319,7 +319,7 @@ export default function ItineraryClient({
 
         {/* Conflict summary banners at top */}
         {conflicts.length > 0 && (
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 px-6">
             {conflicts.map((conflict, idx) => (
               <div key={idx} className="bg-secondary/10 border border-[#C2592F]/30 p-4 rounded-2xl flex items-start gap-3">
                 <AlertTriangle className="w-5 h-5 text-[#C2592F] shrink-0 mt-0.5" />
@@ -340,7 +340,7 @@ export default function ItineraryClient({
         )}
 
         {/* TIMELINE LIST */}
-        <div className="space-y-8">
+        <div className="space-y-8 px-6">
           {sortedDates.length === 0 ? (
             <div className="bg-card-cream/60 border border-dashed border-border-warm-grey rounded-2xl p-8 text-center text-muted-text font-body-sm space-y-4">
               <p>Your itinerary is empty. Manually add events or upload bookings to populate your timeline!</p>
