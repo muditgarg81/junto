@@ -62,7 +62,6 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
         const oauthUrl = `https://junto-three.vercel.app/api/auth/google?redirect=${encodeURIComponent(nativeRedirectPath)}`;
 
         const listener = await Browser.addListener('browserFinished', async () => {
-          alert("debug: browserFinished triggered!");
           await listener.remove();
           setLoading(false);
           
@@ -81,7 +80,6 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
           }
         });
 
-        alert("debug: Opening Custom Tab with url:\n" + oauthUrl);
         await Browser.open({ url: oauthUrl, presentationStyle: 'popover' });
         return; // stay in loading state — listener or deep link will handle redirect
       }
@@ -179,6 +177,24 @@ export default function SignInForm({ redirectPath }: SignInFormProps) {
 
           {!loading && (
             <>
+              {/* Google Button */}
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                className="w-full flex items-center justify-center gap-3 bg-[#1f4d3f] hover:bg-[#15342a] text-surface font-body-md font-semibold py-4 px-6 rounded-xl shadow-sm hover:shadow active:scale-[0.99] transition duration-200 cursor-pointer"
+              >
+                <svg className="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.56-1.56 2.95-3.24 3.75v3.02h5.18c3.07-2.83 4.84-7 4.84-11.91 0-.62-.06-1.22-.16-1.59zM12.18 21c3.24 0 5.97-1.07 7.96-2.91l-5.18-3.02c-.77.52-1.77.83-2.78.83-2.14 0-3.96-1.43-4.61-3.37H2.23v3.13C4.19 18.66 7.93 21 12.18 21zM7.57 12.53a5.4 5.4 0 010-3.06V6.34H2.23a9.99 9.99 0 000 9.32l5.34-3.13zM12.18 5.92c1.77 0 3.35.61 4.6 1.8l3.43-3.43C18.15 2.37 15.42 1.5 12.18 1.5 7.93 1.5 4.19 3.84 2.23 7.97l5.34 3.13c.65-1.94 2.47-3.37 4.61-3.37z"/>
+                </svg>
+                Continue with Google
+              </button>
+
+              <div className="flex items-center gap-3 py-2">
+                <div className="flex-grow border-t border-border-warm-grey" />
+                <span className="text-[10px] font-label-caps text-muted-text/70 tracking-widest">OR</span>
+                <div className="flex-grow border-t border-border-warm-grey" />
+              </div>
+
               {/* Email + Password Form */}
               <form onSubmit={handleEmailPasswordSubmit} className="space-y-3 text-left">
                 <div className="relative">
