@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Fraunces, Hanken_Grotesk } from "next/font/google";
-import Script from "next/script";
 import NativeInit from "@/components/NativeInit";
 import "./globals.css";
 
@@ -28,9 +27,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  }: Readonly<{
+    children: React.ReactNode;
+  }>) {
   return (
     <html
       lang="en"
@@ -39,16 +38,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-surface text-on-surface font-sans">
         <NativeInit />
         {children}
-        <Script id="travelpayouts-drive" strategy="afterInteractive">
-          {`
-            (function () {
-              var script = document.createElement("script");
-              script.async = 1;
-              script.src = 'https://emrldtp.cc/NTQwMzI5.js?t=540329';
-              document.head.appendChild(script);
-            })();
-          `}
-        </Script>
       </body>
     </html>
   );
