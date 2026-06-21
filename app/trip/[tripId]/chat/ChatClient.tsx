@@ -31,40 +31,13 @@ export default function ChatClient({
   const [actionStates, setActionStates] = useState<Record<string, 'idle' | 'loading' | 'done'>>({});
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const isInitialLoad = useRef(true);
-  const prevMessagesLengthRef = useRef(initialMessages.length);
   const tripId = trip.id;
   const currentMemberId = currentMember?.memberId || null;
 
+  // Scroll to bottom on initial load
   useEffect(() => {
-    if (isInitialLoad.current) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
-      isInitialLoad.current = false;
-      prevMessagesLengthRef.current = messages.length;
-      return;
-    }
-
-    if (messages.length > prevMessagesLengthRef.current) {
-      const lastMessage = messages[messages.length - 1];
-      const sentByMe = lastMessage && lastMessage.author_id === currentMemberId;
-
-      if (sentByMe) {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        const container = chatContainerRef.current;
-        if (container) {
-          const threshold = 150; // pixels
-          const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight <= threshold;
-          if (isNearBottom) {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
-      }
-    }
-
-    prevMessagesLengthRef.current = messages.length;
-  }, [messages, currentMemberId]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+  }, []);
 
   // Realtime Polling Sync (every 3 seconds)
   useEffect(() => {
@@ -109,6 +82,11 @@ export default function ChatClient({
       created_at: new Date().toISOString(),
     };
     setMessages((prev) => [...prev, optimisticMessage]);
+
+    // Force scroll to bottom immediately upon sending
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 50);
 
     try {
       const res = await fetch(`/api/trip/${tripId}/message`, {
@@ -282,7 +260,7 @@ export default function ChatClient({
       )}
 
       {/* Chat History Container */}
-      <div ref={chatContainerRef} data-scroll className="flex-grow overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin">
+      <div data-scroll className="flex-grow overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin">
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-2 opacity-50">
             <Sparkles className="w-8 h-8 text-primary-container" />
