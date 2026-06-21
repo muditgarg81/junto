@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { authorizeTripAccess, HttpError } from '@/lib/authz';
 import { verifyCsrf } from '@/lib/csrf';
+import { syncItineraryFromDecision } from '@/lib/itinerary-sync';
 
 export async function POST(
   req: NextRequest,
@@ -125,7 +126,14 @@ export async function POST(
          WHERE id = $2`,
         [optionId, decisionId]
       );
-
+ 
+      // Automatically sync to itinerary
+      try {
+        await syncItineraryFromDecision(tripId, decisionId, optionId);
+      } catch (syncErr) {
+        console.error('Failed to sync itinerary from decision:', syncErr);
+      }
+ 
       // Post clean AI record message in chat
       await query(
         `INSERT INTO messages (id, trip_id, author_id, is_ai, body)
