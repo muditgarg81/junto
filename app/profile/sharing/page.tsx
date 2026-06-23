@@ -2,10 +2,9 @@
 
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 import { 
-  ChevronLeft, Copy, Share, Shield, Link2, Eye, Compass, Heart, Award
+  ChevronLeft, Copy, Share, Shield, Link2, Eye, Compass
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -15,12 +14,93 @@ export default function SharingSettingsPage() {
   const [publicLinkEnabled, setPublicLinkEnabled] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const shareLink = "https://junto.plan/j/goa-recap-2026?token=7d8a9f0e";
+  // Dynamic trip state with defaults matching the mockup style
+  const [tripId, setTripId] = useState<string | null>(null);
+  const [tripName, setTripName] = useState('Beach Escape');
+  const [destination, setDestination] = useState('Goa, India');
+  const [dates, setDates] = useState('Oct 12 - Oct 17');
+  const [memberCount, setMemberCount] = useState(5);
+  const [inviteToken, setInviteToken] = useState('goa-recap-2026');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('tripId');
+      if (id) {
+        setTripId(id);
+        setIsLoading(true);
+        fetch(`/api/trip/${id}/sync`)
+          .then((res) => {
+            if (!res.ok) throw new Error('Failed to fetch trip details');
+            return res.json();
+          })
+          .then((data) => {
+            if (data.trip) {
+              setTripName(data.trip.name);
+              setInviteToken(data.trip.invite_token);
+            }
+            if (data.members) {
+              setMemberCount(data.members.length);
+            }
+            if (data.decisions) {
+              const destDec = data.decisions.find((d: any) => d.type === 'destination' && d.status === 'locked');
+              if (destDec && destDec.resolved_option_id) {
+                const opt = destDec.options.find((o: any) => o.id === destDec.resolved_option_id);
+                if (opt) setDestination(opt.label);
+              }
+              
+              const datesDec = data.decisions.find((d: any) => d.type === 'dates' && d.status === 'locked');
+              if (datesDec && datesDec.resolved_option_id) {
+                const opt = datesDec.options.find((o: any) => o.id === datesDec.resolved_option_id);
+                if (opt) setDates(opt.label);
+              }
+            }
+          })
+          .catch((err) => {
+            console.error('Error fetching trip for sharing:', err);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      }
+    }
+  }, []);
+
+  // Compute share link dynamically
+  const shareLink = typeof window !== 'undefined' 
+    ? `${window.location.origin}/join/${inviteToken}`
+    : `https://junto-three.vercel.app/join/${inviteToken}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleShareWhatsApp = () => {
+    const text = `Check out our Junto trip scrapbook & journal for ${tripName}: ${shareLink}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const handleShareInstagram = () => {
+    navigator.clipboard.writeText(shareLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    alert("Scrapbook link copied! Opening Instagram so you can add it as a link sticker to your story.");
+    window.open("https://instagram.com", "_blank");
+  };
+
+  const handleShareMore = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: `Junto Trip: ${tripName}`,
+        text: `Check out our Junto trip scrapbook & journal for ${tripName}!`,
+        url: shareLink,
+      }).catch((error) => console.log('Error sharing', error));
+    } else {
+      handleCopyLink();
+    }
   };
 
   return (
@@ -51,12 +131,12 @@ export default function SharingSettingsPage() {
             </div>
             
             <div className="flex justify-between items-start z-10">
-              <span className="font-label-caps text-[9px] tracking-widest text-[#8dbdab]">GOA, INDIA</span>
+              <span className="font-label-caps text-[9px] tracking-widest text-[#8dbdab]">{destination.toUpperCase()}</span>
               <span className="font-label-caps text-[8px] bg-secondary text-white px-2 py-0.5 rounded-full font-semibold font-body-sm uppercase">JOURNAL</span>
             </div>
 
             {/* Hero photo mockup */}
-            <div className="w-full h-36 rounded-xl overflow-hidden shadow-xs border border-white/10 z-10 my-4">
+            <div className="w-full h-36 rounded-xl overflow-hidden shadow-xs border border-white/10 z-10 my-4 bg-surface/10 flex items-center justify-center">
               <img 
                 alt="Goa beach" 
                 className="w-full h-full object-cover"
@@ -65,8 +145,8 @@ export default function SharingSettingsPage() {
             </div>
 
             <div className="z-10 text-left space-y-1.5">
-              <h2 className="font-display text-2xl font-bold leading-tight">Beach Escape</h2>
-              <p className="font-body-sm text-[11px] text-[#8dbdab]">Oct 12 - Oct 17 · 5 members</p>
+              <h2 className="font-display text-2xl font-bold leading-tight line-clamp-2">{tripName}</h2>
+              <p className="font-body-sm text-[11px] text-[#8dbdab]">{dates} · {memberCount} members</p>
             </div>
 
             <div className="flex justify-between items-baseline z-10 pt-2 border-t border-white/10">
@@ -111,28 +191,28 @@ export default function SharingSettingsPage() {
           <h3 className="font-label-caps text-[10px] tracking-widest text-muted-text uppercase px-1">EXPORT TARGETS</h3>
           <div className="grid grid-cols-4 gap-3">
             <button 
-              onClick={() => alert('Launching Instagram Stories share intent...')}
+              onClick={handleShareInstagram}
               className="flex flex-col items-center justify-center p-3 bg-card-cream border border-border-warm-grey rounded-2xl gap-1.5 hover:border-outline active:scale-95 transition"
             >
               <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 to-purple-600 flex items-center justify-center text-white shrink-0 shadow-sm font-display font-bold text-xs">Insta</div>
               <span className="text-[9px] font-label-caps text-ink-text">Stories</span>
             </button>
             <button 
-              onClick={() => alert('Launching WhatsApp share intent...')}
+              onClick={handleShareWhatsApp}
               className="flex flex-col items-center justify-center p-3 bg-card-cream border border-border-warm-grey rounded-2xl gap-1.5 hover:border-outline active:scale-95 transition"
             >
               <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-sm font-display font-bold text-xs">WA</div>
               <span className="text-[9px] font-label-caps text-ink-text">WhatsApp</span>
             </button>
             <button 
-              onClick={() => alert('Copying link...')}
-              className="flex flex-col items-center justify-center p-3 bg-card-cream border border-border-warm-grey rounded-2xl gap-1.5 hover:border-outline active:scale-95 transition"
+              onClick={handleCopyLink}
+              className="flex flex-col items-center justify-center p-3 bg-card-cream border border-border-warm-grey rounded-2xl gap-1.5 hover:border-outline active:scale-95 transition relative"
             >
               <div className="w-10 h-10 rounded-full bg-primary-container text-surface flex items-center justify-center shrink-0 shadow-sm"><Link2 className="w-5 h-5" /></div>
-              <span className="text-[9px] font-label-caps text-ink-text">Copy Link</span>
+              <span className="text-[9px] font-label-caps text-ink-text">{copied ? 'Copied!' : 'Copy Link'}</span>
             </button>
             <button 
-              onClick={() => alert('Opening OS Share sheet...')}
+              onClick={handleShareMore}
               className="flex flex-col items-center justify-center p-3 bg-card-cream border border-border-warm-grey rounded-2xl gap-1.5 hover:border-outline active:scale-95 transition"
             >
               <div className="w-10 h-10 rounded-full bg-surface-dim border border-border-warm-grey text-ink-text flex items-center justify-center shrink-0 shadow-sm"><Share className="w-5 h-5" /></div>

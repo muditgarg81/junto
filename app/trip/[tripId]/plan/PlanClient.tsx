@@ -526,7 +526,7 @@ export default function PlanClient({ initialState, currentMember, myUnpackedItem
             </Link>
 
             <Link
-              href={`/profile/sharing`}
+              href={`/profile/sharing?tripId=${tripId}`}
               className="flex items-center gap-3 bg-card-cream border border-border-warm-grey p-4 rounded-xl shadow-xs hover:border-outline hover:scale-[1.01] active:scale-[0.99] transition group text-left"
             >
               <div className="w-10 h-10 rounded-lg bg-[#1f4d3f]/10 flex items-center justify-center text-[#1f4d3f] group-hover:text-secondary transition shrink-0">
