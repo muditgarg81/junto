@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 'use client';
 
@@ -61,6 +61,24 @@ export default function VaultClient({
 
   const tripId = trip.id;
   const currentMemberId = currentMember?.memberId || null;
+
+  const openVaultFile = async (vaultItemId: string) => {
+    try {
+      const res = await fetch(`/api/trip/${tripId}/vault/download?vaultItemId=${vaultItemId}`);
+      const fileUrl = res.url;
+      
+      const { Capacitor } = await import('@capacitor/core');
+      if (Capacitor.isNativePlatform()) {
+        const { Browser } = await import('@capacitor/browser');
+        await Browser.open({ url: fileUrl, windowName: '_blank' });
+      } else {
+        window.open(fileUrl, '_blank', 'noopener');
+      }
+    } catch (err) {
+      console.error('Error opening voucher:', err);
+      alert('Could not open voucher. Please try again.');
+    }
+  };
 
   // Sync polling to update list
   useEffect(() => {
@@ -547,12 +565,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <button
-                              onClick={async () => {
-                                try {
-                                  const res = await fetch(`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`);
-                                  window.open(res.url, '_blank', 'noopener');
-                                } catch { /* silent */ }
-                              }}
+                              onClick={() => openVaultFile(item.id)}
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg cursor-pointer"
                               title="Open Document"
                             >
@@ -609,12 +622,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <button
-                              onClick={async () => {
-                                try {
-                                  const res = await fetch(`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`);
-                                  window.open(res.url, '_blank', 'noopener');
-                                } catch { /* silent */ }
-                              }}
+                              onClick={() => openVaultFile(item.id)}
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg cursor-pointer"
                               title="Open Document"
                             >
@@ -688,12 +696,7 @@ export default function VaultClient({
                           <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                             {item.source_file_url && (
                               <button
-                                onClick={async () => {
-                                  try {
-                                    const res = await fetch(`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`);
-                                    window.open(res.url, '_blank', 'noopener');
-                                  } catch { /* silent */ }
-                                }}
+                                onClick={() => openVaultFile(item.id)}
                                 className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg cursor-pointer"
                                 title="Open Document"
                               >
@@ -742,12 +745,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <button
-                              onClick={async () => {
-                                try {
-                                  const res = await fetch(`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`);
-                                  window.open(res.url, '_blank', 'noopener');
-                                } catch { /* silent */ }
-                              }}
+                              onClick={() => openVaultFile(item.id)}
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg cursor-pointer"
                               title="Open Document"
                             >
@@ -795,12 +793,7 @@ export default function VaultClient({
                         <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                           {item.source_file_url && (
                             <button
-                              onClick={async () => {
-                                try {
-                                  const res = await fetch(`/api/trip/${tripId}/vault/download?vaultItemId=${item.id}`);
-                                  window.open(res.url, '_blank', 'noopener');
-                                } catch { /* silent */ }
-                              }}
+                              onClick={() => openVaultFile(item.id)}
                               className="text-muted-text hover:text-ink-text p-1.5 border border-border-warm-grey rounded-lg cursor-pointer"
                               title="Open Document"
                             >
@@ -1444,16 +1437,7 @@ export default function VaultClient({
                     </span>
                     {selectedVaultItem.source_file_url && (
                       <button
-                        onClick={async () => {
-                          try {
-                            // Fetch with auth cookies → follow redirect to get signed file URL
-                            const res = await fetch(`/api/trip/${tripId}/vault/download?vaultItemId=${selectedVaultItem.id}`);
-                            const fileUrl = res.url; // final URL after redirect contains the signed token
-                            window.open(fileUrl, '_blank', 'noopener');
-                          } catch {
-                            alert('Could not open voucher. Please try again.');
-                          }
-                        }}
+                        onClick={() => openVaultFile(selectedVaultItem.id)}
                         className="text-[#1f4d3f] hover:underline font-bold text-xs flex items-center gap-1 cursor-pointer"
                       >
                         Voucher Attachment <ExternalLink className="w-3.5 h-3.5" />
