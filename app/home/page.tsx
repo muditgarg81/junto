@@ -43,6 +43,31 @@ export default async function HomePage() {
     `, [user.id, user.auth_id]);
     dbTrips = tripsRes.rows;
 
+    // Auto-complete trips whose end date has passed
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const expiredIds: string[] = [];
+    for (const trip of dbTrips) {
+      if (trip.status === 'done') continue;
+      const payload = trip.dates_payload
+        ? (typeof trip.dates_payload === 'string' ? JSON.parse(trip.dates_payload) : trip.dates_payload)
+        : null;
+      if (payload?.endDate) {
+        const [y, m, d] = payload.endDate.split('T')[0].split('-').map(Number);
+        const end = new Date(y, m - 1, d);
+        if (end < today) expiredIds.push(trip.id);
+      }
+    }
+    if (expiredIds.length > 0) {
+      await query(
+        `UPDATE trips SET status = 'done' WHERE id = ANY($1::uuid[])`,
+        [expiredIds]
+      );
+      dbTrips = dbTrips.map((t) =>
+        expiredIds.includes(t.id) ? { ...t, status: 'done' } : t
+      );
+    }
+
     const unpackedItemsRes = await query(`
       SELECT ci.id, ci.label, ci.category, t.id as trip_id, t.name as trip_name
       FROM checklist_items ci
