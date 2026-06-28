@@ -227,3 +227,16 @@ CREATE INDEX IF NOT EXISTS idx_vault_items_trip_id ON vault_items(trip_id);
 CREATE INDEX IF NOT EXISTS idx_itinerary_items_trip_id ON itinerary_items(trip_id);
 CREATE INDEX IF NOT EXISTS idx_checklist_items_trip_id ON checklist_items(trip_id);
 CREATE INDEX IF NOT EXISTS idx_vault_files_trip_id ON vault_files(trip_id);
+
+
+-- Scrapbook photos: trip memory photos uploaded by members
+CREATE TABLE IF NOT EXISTS scrapbook_photos (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  trip_id             UUID NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+  uploader_member_id  UUID REFERENCES members(id) ON DELETE SET NULL,
+  filename            VARCHAR(255) NOT NULL REFERENCES vault_files(filename) ON DELETE CASCADE,
+  caption             TEXT,
+  taken_at            DATE,
+  created_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_scrapbook_photos_trip_id ON scrapbook_photos(trip_id);
