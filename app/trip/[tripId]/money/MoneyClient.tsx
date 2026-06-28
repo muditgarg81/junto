@@ -177,6 +177,7 @@ export default function MoneyClient({
           amount: transfer.amount,
           description: `Settle-up: ${transfer.fromName} to ${transfer.toName}`,
           category: 'Other',
+          source: 'settlement',
           paidBy: transfer.fromMemberId, // paid by debtor
           splitType: 'exact',
           splits: [
@@ -197,7 +198,7 @@ export default function MoneyClient({
   };
 
   // Math Tallies
-  const manualExpenses = expenseList.filter((e) => e.source === 'manual');
+  const manualExpenses = expenseList.filter((e) => e.source === 'manual' || e.source === 'ocr');
   const draftExpenses = expenseList.filter((e) => e.source === 'ai-draft');
 
   const totalSpent = manualExpenses.reduce((acc, e) => acc + Number(e.amount), 0);

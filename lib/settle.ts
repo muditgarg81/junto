@@ -23,8 +23,8 @@ export function calculateSettleUp(
 
   // 2. Iterate expenses to calculate net balance per member (paid - owed)
   expenses.forEach((exp) => {
-    // Only tally manual/confirmed expenses (exclude unconfirmed AI drafts)
-    if (exp.source === 'ai-draft') return;
+    // Only tally real expenses (exclude AI drafts and settle-up transfers)
+    if (exp.source === 'ai-draft' || exp.source === 'settlement') return;
 
     const amount = Number(exp.amount);
     const paidBy = exp.paid_by;
