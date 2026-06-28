@@ -504,6 +504,8 @@ export default function MoneyClient({
                           {upiLink ? (
                             <a
                               href={upiLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="bg-card-cream text-primary-container hover:bg-white font-body-sm text-[11px] font-bold py-1.5 px-3 rounded-lg shadow-sm transition"
                             >
                               Pay · UPI
