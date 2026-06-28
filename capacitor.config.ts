@@ -20,8 +20,6 @@ const config: CapacitorConfig = {
     url: serverUrl,
     // cleartext (plain HTTP) only permitted in local dev; never in production
     cleartext: isDev,
-    // Shown when the remote server is unreachable (no internet)
-    errorPath: 'offline.html',
   },
 };
 
