@@ -87,7 +87,7 @@ export interface Expense {
   category: string;
   date: string;
   split_type: 'equal' | 'shares' | 'exact';
-  source: 'manual' | 'ai-draft';
+  source: 'manual' | 'ai-draft' | 'ocr' | 'settlement';
   created_at: string;
 }
 
