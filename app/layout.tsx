@@ -34,7 +34,16 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${fraunces.variable} ${hankenGrotesk.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      {/* Apply saved theme before first paint to avoid flash */}
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){try{var t=localStorage.getItem('junto_theme')||
+          (window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+          document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+        `}} />
+      </head>
       <body className="min-h-full flex flex-col bg-surface text-on-surface font-sans">
         <NativeInit />
         {children}

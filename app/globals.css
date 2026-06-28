@@ -188,3 +188,33 @@ html {
   background: #c0c8c3;
 }
 
+/* ── Dark mode ─────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-surface: #151510;
+  --color-surface-dim: #0d0d0a;
+  --color-surface-bright: #1e1e18;
+  --color-surface-container-lowest: #0a0a07;
+  --color-surface-container-low: #1a1a14;
+  --color-surface-container: #1f1f18;
+  --color-surface-container-high: #252520;
+  --color-surface-container-highest: #2a2a24;
+  --color-on-surface: #e8e2d6;
+  --color-on-surface-variant: #c0c8c3;
+  --color-inverse-surface: #e8e2d6;
+  --color-inverse-on-surface: #333028;
+  --color-outline: #8a918d;
+  --color-outline-variant: #3a3d3b;
+  --color-background: #151510;
+  --color-on-background: #e8e2d6;
+  --color-ink-text: #EDE8DC;
+  --color-muted-text: #9E9888;
+  --color-card-cream: #1C1C16;
+  --color-border-warm-grey: #2E2E26;
+  --color-ai-sage-tint: #1A2620;
+  --color-primary: #a1d1be;
+  --color-primary-container: #2a5e4e;
+  --color-on-primary-container: #c8e8dc;
+  --color-secondary: #ff8759;
+  --color-secondary-container: #7a3010;
+  --color-on-secondary-container: #ffb899;
+}

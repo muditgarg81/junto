@@ -3,11 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth';
-import { 
+import {
   User, Calendar, MessageSquare, Share2, HelpCircle, Shield, LogOut, ChevronRight, Settings
 } from 'lucide-react';
 import { logoutAction } from './actions';
 import { BackButton } from '@/components/BackButton';
+import { ProfileActions } from './ProfileActions';
 
 export default async function ProfileHubPage() {
   const user = await getCurrentUser(true) || {
@@ -75,7 +76,7 @@ export default async function ProfileHubPage() {
           <div className="space-y-2">
             <h3 className="font-label-caps text-[10px] tracking-widest text-muted-text uppercase px-1">PREFERENCES</h3>
             <div className="bg-card-cream border border-border-warm-grey rounded-2xl divide-y divide-border-warm-grey/50 overflow-hidden shadow-xs">
-              <Link 
+              <Link
                 href="/profile/chats"
                 className="w-full flex items-center justify-between p-4 hover:bg-surface-container-low transition active:scale-[0.99] duration-150"
               >
@@ -85,7 +86,7 @@ export default async function ProfileHubPage() {
                 </div>
                 <ChevronRight className="w-4 h-4 text-muted-text/40" />
               </Link>
-              <Link 
+              <Link
                 href="/profile/sharing"
                 className="w-full flex items-center justify-between p-4 hover:bg-surface-container-low transition active:scale-[0.99] duration-150"
               >
@@ -95,6 +96,7 @@ export default async function ProfileHubPage() {
                 </div>
                 <ChevronRight className="w-4 h-4 text-muted-text/40" />
               </Link>
+              <ProfileActions />
             </div>
           </div>
 

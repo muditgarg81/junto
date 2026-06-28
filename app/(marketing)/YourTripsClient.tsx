@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Plus, Link as LinkIcon, Calendar, Users, ArrowRight, Trash2, Sparkles, X } from 'lucide-react';
 import { User, Member } from '@/lib/types';
 import { deleteTripAction } from '@/app/create-trip/actions';
+import { OnboardingWalkthrough } from '@/components/OnboardingWalkthrough';
 
 interface DbTrip {
   id: string;
@@ -153,7 +154,8 @@ export default function YourTripsClient({ user, dbTrips, unpackedItems = [] }: Y
 
   return (
     <div className="relative min-h-screen flex flex-col justify-between bg-surface overflow-hidden max-w-md mx-auto border-x border-border-warm-grey shadow-sm pb-16">
-      
+      <OnboardingWalkthrough />
+
       {/* Header Bar */}
       <header className="px-6 pt-8 pb-4 flex justify-between items-center z-10">
         <div>
